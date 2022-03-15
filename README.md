@@ -38,8 +38,6 @@
 ## Control card (2) 
 ![Alt text](controlcard2.JPG?raw=true "Title")
 <br>
-
-<br>
 ## abfrage overview 
 ![Alt text](abfrageoverview.JPG?raw=true "Title")
 <br>
