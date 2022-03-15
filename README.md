@@ -42,11 +42,11 @@
 ![Alt text](abfrageoverview.JPG?raw=true "Title")
 <br>
 ## select contact
-![Alt text](select contact.JPG?raw=true "Title")
+![Alt text](selectcontact.JPG?raw=true "Title")
 <br>
 ##  send email
-![Alt text](send email.JPG?raw=true "Title")
+![Alt text](sendemail.JPG?raw=true "Title")
 <br>
 ## send reminder
-![Alt text](send reminder.JPG?raw=true "Title")
+![Alt text](sendreminder.JPG?raw=true "Title")
 <br>
