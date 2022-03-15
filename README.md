@@ -38,3 +38,17 @@
 ## Control card (2) 
 ![Alt text](controlcard2.JPG?raw=true "Title")
 <br>
+
+<br>
+## abfrage overview 
+![Alt text](abfrageoverview.JPG?raw=true "Title")
+<br>
+## select contact
+![Alt text](select contact.JPG?raw=true "Title")
+<br>
+##  send email
+![Alt text](send email.JPG?raw=true "Title")
+<br>
+## send reminder
+![Alt text](send reminder.JPG?raw=true "Title")
+<br>
