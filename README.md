@@ -4,6 +4,7 @@
 <br>
 ## Activity Diagram
 ![Alt text](activity.jpg?raw=true "Title")
+<br>
 ## 1-03 Ersteinrichtung starten
 ![Alt text](1-03-save.jpg?raw=true "Title")
 <br>
@@ -24,3 +25,16 @@
 <br>
 ## Riskoverview (2) 
 ![Alt text](riskoverview2.jpg?raw=true "Title")
+<br>
+## Control Overview  
+![Alt text](controloverview.jpg?raw=true "Title")
+<br>
+## Control Overview (2) 
+![Alt text](controloverview2.jpg?raw=true "Title")
+<br>
+## Control card (1) 
+![Alt text](controlcard1.jpg?raw=true "Title")
+<br>
+## Control card (2) 
+![Alt text](controlcard2.jpg?raw=true "Title")
+<br>
