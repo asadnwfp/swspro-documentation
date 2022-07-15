@@ -1,0 +1,422 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> forms/rc-list/1/rclist-calculations.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"></div><div class="category"><h2>AgGrid</h2><h3>Classes</h3><ul><li><a href="CheckboxRenderer.html">CheckboxRenderer</a></li><li><a href="DetailsRenderer.html">DetailsRenderer</a></li><li><a href="Utils.html">Utils</a></li></ul></div><div class="category"><h2>Forms</h2><h3>Classes</h3><ul><li><a href="AssignedOverview.html">AssignedOverview</a></li><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="Classification.html">Classification</a></li><li><a href="Classification1.html">Classification1</a></li><li><a href="ControlCard.html">ControlCard</a></li><li><a href="ControlsLibrary.html">ControlsLibrary</a></li><li><a href="ControlsOverview.html">ControlsOverview</a></li><li><a href="DescriptionDialog.html">DescriptionDialog</a></li><li><a href="FooterForm.html">FooterForm</a></li><li><a href="ImportModal.html">ImportModal</a></li><li><a href="Logs.html">Logs</a></li><li><a href="NewRiskReport.html">NewRiskReport</a></li><li><a href="QueriesCockpit.html">QueriesCockpit</a></li><li><a href="RcList.html">RcList</a></li><li><a href="RefDocs.html">RefDocs</a></li><li><a href="RiskCard.html">RiskCard</a></li><li><a href="RiskLibrary.html">RiskLibrary</a></li><li><a href="RiskOverview.html">RiskOverview</a></li><li><a href="RiskReport.html">RiskReport</a></li><li><a href="RpeatForm.html">RpeatForm</a></li><li><a href="SaveQuestionere.html">SaveQuestionere</a></li><li><a href="SelectContacts.html">SelectContacts</a></li><li><a href="SelectControls.html">SelectControls</a></li><li><a href="SelectControlsDocuments.html">SelectControlsDocuments</a></li><li><a href="SelectDocuments.html">SelectDocuments</a></li><li><a href="SelectQueryDocuments.html">SelectQueryDocuments</a></li><li><a href="SendOverview.html">SendOverview</a></li><li><a href="ShowDocument.html">ShowDocument</a></li><li><a href="SWSDB.html">SWSDB</a></li></ul></div><div class="category"><h2>Miscmiscellaneous</h2><h3>Classes</h3><ul><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="ControlsOverviewRollForward.html">ControlsOverviewRollForward</a></li><li><a href="GCalcs.html">GCalcs</a></li><li><a href="GlobalConfigs.html">GlobalConfigs</a></li><li><a href="GlobalFile.html">GlobalFile</a></li><li><a href="RisksOverviewRollForward.html">RisksOverviewRollForward</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>forms/rc-list/1/rclist-calculations.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Global iife: Rc List
+ * @class RcList
+ * @category Forms
+ */
+(function () {
+  /* global _ */
+  // define global object
+  const gCalcs = wpw.tax.de.global.functions.gCalcs;
+  wpw.tax.create.calcBlocks("rclist", function (calcUtils) {
+    function filterArr(data) {
+      // filter out empty elements
+      let filteredArr = data.filter((el) => {
+        return el != "";
+      });
+      let uniqueData = [...new Set(filteredArr)];
+      return uniqueData;
+    }
+
+    let tableArr = [];
+    calcUtils.onFormLoad("rclist", function (calcUtils) {
+      // clear the table arr when the form is loaded
+      tableArr = [];
+
+      let documentsMap = new Map();
+      let controlsMap = new Map();
+
+      let riskObjectData = {
+        riskId: "",
+        riskNumber: "",
+        riskName: "",
+        controls: [],
+      };
+
+      let controlObjectData = {
+        controlId: "",
+        controlNumber: "",
+        controlName: "",
+        documents: [],
+      };
+
+      let documentsObjectData = {
+        documentId: "",
+        documentName: "",
+        documentStatus: "",
+      };
+
+      let controlsWithDocuments = [];
+      let riskWithControls = [];
+      // find all the documents on documents surfacce and put in into a map
+      return wpw.tax.getDocuments().then((docs) => {
+        docs.forEach(function (doc) {
+          documentsMap.set(doc.id, doc);
+        });
+
+        // get all the controls mentioned in the engagement
+        return wpw.tax.getControls().then((controls) => {
+          controls.forEach(function (control) {
+            controlsMap.set(control.id, control);
+            // find if a single control has any documents attached
+            // control.properties.DE_activeDocuments holds the active queries on engagement level
+            if (
+              control.attachables.count() > 0 ||
+              control.properties.DE_activeDocuments !== ""
+            ) {
+              let controlDocuments = []; // this will take all the documents associated to a single control
+              let attachableIds = [];
+              // remember these documents are not directly referenced here, they have a separate id in attachables model,
+              // so we have to look for the id of attachable and then look for the link id (here link property inside attachable has the actual document id)
+              // id here is just a link of attachable model
+              let queryIds = [];
+              Object.keys(control.attachables).forEach((id) => {
+                attachableIds.push(id);
+                let docId = control.attachables[id].link;
+                queryIds.push(docId);
+              });
+              // new statement
+              let controlQueries = [];
+              if (control.properties.hasOwnProperty("DE_activeDocuments"))
+                controlQueries =
+                  control.properties.DE_activeDocuments.split(",");
+              /*               let controlQueries =
+                control.properties.DE_activeDocuments.split(","); */
+              queryIds.push(...controlQueries);
+              let filteredArr = filterArr(queryIds);
+              filteredArr.forEach((id) => {
+                try {
+                  const cDocument = documentsMap.get(id);
+                  let documentData = Object.create(documentsObjectData);
+                  documentData.documentId = cDocument.id;
+                  documentData.documentName = cDocument.name;
+                  documentData.documentStatus = cDocument.status;
+                  controlDocuments.push(documentData);
+                } catch (e) {
+                  console.log(
+                    "the attached document is not found for the control " +
+                      control.name
+                  );
+                }
+              });
+              // this controlData object is now the control with all associated documents to it
+              let controlData = Object.create(controlObjectData);
+              controlData.controlId = control.id;
+              controlData.controlNumber = control.properties.DE_number;
+              controlData.controlName = gCalcs.getTitle(control);
+              controlData.documents = controlDocuments; // this is the array of all documents
+              controlsWithDocuments.push(controlData);
+            } else {
+              // this controlData object is now the control with no documents to it
+              let controlData = Object.create(controlObjectData);
+              controlData.controlId = control.id;
+              controlData.controlNumber = control.properties.DE_number;
+              controlData.controlName = gCalcs.getTitle(control);
+              controlData.documents = []; // this will have empty documents
+              controlsWithDocuments.push(controlData);
+            }
+          });
+          return wpw.tax.getRisks().then((risks) => {
+            risks.forEach((risk) => {
+              if (risk.properties.DE_activeStatus === "1") {
+                if (risk.controls.length > 0) {
+                  let riskControls = []; // this will take all the controls associated to a single risk
+                  // we have to find the control if it also exists in activecontrols property
+                  const activeControlsArr =
+                    risk.properties.DE_activeControls.split(",");
+                  // filter empty or null elements
+                  const activeControlsFiltered = activeControlsArr.filter(
+                    (el) => {
+                      return el != null &amp;&amp; el != "";
+                    }
+                  );
+                  // we only need active controls
+                  activeControlsFiltered.forEach(function (rCon) {
+                    // rCon is the id of a control inside the risk
+                    // we now have to find this id in controlsWithDocuments array
+                    for (let i = 0; i &lt; controlsWithDocuments.length; i++) {
+                      let cId = controlsWithDocuments[i].controlId;
+                      if (rCon === cId) {
+                        riskControls.push(controlsWithDocuments[i]);
+                      }
+                    }
+                  });
+                  // this riskdata object is now the risk with all controls to it
+                  let riskData = Object.create(riskObjectData);
+                  riskData.riskId = risk.id;
+                  riskData.riskNumber = risk.properties.DE_number;
+                  //riskData.riskName = risk.name;
+                  riskData.riskName = gCalcs.getTitle(risk);
+                  riskData.controls = riskControls; // this will have all the controls
+                  riskWithControls.push(riskData);
+                } else {
+                  // this riskData object is now the risk with no controls to it
+                  let riskData = Object.create(riskObjectData);
+                  riskData.riskId = risk.id;
+                  riskData.riskNumber = risk.properties.DE_number;
+                  // riskData.riskName = risk.name;
+                  riskData.riskName = gCalcs.getTitle(risk);
+                  riskData.controls = []; // this will have no controls
+                  riskWithControls.push(riskData);
+                }
+              }
+            });
+            createData(calcUtils, riskWithControls);
+          });
+        });
+      });
+    });
+
+    /*For each risk we must have to create a new row
+  While creating controls we can use existing row
+	or we have to create new row for the control (all the attributes for risk will be empty)
+	
+  While creating documents we can use existing row
+	or we have to create new row for the document (all the attributes for risk and control will be empty) */
+
+    // creating the data in terms of rows
+    function createData(calcUtils, data) {
+      data.forEach((risk) => {
+        let rData = {
+          riskId: risk.riskId,
+          riskNumber: risk.riskNumber,
+          sortedNumber: risk.riskNumber,
+          riskName: risk.riskName,
+          controlId: "",
+          controlNumber: "",
+          controlName: "",
+          documentId: "",
+          documentName: "",
+          documentStatus: "",
+        };
+
+        let cons = risk.controls;
+        if (cons.length > 0) {
+          if (cons.length === 1) {
+            createControlRow(cons[0], rData, risk.riskNumber);
+          } else {
+            createControlRow(cons[0], rData, risk.riskNumber);
+            for (let i = 1; i &lt; cons.length; i++) {
+              createControlRow(cons[i], null, risk.riskNumber);
+            }
+          }
+        } else {
+          tableArr.push(rData);
+        }
+      });
+      // sort the data first
+      let sortedArr = _.sortBy(tableArr, "sortedNumber");
+      populateTable(calcUtils, sortedArr);
+    }
+
+    function createControlRow(con, row, riskNumber) {
+      let cData = row;
+      if (cData !== null) {
+        cData.controlId = con.controlId;
+        cData.controlNumber = con.controlNumber;
+        cData.controlName = con.controlName;
+      } else {
+        cData = {
+          riskId: "",
+          riskNumber: "",
+          sortedNumber: riskNumber,
+          riskName: "",
+          controlId: con.controlId,
+          controlNumber: con.controlNumber,
+          controlName: con.controlName,
+          documentId: "",
+          documentName: "",
+          documentStatus: "",
+        };
+      }
+
+      let docs = con.documents;
+      if (docs.length > 0) {
+        if (docs.length === 1) {
+          createDocRow(docs[0], cData, riskNumber);
+        } else {
+          createDocRow(docs[0], cData, riskNumber);
+          for (let i = 1; i &lt; docs.length; i++) {
+            createDocRow(docs[i], null, riskNumber);
+          }
+        }
+      } else {
+        tableArr.push(cData);
+      }
+    }
+
+    function createDocRow(doc, row, riskNumber) {
+      let dData = row;
+      if (dData !== null) {
+        dData.documentId = doc.documentId;
+        dData.documentName = doc.documentName;
+        dData.documentStatus = doc.documentStatus;
+        tableArr.push(dData);
+      } else {
+        dData = {
+          riskId: "",
+          riskNumber: "",
+          sortedNumber: riskNumber,
+          riskName: "",
+          controlId: "",
+          controlNumber: "",
+          controlName: "",
+          documentId: doc.documentId,
+          documentName: doc.documentName,
+          documentStatus: doc.documentStatus,
+        };
+        tableArr.push(dData);
+      }
+    }
+
+    // generate the table rows
+    function populateTable(calcUtils, tableArr) {
+      const isPrinting = wpw.tax.global.isPrinting;
+      let table = calcUtils.field("RC-LIST");
+      // Clear the table if already rows are added, by removing each row
+      let tableLength = table.getRows().length;
+      for (let i = 0; i &lt; tableLength; i++) {
+        calcUtils.removeTableRow("rclist", "RC-LIST", 0);
+      }
+      // add rows to the table
+      for (var i = 0; i &lt; tableArr.length; i++) {
+        // we have to change the document status into German words
+        let documentStatus = tableArr[i].documentStatus;
+        if (documentStatus === "draft") documentStatus = "Entwurf";
+        else if (documentStatus === "open")
+          documentStatus = "Auf Antwort warten";
+        else if (documentStatus === "responded") documentStatus = "Beantwortet";
+        else if (documentStatus === "reopened")
+          documentStatus = "Erneut geöffnet";
+        else if (documentStatus === "complete")
+          documentStatus = "Fertiggestellt";
+        else {
+          documentStatus = tableArr[i].documentStatus;
+        }
+        calcUtils.addTableRow("rclist", "RC-LIST");
+        table.cell(i, 0).label(tableArr[i].riskNumber);
+        table.cell(i, 1).label(tableArr[i].riskName);
+        table.cell(i, 2).label(tableArr[i].controlNumber);
+        table.cell(i, 3).label(tableArr[i].controlName);
+        table.cell(i, 4).label(tableArr[i].documentName);
+        table.cell(i, 5).label(documentStatus);
+      }
+    }
+  });
+})();
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

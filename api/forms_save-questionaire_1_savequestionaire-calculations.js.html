@@ -1,0 +1,1454 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> forms/save-questionaire/1/savequestionaire-calculations.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"></div><div class="category"><h2>AgGrid</h2><h3>Classes</h3><ul><li><a href="CheckboxRenderer.html">CheckboxRenderer</a></li><li><a href="DetailsRenderer.html">DetailsRenderer</a></li><li><a href="Utils.html">Utils</a></li></ul></div><div class="category"><h2>Forms</h2><h3>Classes</h3><ul><li><a href="AssignedOverview.html">AssignedOverview</a></li><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="Classification.html">Classification</a></li><li><a href="Classification1.html">Classification1</a></li><li><a href="ControlCard.html">ControlCard</a></li><li><a href="ControlsLibrary.html">ControlsLibrary</a></li><li><a href="ControlsOverview.html">ControlsOverview</a></li><li><a href="DescriptionDialog.html">DescriptionDialog</a></li><li><a href="FooterForm.html">FooterForm</a></li><li><a href="ImportModal.html">ImportModal</a></li><li><a href="Logs.html">Logs</a></li><li><a href="NewRiskReport.html">NewRiskReport</a></li><li><a href="QueriesCockpit.html">QueriesCockpit</a></li><li><a href="RcList.html">RcList</a></li><li><a href="RefDocs.html">RefDocs</a></li><li><a href="RiskCard.html">RiskCard</a></li><li><a href="RiskLibrary.html">RiskLibrary</a></li><li><a href="RiskOverview.html">RiskOverview</a></li><li><a href="RiskReport.html">RiskReport</a></li><li><a href="RpeatForm.html">RpeatForm</a></li><li><a href="SaveQuestionere.html">SaveQuestionere</a></li><li><a href="SelectContacts.html">SelectContacts</a></li><li><a href="SelectControls.html">SelectControls</a></li><li><a href="SelectControlsDocuments.html">SelectControlsDocuments</a></li><li><a href="SelectDocuments.html">SelectDocuments</a></li><li><a href="SelectQueryDocuments.html">SelectQueryDocuments</a></li><li><a href="SendOverview.html">SendOverview</a></li><li><a href="ShowDocument.html">ShowDocument</a></li><li><a href="SWSDB.html">SWSDB</a></li></ul></div><div class="category"><h2>Miscmiscellaneous</h2><h3>Classes</h3><ul><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="ControlsOverviewRollForward.html">ControlsOverviewRollForward</a></li><li><a href="GCalcs.html">GCalcs</a></li><li><a href="GlobalConfigs.html">GlobalConfigs</a></li><li><a href="GlobalFile.html">GlobalFile</a></li><li><a href="RisksOverviewRollForward.html">RisksOverviewRollForward</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>forms/save-questionaire/1/savequestionaire-calculations.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Global iife: Save Questionere
+ * @class SaveQuestionere
+ * @category Forms
+ */
+(function () {
+  // define global object
+  const gCalcs = wpw.tax.de.global.functions.gCalcs;
+  wpw.tax.create.calcBlocks("savequestionaire", function (calcUtils) {
+    let lockdownStatus = wpw.tax.global.engagementProperties.lockdownStatus;
+    // get the answers from the checklists
+    // data1 gets the three answers, each answer has its own relevant risk
+    let data1 = [
+      {
+        pro: 'procedureprop("@_4C1vKiETaic5DH5w0LCOw", "responseAnswer", "@KkJcWJ7VSua2x1Y0274vvQ", "@ix5Gc5rFQg65YXo0VVfFVA")',
+        riskId1: "85kuLzFHQLyZZh7ZM4Qjgw",
+        riskId2: "G9BE78gUQhOoKxqM3CI-_w",
+        riskId3: "n6N61CvvR_mROMlSrz7h0w",
+      },
+      {
+        pro: 'procedureprop("@0Ody6Hl9TauhG3j8e-U4iQ", "responseAnswer", "@7ME067x-QYS__eZWvFHTOQ", "@uHjyxWOpStyMrVt46V8dVQ")',
+        riskId1: "lR3Yn1HWS_WVUJCiIY6v3g",
+        riskId2: "SOEyx9IDStCIVPMb-EulpQ",
+        riskId3: "Nu6UfYb1TVK_yFWKLqPpcA",
+      },
+      {
+        pro: 'procedureprop("@2AcZ75fzTnm5WC0OYEX5Ww", "responseAnswer", "@nrqT3YdcRoi18PVDUMrbqA", "@GOBvLBlBQxiw9HTT29YV7w")',
+        riskId1: "anr43KezQeuJNmb9WySPHg",
+        riskId2: "8LBjNyJCSyeOW6H7tLZ64Q",
+        riskId3: "rzVsYATPRMarGUYi9E7y8A",
+      },
+      {
+        pro: 'procedureprop("@3tY-Bs74RnynQgfxePZ06Q", "responseAnswer", "@ETRnS3bQSlajDzqALvsy7g", "@ogZ6ubvsTlm499h-Gi_cfg")',
+        riskId1: "53dDEAaTRpCANLMppGpkzA",
+        riskId2: "W9a-5pkEQQ2IcoWCMbNT7g",
+        riskId3: "ZvIRS1dNTXS-S3vaBL-24w",
+      },
+      {
+        pro: 'procedureprop("@4qE1fGXzSU6DXfqpygmirA", "responseAnswer", "@9qQmYrHuRGK9JLwU3RK66Q", "@JZgTZebMTQepc37G23RDIg")',
+        riskId1: "9FLMhP3mRQq_VcAzXp26mw",
+        riskId2: "HiIijMSRTmSHYEfXx4kz0g",
+        riskId3: "vwlMRt42Th2VUBnEJz6_aw",
+      },
+      {
+        pro: 'procedureprop("@5QgRUwzpRQmAgEg7VQ5PqA", "responseAnswer", "@joOH67RrS-eAkVHBgoCGBg", "@rrzMZ8f6TO6n_PYyPEszmA")',
+        riskId1: "mjJLFD1fRXyOzAT5I5GJ2w",
+        riskId2: "_nZysJ9XQX6b5j-koDqL4Q",
+        riskId3: "mVJQgyGpT6aebI_RGnYtuQ",
+      },
+      {
+        pro: 'procedureprop("@5xcRJmTHShm5oS_0xobPgA", "responseAnswer", "@NxzjT99aToaIAWtEujtrOQ", "@64XO0lxsTFOrE42hK17lVg")',
+        riskId1: "VuMOEVpQTem5fXwHapOZcA",
+        riskId2: "RoS4-eAXSeGVLvtugzl_UQ",
+        riskId3: "9KNnuNG7T0OD-9jiukpvYQ",
+      },
+      {
+        pro: 'procedureprop("@6DVh8Y8pStyq3o9xrs_sJQ", "responseAnswer", "@eyyzDeScRaOxl33DyTlFqw", "@PlDorTuiQgaEUhxcUi0cZA")',
+        riskId1: "T7tUwyOYSc24GfT7tvolsg",
+        riskId2: "m9ED0eQgQj-1pmmRyhOeqw",
+        riskId3: "JeXDo7d1T9ymRfTEvJBWAA",
+      },
+      {
+        pro: 'procedureprop("@8CUp2iiEQtWM_UcrccRksw", "responseAnswer", "@fGB1CSz2SF-ohnPnuylC4Q", "@N30Ww-M0Q9eZaBj20RWqag")',
+        riskId1: "RK3TWjePQryimUU1RsI4mQ",
+        riskId2: "wA49y_CLSAynha2IYdxpXQ",
+        riskId3: "8AV2qMKCS1qYJprIV1L7XQ",
+      },
+      {
+        pro: 'procedureprop("@9DE1wVW5SxGDcSFjsoKivA", "responseAnswer", "@qlQL9DkeRxWgakqHZ_Whng", "@Y-i39oXOSHWNdxkdnOEHrQ")',
+        riskId1: "P8C_6qNfS1etHhOqLJ1C9A",
+        riskId2: "Tsh9y5gmTwqc4Y7eUa4DTQ",
+        riskId3: "0f_DkYAIQ3if-Gnla46UsA",
+      },
+      {
+        pro: 'procedureprop("@--bMaC99QoGRVuOmbdDymQ", "responseAnswer", "@28-LDIu-TSeROSUWU5uPBA", "@PGlYnoBZT0uAZveyvOHA8w")',
+        riskId1: "h6f9tY_wQkSdPJr5UkcjSw",
+        riskId2: "0HuqYoAySEeUq0dNM1nyPw",
+        riskId3: "OajTAwQPSFmTqtT_P8RJiA",
+      },
+      {
+        pro: 'procedureprop("@C3r61FxJQIOfToH-Wkx9Zw", "responseAnswer", "@Sp1bI82dSEOYL4xH6QarPA", "@CrOSjipMSRi1SAz8BHyiVg")',
+        riskId1: "20oLoqIMSeOwj55tGwxrfw",
+        riskId2: "NhfavojeQl6P0WkpUf4RQQ",
+        riskId3: "KUhe8EdkQFS6jJ3zoxc6Cw",
+      },
+      {
+        pro: 'procedureprop("@cqdqNRPWRtirKUuQUXybgw", "responseAnswer", "@Nl2krtbNS5yi1bn_U0xQYQ", "@9N2V1ie6RLqdJ9Mh9WGoYQ")',
+        riskId1: "-aWT-jPvRZehsf0ywtt88A",
+        riskId2: "WFqNtZ_ERUO_bzvEmJswBA",
+        riskId3: "iuPxRR-kTRq6xkMcpYGvxA",
+      },
+      {
+        pro: 'procedureprop("@CUzec7c8QcCjCJq6dHJIDg", "responseAnswer", "@JzCNb-q_QzeoFqtINU90AA", "@FZmOLlBfTl-VaL_T60S9ZA")',
+        riskId1: "p194FMyGT6GDyNvl8iirYg",
+        riskId2: "itlBr6CYQL-npZOc6l9neA",
+        riskId3: "HEdSFtnpS8GPEBU1qzEaPQ",
+      },
+      {
+        pro: 'procedureprop("@D5gJKpI2RrS1QFMQeORv5A", "responseAnswer", "@RalqlcInQPS_BVGoKoEkFw", "@yhVfQ-ikRDiTDKNN_DXnKg")',
+        riskId1: "7HusnHF0TQmSJNYd3gzWXQ",
+        riskId2: "t4O5CApwRASY6zVQ8ZWMBA",
+        riskId3: "cmK4z-UlTQOwfsg68ErDrQ",
+      },
+      {
+        pro: 'procedureprop("@dAuAoY4YRsKn89705pa7aQ", "responseAnswer", "@d4VkKRqLQIS7Wa4iIw133g", "@tgHA1FSVRn2b7sJRfBuZkw")',
+        riskId1: "GWkLXM45QwqWeNBOszQDlw",
+        riskId2: "iUH_OxjFQfmYbEzdxBwBRw",
+        riskId3: "s1ESQXyXSZCv0zyfz2d0Og",
+      },
+      {
+        pro: 'procedureprop("@D-GWfQ0GQvq_Vs99RMKs5A", "responseAnswer", "@l64qdAqXQpWOpH02BIG5nQ", "@1oBtDRUUTcqpROc-mvZzhA")',
+        riskId1: "QdlEYv4LS_qJHv-95H26Yw",
+        riskId2: "hd1kbFkSRnicLQJfzu10wA",
+        riskId3: "3FBF5Q-bRGuyffIhaSDSkg",
+      },
+      {
+        pro: 'procedureprop("@DLzZ4FQGSw2Y4VzSkaV30A", "responseAnswer", "@bGBawlPiTwmZXlmGyx8IIA", "@BrpReLeoQx-8j_vw1X2CqQ")',
+        riskId1: "jhT6BU3gTEmCNxAYHfhm2g",
+        riskId2: "ztF7i1S4RemM41gfUT1kxQ",
+        riskId3: "kcpsffkaRvas89_0yvs_nw",
+      },
+      {
+        pro: 'procedureprop("@dsjftFiZTPyWreBWbhSN1A", "responseAnswer", "@uOJ1Gxi9RhSbHAcEf_Jy7A", "@kTLp-WqgR7Sr0mAmHSTJjA")',
+        riskId1: "-smSSn6jQAykdvEBzTmWSQ",
+        riskId2: "4HP4zN5QTkGZ801z7vLHrg",
+        riskId3: "T9MOtWF-Q3ef2KzaRjzH8Q",
+      },
+      {
+        pro: 'procedureprop("@dt_ZM0gkSmiZHsSE49Baaw", "responseAnswer", "@f7Rsew7STEeASuvnqxi7mg", "@tthoTAI7QVaomovDJ8SY8g")',
+        riskId1: "wLawHPVVSAesPHyqiQI_Dg",
+        riskId2: "M2x_wP3LREGce1zp3omnfA",
+        riskId3: "OoEbIkTNQ9mf5aMxzwTsfw",
+      },
+      {
+        pro: 'procedureprop("@FP0Db6haSHSoPjreZp6lpw", "responseAnswer", "@7_kUsKlbTeuzm_gEN3yD0w", "@6oGRxP-vRXq4tciDVr21Lw")',
+        riskId1: "jrZmBx6fS_mu4Rs9qoIizA",
+        riskId2: "SOf9973jRuCu30CtWjUZ4w",
+        riskId3: "Wo7lTa5YQ5WOmm5czmljtg",
+      },
+      {
+        pro: 'procedureprop("@fYRSFBgrTH6QU6t-EYP8jA", "responseAnswer", "@3HMEfZAoQL61GGcrPeSkTQ", "@LfGSCEXVQeO5LuCHi4elAw")',
+        riskId1: "Pu4BQeJPTeelapFKLRww2Q",
+        riskId2: "lCl6mKnoT8GH-lffUw4BFA",
+        riskId3: "NYU_jz3oS--7lSB9SZSXIw",
+      },
+      {
+        pro: 'procedureprop("@GDVdejoZSzydOTeKFAkxag", "responseAnswer", "@U5cXEI1dQKWBCL-6NuPXWw", "@Oab8Gr8yRZ-LqtexqVGE6w")',
+        riskId1: "s20zFnI1RvmSaFfTReUmUg",
+        riskId2: "4IP5QVGoTjubD5nHqXdlCw",
+        riskId3: "dPQAi-t8RO-fPD-e1lT_lw",
+      },
+      {
+        pro: 'procedureprop("@GEqUkZC4TqGkbhmiO1ajmQ", "responseAnswer", "@GnwnZWC5RBK_lNw3jbm5VA", "@7j5ZPn1fT1OgTrzbfpEwCg")',
+        riskId1: "1yFkmz7pTFOusDq9fzI9xw",
+        riskId2: "WrE5c0suTRuwMbNjhc0a2w",
+        riskId3: "GvyV0KLeRmmKjRZudoQJfA",
+      },
+      {
+        pro: 'procedureprop("@GGBIUE7HTzmrTjeWfy7t6g", "responseAnswer", "@zf1Mkhd4Q6aUwBkMdw3Mdg", "@Y6IAWiUiTLaAvXTIVaj1CQ")',
+        riskId1: "Lnui4m64T3y8jJNQmebSAQ",
+        riskId2: "pOlu0__VTxi68Gapl8XqSw",
+        riskId3: "eyp5pfY4TvejcbcFafbJXw",
+      },
+      {
+        pro: 'procedureprop("@GWjUYD22SnyHqFcHHfB05A", "responseAnswer", "@174OhpHxSUq7E7ssbtnhsA", "@BUKiyzj3S8ugWPDUJvx27Q")',
+        riskId1: "uanS4f5FRVuNYijfh5ulVQ",
+        riskId2: "dC25p1XDTHy0HOH1WzfisQ",
+        riskId3: "mZU-I4KvQGqMQlKuEr2ewQ",
+      },
+      {
+        pro: 'procedureprop("@HZqTO7QCQuKcPkQqyUzKQg", "responseAnswer", "@MIMF-cRuRyeWWlCKzoiAIQ", "@lT--eznpSE2nugsne1VEDw")',
+        riskId1: "djhbLn3USWyeHTQTiv3HKg",
+        riskId2: "iUeGwTVeRNu-c48vCCLtBA",
+        riskId3: "KT-JEju8SUSGSnKPubwUVw",
+      },
+      {
+        pro: 'procedureprop("@ia4kg020TVaCPDaWql0iFA", "responseAnswer", "@UOraFU-BS3KXe4_H642bww", "@OcKml_duQkaRoc6SW8NhCw")',
+        riskId1: "k9eFO62sSfWWIlFrY9wk3g",
+        riskId2: "wHGmPJ0zRaCKAlNkmCNhqQ",
+        riskId3: "AKZZjtY4TjitP4zViKfmMg",
+      },
+      {
+        pro: 'procedureprop("@ij1YV7whRU-kFrC59T_hYQ", "responseAnswer", "@az239I-mQKyRBJxHd96FkQ", "@GMWYWkyXShOW9jXHKuiADQ")',
+        riskId1: "_YvFV4IARJy4r_CqBTyfMA",
+        riskId2: "Ell1MzoLRL2b11oTD7TeXA",
+        riskId3: "7L9xOF6yRJ-HHSD5pxl4Sg",
+      },
+      {
+        pro: 'procedureprop("@iZleX57IR4SbveC9II0EdQ", "responseAnswer", "@H7b7trUJQ7ChL0XrfdmXDA", "@0A8W6JchT0GWODMdvXTJjg")',
+        riskId1: "XJcSBcIeQLO6WDR-kANTDw",
+        riskId2: "Q_wIKNuTTsGluLzSHqNPtQ",
+        riskId3: "OcWweHxGT5GnUxPUXi4-JQ",
+      },
+      {
+        pro: 'procedureprop("@JAmN53MWRGC9JR85U3yUKw", "responseAnswer", "@YyC8W4cmR02SunXnZQq9nA", "@xO6tqtJtReuUIoNvbkA5TQ")',
+        riskId1: "xkA1dYSnS_633jTvquN6xQ",
+        riskId2: "W_nGdLAdSPSj6Kdj5OYXBQ",
+        riskId3: "kdv1T3SQQPqeC7LO4WkaVg",
+      },
+      {
+        pro: 'procedureprop("@j-NK6CrLRrymgGN9nSgHZQ", "responseAnswer", "@XT4k3vm0RHifkYXj6hkafA", "@dq8UNmlCQFKNYUAzvk13-A")',
+        riskId1: "QY37uLWLQ5-WqY4y0y0UoA",
+        riskId2: "YzCR_2P5RGehIFHcmFt8bw",
+        riskId3: "DFThOaYCTMuNP8IsFlJa1g",
+      },
+      {
+        pro: 'procedureprop("@kjRGUrqfRrecnqilwxA25A", "responseAnswer", "@8fDhy6ACQrOKxOw4yoenGg", "@joPOaAHpRvinHQXByv3czg")',
+        riskId1: "ZHa-YVyaTKCKzQ0nIsTmUg",
+        riskId2: "PEQ1JOEQS86zZuyOKFu8Xg",
+        riskId3: "RlOKoBLsRuyv7IFxjW-Kzg",
+      },
+      {
+        pro: 'procedureprop("@lrxXeLTjQFmBHMTeHO5Cbg", "responseAnswer", "@eU1XbTSUQZ-zdWQiccNhQg", "@iALPUlQ1Tz6zl-ncrfE_yw")',
+        riskId1: "p35fdm8cSI-bP3zurdZgoQ",
+        riskId2: "tLDGjRrfRXK9iqvwZw4pzQ",
+        riskId3: "MLZrwziOSemsmtwWUbYCiw",
+      },
+      {
+        pro: 'procedureprop("@mv6bI71SRGqwTg5_kDRQmw", "responseAnswer", "@r-Dawvu7QJef0EtQEQ_fGA", "@c1UiaEx7Toeg3cweJcMMBg")',
+        riskId1: "DyUyE2rsQdyiLJerLE9hhg",
+        riskId2: "pE9ODzNCQB2EETwIVkBEVw",
+        riskId3: "UsLOwU-pRdG9mRkHbrpqkA",
+      },
+      {
+        pro: 'procedureprop("@N0uhlY9OSg-sfYBPYorOsg", "responseAnswer", "@ws6ijHkARbKT1wUDrKj8Tg", "@3ATg7E7qRJqbNtcb2hCUBA")',
+        riskId1: "RPcTsNqwTvKbaeKug7duew",
+        riskId2: "IM5mciYKRJqLcfrEHmR0og",
+        riskId3: "CW0ZiklwSJmj4tpa9F3JPw",
+      },
+      {
+        pro: 'procedureprop("@n-BfJB8ZQoaHL3n6_Vk-uQ", "responseAnswer", "@8AaYkWVmTVK5Th9OVBIykA", "@m5FTxqwQRI2wxYrNHXlqSg")',
+        riskId1: "ZO1nqA6USNOGHGxl-5hSGw",
+        riskId2: "CN79Or-4SdqEIvLrlC2LwA",
+        riskId3: "3HuRoFsQTnqJA2ACBIl_VQ",
+      },
+      {
+        pro: 'procedureprop("@nOvB5RRfTXa6Tp5Ngf9xkg", "responseAnswer", "@J-C_dlDyRXeHch8WOslK9w", "@WmJmoUTlR1GRuM0VixvIPg")',
+        riskId1: "A2sMb3bKQAy4PGXYaDlpuA",
+        riskId2: "3HEn5ANMR_2r84NzYDR3CA",
+        riskId3: "KSqipAT7QP2APW6_EdrnmQ",
+      },
+      {
+        pro: 'procedureprop("@o4unvH2qT9qgjAiZYZKkcA", "responseAnswer", "@W30bmKRqQD-7S52iah1Zkw", "@az-kLddSQu2m6DlXyX-0Lg")',
+        riskId1: "UGFOYzziReKyk8aOcKc6qQ",
+        riskId2: "Z8AfzRSwT6OnGVayQG89Ng",
+        riskId3: "XNB6K_fRR9KaHwYmyfEywQ",
+      },
+      {
+        pro: 'procedureprop("@Pq5ONVm0T3WVo7SSc0PKmA", "responseAnswer", "@KnMSXaEiRn2F4xiMgLe1-A", "@DujCm5k6RXS10zZCYHAlKw")',
+        riskId1: "d4m9kYBxQpWUAAWStlBulg",
+        riskId2: "MGkjM9hGRSSBBz9gZzG1hg",
+        riskId3: "t9_bSuXwRGmb-Sds9GtV8w",
+      },
+      {
+        pro: 'procedureprop("@qF2NLpzNT9GhOrP83WhOag", "responseAnswer", "@po1U6tkTT2uzzgd144c4fA", "@GTuMUX9ATdGfJVXmpVKfeg")',
+        riskId1: "PCqTojurTGCpF1mBDw035A",
+        riskId2: "oOBs-u0xSyKrZ_9n6VP0Yg",
+        riskId3: "5v6QAA4WTsqNaarhyFQwfg",
+      },
+      {
+        pro: 'procedureprop("@RcohVxfHS7SmA7whsx69hg", "responseAnswer", "@J9cfDKvUSEqIB5XxS73c_g", "@KNMFRLkERdSApdcrhlGrGg")',
+        riskId1: "eSFBHFw_RROOXWv5w6TjQg",
+        riskId2: "VHrG3VXWTaCVRc_nZ7jetg",
+        riskId3: "gZPh_s4oTrC4S3VXjx3xHw",
+      },
+      {
+        pro: 'procedureprop("@RTdhgILJS62sZFH7fJYJsA", "responseAnswer", "@Q0gtgcEhTx-3Sw4hhdOjOA", "@5WTDy9XESn6DY4AzeWPvRw")',
+        riskId1: "B0sX-QceSWWG9prcAm8VcA",
+        riskId2: "FiO0HXVUQvu4xBNDw5_8mg",
+        riskId3: "cW5MW1NfQa6m7mlbzIipew",
+      },
+      {
+        pro: 'procedureprop("@t6bhqTZHQXGJpzA1RYsouw", "responseAnswer", "@rU9tvUmPRMG_4v0UW8l2CQ", "@ghX6RWSPTMmFrcLY7msH6g")',
+        riskId1: "a6lPRrHATcKGY_1_tOiKug",
+        riskId2: "Un717nB7RIKp_1eBVKxdMA",
+        riskId3: "PrI22rj6SnWy-vw3Fx1mDQ",
+      },
+      {
+        pro: 'procedureprop("@TVBrJxbBRy6YC1I1FVyK8Q", "responseAnswer", "@NHkBkEYdTZe_lFzv8MiAyA", "@ALwZHawVRBezNi-PyiiNRA")',
+        riskId1: "JMsbXQCmQq6G2xpy1e7IAg",
+        riskId2: "zm4mdMCgQn-hhWLpHJewIA",
+        riskId3: "Aoe4nCIlQVeQd92_cHuZ7g",
+      },
+      {
+        pro: 'procedureprop("@u3hmEzggR3ao0ZThUU5qnw", "responseAnswer", "@IJ-Ao3OjSiSGCLUqYktj2Q", "@0JHlvoB4RySxJiyIGNn6EQ")',
+        riskId1: "Hp1R9cvdQfiKqoSen2xr5Q",
+        riskId2: "mJfYv1XcSt2qJxD9mIOheQ",
+        riskId3: "YxiUdSt9ThSPTlXlQ8FSUw",
+      },
+      {
+        pro: 'procedureprop("@Ua3_urAvQcehVsT47e77Yg", "responseAnswer", "@phcl4qirQb6ISMqfKyi1sg", "@DS81Y1TuTZ-HXpaGX3ZGJA")',
+        riskId1: "VAzquAyzRjeg9TWzivqK3g",
+        riskId2: "plxuasldTVuy1vYZbC9vnw",
+        riskId3: "l-0Haq8bRrCdKo8vfa48bA",
+      },
+      {
+        pro: 'procedureprop("@UBFVS2MHSoGfejee39x7BA", "responseAnswer", "@G9lgGScxQIqzoWfKcFQQew", "@ZYmePXzOQiKHhtNwfrNEQA")',
+        riskId1: "N8Wb7dvkQz2jZJsAeMRCJQ",
+        riskId2: "t9m_At2oTZC3G6reSHdbRg",
+        riskId3: "05ju11l2QoiZFoeFsY4szg",
+      },
+      {
+        pro: 'procedureprop("@UC3k_eG3RlWAbawLEI3__A", "responseAnswer", "@ZDyN0_BNSPedlkUmAzNTfw", "@uq6wNcH2Tea4tA8QA3JL9A")',
+        riskId1: "EFwHQZucSKKNPDxly71tAg",
+        riskId2: "xeiAA3IlSL-Jes8lNne9Fg",
+        riskId3: "0UtMFkHpSvKn22bf3hkFug",
+      },
+      {
+        pro: 'procedureprop("@VwKlkC8jRnibI_LqUf7jpA", "responseAnswer", "@n48c9jTnTuaPAXKqxC7plw", "@2hplS2bXRS60VZ9XDRrz0A")',
+        riskId1: "XL90XJ7YQqaE0CnegWneHg",
+        riskId2: "jJE_BtcLThWeI5tmySoTSw",
+        riskId3: "Q3e3olP3TN6DLiVw_nX_0A",
+      },
+      {
+        pro: 'procedureprop("@wU0565OcQdSYbHqY-qk-QQ", "responseAnswer", "@m1v2ZKXUTpKlnN2BgKYZbw", "@RKIa6CL5RXuMDf0V06NQ-g")',
+        riskId1: "6_66Q-jBQMaFXUZ-ubiE0g",
+        riskId2: "f9SyrhAyTXClD9WEx6o0Cw",
+        riskId3: "Ju2QkxeOR9u8AnUFi3ibJg",
+      },
+      {
+        pro: 'procedureprop("@x_ulzYG5TNCwKeGXFm6Hkg", "responseAnswer", "@Bf2XbThvRiW9I-6K5beQng", "@qRrNvfGoSOq1OqAng1kQ0w")',
+        riskId1: "duImjnxrRvySofAvXC5MbA",
+        riskId2: "RND39atnSkWm8LYWFAYYMQ",
+        riskId3: "06xplbJZQouZZRad87V-mQ",
+      },
+      {
+        pro: 'procedureprop("@XuP5RaWXR9qFR3-E5HKPhA", "responseAnswer", "@H3h6DQOVSVa8Rsx4Tl0AhA", "@-Tq6OfKLQUul_vWidEP1JA")',
+        riskId1: "oZyDV7zqRvO0DuCcV8WtSQ",
+        riskId2: "AdGEGno-REq4tuX2T84fOQ",
+        riskId3: "_qrXg7PyQZiVI8uh1W_vJw",
+      },
+      {
+        pro: 'procedureprop("@ya33p0syR2aKg1WmD1A9pA", "responseAnswer", "@ygDnOdL7T1evO4kyqBOIAQ", "@NSdyUMEISzWyG1BwyTsGjw")',
+        riskId1: "z_GyZ2TvTDaq3_zWpySQpQ",
+        riskId2: "zlPMDVQHQWGoLXLvqE8srg",
+        riskId3: "JDf1xjDnQVqF3nrllF7KEQ",
+      },
+      {
+        pro: 'procedureprop("@YfP6lnl9QxiuWkGRIKVOsg", "responseAnswer", "@t521CbqxR9umbXlQkmt40Q", "@MSA3ADpFRKeA2zlJ_spehA")',
+        riskId1: "Tvkb9FaaRP29GlchvqpCGQ",
+        riskId2: "ledbRRa1T-yHMFncI9CC4g",
+        riskId3: "Ho5Fkb6EQvi8IB_qAOFDAQ",
+      },
+
+      // new relevant logics for Jan 2022 release
+      {
+        pro: 'procedureprop("@2-BVuB-pT-CFbrmwyszXcg", "responseAnswer", "@2bk9VjM0RHKwNKROBVAD5A", "@ID5nUyA8RreyzOYSzGxIJA")',
+        riskId1: "EFwHQZucSKKNPDxly71tAg",
+        riskId2: "xeiAA3IlSL-Jes8lNne9Fg",
+        riskId3: "0UtMFkHpSvKn22bf3hkFug",
+      },
+      {
+        pro: 'procedureprop("@2fUAGmkGSeCRIMiXytEGkA", "responseAnswer", "@8WcEQYCgTWWYc88yYmj6gA", "@rXgeW87eR-CsTQTnCy_Pgw")',
+        riskId1: "9FLMhP3mRQq_VcAzXp26mw",
+        riskId2: "HiIijMSRTmSHYEfXx4kz0g",
+        riskId3: "vwlMRt42Th2VUBnEJz6_aw",
+      },
+      {
+        pro: 'procedureprop("@41TKMPEKRHKv1Hm1u6mIvA", "responseAnswer", "@Vt5JuWk4RfuPkjUcYgFGww", "@l_gM3reaQc2RkgpQxtvy3g")',
+        riskId1: "_YvFV4IARJy4r_CqBTyfMA",
+        riskId2: "Ell1MzoLRL2b11oTD7TeXA",
+        riskId3: "7L9xOF6yRJ-HHSD5pxl4Sg",
+      },
+      {
+        pro: 'procedureprop("@4rkc4uInTAGw6_V-S23Wxw", "responseAnswer", "@3YpmeZl5SI6JxEMCVJVA6g", "@9YULye0tSNqu1tnv0cafEw")',
+        riskId1: "JMsbXQCmQq6G2xpy1e7IAg",
+        riskId2: "zm4mdMCgQn-hhWLpHJewIA",
+        riskId3: "Aoe4nCIlQVeQd92_cHuZ7g",
+      },
+      {
+        pro: 'procedureprop("@7bzSvngUTka4bulrDOBKsA", "responseAnswer", "@a--QakSAQS6yvRWfQiSZbA", "@zweI1cU5REKdJh3dMrg8qg")',
+        riskId1: "h6f9tY_wQkSdPJr5UkcjSw",
+        riskId2: "0HuqYoAySEeUq0dNM1nyPw",
+        riskId3: "OajTAwQPSFmTqtT_P8RJiA",
+      },
+      {
+        pro: 'procedureprop("@7wJwSxU7TuStb0SzVEzSag", "responseAnswer", "@-YwjVLo3Rsaabl7ZiI-nhg", "@Ww6w_ErfRpG852fW6NK0Ug")',
+        riskId1: "7HusnHF0TQmSJNYd3gzWXQ",
+        riskId2: "t4O5CApwRASY6zVQ8ZWMBA",
+        riskId3: "cmK4z-UlTQOwfsg68ErDrQ",
+      },
+      {
+        pro: 'procedureprop("@9cEhsYA5TTOWX4r2olKmtQ", "responseAnswer", "@V9ingJRTQhmoNk1wNz4XXw", "@wpe3U24DTS6V9yxzQOxxmg")',
+        riskId1: "duImjnxrRvySofAvXC5MbA",
+        riskId2: "RND39atnSkWm8LYWFAYYMQ",
+        riskId3: "06xplbJZQouZZRad87V-mQ",
+      },
+      {
+        pro: 'procedureprop("@ARnTqUI-RiW2Jd3x6crvaQ", "responseAnswer", "@SnDEv6ulTD2nmooUP6-H-w", "@GhoW2ArtSQCEFlm6siUKMQ")',
+        riskId1: "mjJLFD1fRXyOzAT5I5GJ2w",
+        riskId2: "_nZysJ9XQX6b5j-koDqL4Q",
+        riskId3: "mVJQgyGpT6aebI_RGnYtuQ",
+      },
+      {
+        pro: 'procedureprop("@BPYZ-TZxQ4u4v4bO-OlRaA", "responseAnswer", "@hDrtWHZ0SgK49J4_rNcL0A", "@5gFCcP18QF6cytUGas8jXA")',
+        riskId1: "Pu4BQeJPTeelapFKLRww2Q",
+        riskId2: "lCl6mKnoT8GH-lffUw4BFA",
+        riskId3: "NYU_jz3oS--7lSB9SZSXIw",
+      },
+      {
+        pro: 'procedureprop("@-IEP8AKdSVGH3S7hy6mxjA", "responseAnswer", "@QWDaJvceTBiy2YejxI0_Hg", "@7236E9qZRrOFqM8RswHjEQ")',
+        riskId1: "RK3TWjePQryimUU1RsI4mQ",
+        riskId2: "wA49y_CLSAynha2IYdxpXQ",
+        riskId3: "8AV2qMKCS1qYJprIV1L7XQ",
+      },
+      {
+        pro: 'procedureprop("@kykcaL_mSoq7VbTmmGYBSA", "responseAnswer", "@W8QEpwLAQYilwM8BZ5vUzw", "@gzpowppBRg-V_ELhUrSFpw")',
+        riskId1: "20oLoqIMSeOwj55tGwxrfw",
+        riskId2: "NhfavojeQl6P0WkpUf4RQQ",
+        riskId3: "KUhe8EdkQFS6jJ3zoxc6Cw",
+      },
+      {
+        pro: 'procedureprop("@o-67msolSPmD7AuQcyJChA", "responseAnswer", "@e_AYT0O_SqCJP06n4nU9eg", "@Pbrp268LQhmYR0ivN5s2NA")',
+        riskId1: "eSFBHFw_RROOXWv5w6TjQg",
+        riskId2: "VHrG3VXWTaCVRc_nZ7jetg",
+        riskId3: "gZPh_s4oTrC4S3VXjx3xHw",
+      },
+      {
+        pro: 'procedureprop("@Pgbclm7uRiGiKIZbyflcSQ", "responseAnswer", "@KOlvvpeOTtugQTByJtTu4g", "@CKaLcxLvRxWgtGGTl3stkQ")',
+        riskId1: "cunf8EboTmutDTwLCOFRCA",
+        riskId2: "NNpscaYfTsymbUzCB92fqA",
+        riskId3: "JQks3631Qh-1kIjlT5Id2w",
+      },
+      {
+        pro: 'procedureprop("@PgD2cydBSciluEZ-w1TAEA", "responseAnswer", "@t_Q4sJirRfuhaiEpnyZ51g", "@1Ugihy30RySORhvjx-F5qA")',
+        riskId1: "ONxja747Q_G6T-g0BAxALA",
+        riskId2: "VQwVVD6oTii5QX9Xe4eU3Q",
+        riskId3: "qoeQ9pKgT_G5PB8g_PlN4A",
+      },
+      {
+        pro: 'procedureprop("@pneLPQqlQ0aSyuiUIllU4Q", "responseAnswer", "@0d_AR9oHRn-LHjt8d0xg7g", "@t0qivEBdRy-7i3NFv8yXXg")',
+        riskId1: "UGFOYzziReKyk8aOcKc6qQ",
+        riskId2: "Z8AfzRSwT6OnGVayQG89Ng",
+        riskId3: "XNB6K_fRR9KaHwYmyfEywQ",
+      },
+      {
+        pro: 'procedureprop("@pVcpKbd7SyuLBGC3v4LBfg", "responseAnswer", "@IcucmvLNS_6myBYcD-e5tQ", "@Ye-hhNIMQ4ensmwGwoa9iQ")',
+        riskId1: "r9GejcYPSOOi06Ft80RgMg",
+        riskId2: "4EvZKOz3Rc23bpN792PhIg",
+        riskId3: "4G1phEaPT46eUjhvrGnKaQ",
+      },
+      {
+        pro: 'procedureprop("@sAi5Ucm5QnKZ27bUW8nHeQ", "responseAnswer", "@OrF6ZwE4R5WN8ZkFp8ZyKQ", "@4hnNVMAxQ6ilKUuu3nTmzg")',
+        riskId1: "a6lPRrHATcKGY_1_tOiKug",
+        riskId2: "Un717nB7RIKp_1eBVKxdMA",
+        riskId3: "PrI22rj6SnWy-vw3Fx1mDQ",
+      },
+      {
+        pro: 'procedureprop("@SgZu7tiDSrioxN0LdduECw", "responseAnswer", "@nwiYUmdSR3aiY7U1KrdKzQ", "@CHZu_RWrQWiUib3nlMfegA")',
+        riskId1: "ZHa-YVyaTKCKzQ0nIsTmUg",
+        riskId2: "PEQ1JOEQS86zZuyOKFu8Xg",
+        riskId3: "RlOKoBLsRuyv7IFxjW-Kzg",
+      },
+      {
+        pro: 'procedureprop("@vjxdlMyDTHKNL3lB9hj46w", "responseAnswer", "@vGW2UfwlSYCGgHp3L_YIbA", "@mtcMn_ypRpCKLsJ406-j3Q")',
+        riskId1: "DJxB_K_rRkOI7MBRjmjubQ",
+        riskId2: "YBzPJCV2R2-RNpFevhQTSQ",
+        riskId3: "IbLzsk-NQA6t74Fc7zPI4w",
+      },
+      {
+        pro: 'procedureprop("@XAk9ppnESTeKVzpk0dzSsw", "responseAnswer", "@bg9aCgOWTqOJUfdetIUQ_w", "@cOitPFv3S9qGb2FbabFFiQ")',
+        riskId1: "RPcTsNqwTvKbaeKug7duew",
+        riskId2: "IM5mciYKRJqLcfrEHmR0og",
+        riskId3: "CW0ZiklwSJmj4tpa9F3JPw",
+      },
+      {
+        pro: 'procedureprop("@Y2hZpX-BQnqM8dA8C7t93g", "responseAnswer", "@c72G3_tJRWiaqzL-vJMmQA", "@X11VV_XySOe21o30E3JZXQ")',
+        riskId1: "VuMOEVpQTem5fXwHapOZcA",
+        riskId2: "RoS4-eAXSeGVLvtugzl_UQ",
+        riskId3: "9KNnuNG7T0OD-9jiukpvYQ",
+      },
+      {
+        pro: 'procedureprop("@yT3o4BzLQdOIr8fHrhJ9hg", "responseAnswer", "@LJg-yAIyRguxkdSDR6rxkQ", "@OG8QqC1URYeRZtHhdcak4Q")',
+        riskId1: "XJcSBcIeQLO6WDR-kANTDw",
+        riskId2: "Q_wIKNuTTsGluLzSHqNPtQ",
+        riskId3: "OcWweHxGT5GnUxPUXi4-JQ",
+      },
+      {
+        pro: 'procedureprop("@ZzXHYSyCReOy3AGXAKIj3A", "responseAnswer", "@tMUzkWBzSTGdhC3Ont50cA", "@AuMM0m9oTOOglzHjvQxEhg")',
+        riskId1: "H5DXdDa1SO6mdyQ7AKTbaw",
+        riskId2: "-ifq7yoFTqigBGFuYi8SFA",
+        riskId3: "ZLvXhIUgQMGCrgjVsfX5Xg",
+      },
+    ];
+
+    // data2 Ja oder Nein answers have its own relevant risks
+    // riskId1 is Nein , riskId2 is Ja
+    let data2 = [
+      {
+        pro: 'procedureprop("@1cMhj2CyQQmXuq_rRNS0yg", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@D909Bz1gSxmb_2vvxfWp4g")',
+        riskId1: "O3RRA8T7Siic8FrflF4WHw",
+        riskId2: "zlvlHVSYQYee-P3U6Iw6vw",
+      },
+      {
+        pro: 'procedureprop("@6jD7-biFTwGdPTfYWtzj4A", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@ee59pjQjR_KLVYsgfcibtA")',
+        riskId1: "gahqVR1fQ3SJjISNer_FDg",
+        riskId2: "OgOwKxs5SoKoY29ASulYJQ",
+      },
+      {
+        pro: 'procedureprop("@7dI5NEexQNCe5omePK7DfA", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@Uwn3k9qVS0Or7DQ0cn4Ylw")',
+        riskId1: "IKK8MR24Q7G4rRItVMwybw",
+        riskId2: "6Fe5sj_zTxyCFlxiPd-52w",
+      },
+      {
+        pro: 'procedureprop("@7j_DeQ0_RJ-6dr6NMUvMcw", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@3GvmK6NbRCK4kebQXY48Gw")',
+        riskId1: "R52vmm84QjCzjsGN_xxCVQ",
+        riskId2: "7AFrOi0tQZudukLqddiTZQ",
+      },
+      {
+        pro: 'procedureprop("@9P7iva9XRM-PkUJBftNK8Q", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@GkPrcQS0QV65AXhrEfJLOQ")',
+        riskId1: "zmF2HsnySw-dYPHWVOqpLg",
+        riskId2: "iW72oH9RQm2L4XnMV0aiUg",
+      },
+      {
+        pro: 'procedureprop("@B6JVXeoESbWI469hvdn9oA", "responseAnswer", "@soXCSuzQQ268Cw4aokjsPg", "@CsZ9NRWNTfWX_qedoduQ_Q")',
+        riskId1: "ko0kXA0RSSW2in95miIvsw",
+        riskId2: "wJRrJv7tQEmQ5YlmY6mmZA",
+      },
+      {
+        pro: 'procedureprop("@BoFAfEgASvCL35n5RW9rSg", "responseAnswer", "@0kpdU7q0Sd2U_aHCzqvjZg", "@PNngrNfPQICTSjFN5_00DA")',
+        riskId1: "d0iNkXRGRiyZ0a2RnM8UGQ",
+        riskId2: "FLiek-FATyCtnREphrzJQw",
+      },
+      {
+        pro: 'procedureprop("@BQ1MJ3wyRYuongXoKPn02A", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@iNFA_c1US2CqANyjMq31wg")',
+        riskId1: "cGF-V9egTDOQddpNd8altw",
+        riskId2: "59775u6MTXCDI2afyQMkBQ",
+      },
+      {
+        pro: 'procedureprop("@ChU3_72ESy2HSj6GWFyt8w", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@qI69nO3rS86ts-xAHJC65Q")',
+        riskId1: "94ENh_0yRQ-kg6JVoo2BAA",
+        riskId2: "O8HrI8lcRyKdR8r3jtDYTA",
+      },
+      {
+        pro: 'procedureprop("@DB9LE6rZTpy-YznnEY3wbw", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@hRnhBfqlRwmyz1QooGKKdA")',
+        riskId1: "EpQd5luzRdGg08Z9kxeWnQ",
+        riskId2: "VVp7bL3qS2q4y5-yqFay5A",
+      },
+      {
+        pro: 'procedureprop("@e0RvRXDoQC2BWUIlLWomdQ", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@FR1jaDTkQzm6pby-v5tlbw")',
+        riskId1: "GBAjVovTQc2tsUUgFp7jbw",
+        riskId2: "MgeAjie8TOWCeOqaVTH8QA",
+      },
+      {
+        pro: 'procedureprop("@EVhmEXaLSyqLGnr3CJz9yA", "responseAnswer", "@TFGJJQYPTw2lPdDEsWPrBw", "@4fm-A0UMQnqIwpgbz_ByPA")',
+        riskId1: "SoxssoroQqKgL89h01pwlQ",
+        riskId2: "woqr80V5QD6e41zjuhs3LQ",
+      },
+      {
+        pro: 'procedureprop("@fHMgLw7wTLal4tQjxwPApg", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@pBnN3YH5RY2-WQbEAq4zow")',
+        riskId1: "Xm0R-t4cRsOifTZRMeRF_g",
+        riskId2: "IkFOnFnLTF2FAQu0jpWHSg",
+      },
+      {
+        pro: 'procedureprop("@fKAzSf0oSw6_hFgHq2u3fA", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@TjRiXKK6QQGK--ziwUMmiw")',
+        riskId1: "GY_5JBbtS1qFXY0tfA7JRA",
+        riskId2: "tJKIKVjKQI2SV8qcFThilA",
+      },
+      {
+        pro: 'procedureprop("@fSaQ5wIORi2phr4CRVmocw", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@DtHafgWnRkmt6cngVCcgdw")',
+        riskId1: "MXhpLLa1SOuOJ7pSl9mIeA",
+        riskId2: "LE2gnWc7TQmFDwOfzKnEtA",
+      },
+      {
+        pro: 'procedureprop("@G85QKcjGS5iPBYWoUAa-Wg", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@DUYvhAlGSjOlX1DZ8dbQ8A")',
+        riskId1: "MHkIdToxRmK7uwlDD7KJfg",
+        riskId2: "S-DafzLJTX2cr4Z-M5EyZg",
+      },
+      {
+        pro: 'procedureprop("@h_-VnEJXS_yuHjMcpoct7g", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@HoVYpYj1Q7KPZybZSi0iDw")',
+        riskId1: "NmVCWX9ASs23wKDSGMjnmg",
+        riskId2: "M6-LCXFBTvaH7QFfR8TYvQ",
+      },
+      {
+        pro: 'procedureprop("@iKZIIYHtRiK-akkwLHylSA", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@s51W8aboQmCbAD9lt3c05Q")',
+        riskId1: "uAZfKMa_SQGnz6P-X3Rcsw",
+        riskId2: "FYoWKY3eTHq8lvrhFyHpdg",
+      },
+      {
+        pro: 'procedureprop("@JmNdY9_SQ--bUR-27O9keg", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@fJvLFRQNQa2Gk6Dk1y8k5A")',
+        //pro: 'procedureprop("@JmNdY9_SQ--bUR-27O9keg", "responseAnswer", "@g1sPloChTFqSnxC0DN-IEA", "@fJvLFRQNQa2Gk6Dk1y8k5A")',
+        riskId1: "Oo33iPDvTr6TqlMOyZ7ppw",
+        riskId2: "x4cQhF-uRjSm_XZTt8kjOQ",
+      },
+      {
+        pro: 'procedureprop("@jR1SOkfkRGCv1fbAF4Qakw", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@E4DPGrqqQtSrYtRiYLAzLg")',
+        riskId1: "hwu-kS7PRVimWSFcufFuSg",
+        riskId2: "LvA9dxaORCCSkoqHhiqrGw",
+      },
+      {
+        pro: 'procedureprop("@lkFpYAAwR3azuxTL1wvVSA", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@g6CIm_RvTwut4fnGr1551Q")',
+        riskId1: "_eci4W6US0mfXFS5lVywpQ",
+        riskId2: "5yOoNFZsTj-2G1jwXKgiGw",
+      },
+      {
+        pro: 'procedureprop("@m4FoxNPOSSqNL57mGWBSlA", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@lzzd6iGYTV28FUKN-2tDGA")',
+        riskId1: "rrWl3TT9REy1CJCj0xXrEA",
+        riskId2: "U2jOfYLWQvWtzjgwojjhHA",
+      },
+      {
+        pro: 'procedureprop("@mJKMgaq_S1egfgmoW4Ftow", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@4MHx8sCETF2SuK8QDbaSlw")',
+        riskId1: "9c5Ao9hUQfqbQiIJOQlLqA",
+        riskId2: "K0xR4UXRTAWorLqo_eyTPw",
+      },
+      {
+        pro: 'procedureprop("@nY2j6bJHSFyujMUhL-jtlQ", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@EKYWFrfSTxiq8s6A_C8Qnw")',
+        riskId1: "8uj3e1GBQjKP0fTt3nb73Q",
+        riskId2: "6fzxBbFmR-y_45WMnx8niQ",
+      },
+      {
+        pro: 'procedureprop("@O8I4zg7NTHac4dW760HxYA", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@z-oGympGR_qKydnzMA3mTA")',
+        riskId1: "72dE7Wb-R2iqM10mDnTlOQ",
+        riskId2: "6vSqxbPkTImahEtwzlo2Ag",
+      },
+      {
+        pro: 'procedureprop("@oIxbMKhQRqGFwrEZs-6Yvw", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@3o--HP45Sq637gzIG4XVAw")',
+        riskId1: "nRUHSft-S2Ktmvasqts1Qg",
+        riskId2: "3oYjPhhQQgeRdb_D3lzUhw",
+      },
+      {
+        pro: 'procedureprop("@OJX92spRQSivZJMv5hklZA", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@LoklvjpoTHeFXfJ3ov9aDw")',
+        riskId1: "258WVpVrQ16KfC8WJqYc8g",
+        riskId2: "P0-i0tRfRGy-YW0W9lqYOw",
+      },
+      {
+        pro: 'procedureprop("@oWaZNBxkSqSK-Y3MWEwnRQ", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@nWtc_G4TQIaG-kbRHcVxSA")',
+        riskId1: "NzOyCUUYRM2pXJVV_8ifPw",
+        riskId2: "MHCwIZmyS36f70FqYrINsg",
+      },
+      {
+        pro: 'procedureprop("@PBTOKblYR8m9CADBurv92A", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@aPW8sgDyRjy4pxvUHqbxUg")',
+        riskId1: "cWJcLPHrTai49w9mLAz1Ug",
+        riskId2: "pRyipVJYSkWE7Nscz6fU7w",
+      },
+      {
+        pro: 'procedureprop("@pCHMB-XwSnGm7JtBV15iiQ", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@a-eMN8sBRai313wEKiDDdQ")',
+        riskId1: "Tv2Zs1WhRci-XowH7BIjTA",
+        riskId2: "_SKg_8e5Si-Obo-vpoWRRQ",
+      },
+      {
+        pro: 'procedureprop("@QiR8_AuWRK6NsUVWWLLLdw", "responseAnswer", "@T7QM0geDR0aB0g0elyXg2A", "@Nt5HQxqbRAi0Q2Xo6T3r7Q")',
+        riskId1: "HL4LhvW-Sk-YmQ7Jr-Oycg",
+        riskId2: "n2awkpwaTIiwt14NjdIdNA",
+      },
+      {
+        pro: 'procedureprop("@qp9hgSr7TdqlnfkpSngp7w", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@pXZ1V8KdQOyw4Xkxo3UCBQ")',
+        riskId1: "RNxpgIYBSYqeQK6Mmhyd4Q",
+        riskId2: "AduvZjDvQXWRwGM78gcYxQ",
+      },
+      {
+        pro: 'procedureprop("@rI1UDtFaQUCaUMd8tqhk3A", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@xFO8yz7SRm6VEed5DKQpag")',
+        riskId1: "n-IwBn0gTuqLt3PdICZnEw",
+        riskId2: "FBwrrFdPTaCUont_4cjAWQ",
+      },
+      {
+        pro: 'procedureprop("@RkHxuhyOSwS2hZvrtSYb7g", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@B2NGOnSeT7yqBI2zdnDWNg")',
+        riskId1: "LamfqOEXTj643ttE6L8X2Q",
+        riskId2: "1s_Wc3r6R3OJyei3G6RevA",
+      },
+      {
+        pro: 'procedureprop("@rs5eP66QT6-Fmab7lPLxgQ", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@5l7G0950Qvyov93ZiY_yHA")',
+        riskId1: "TOjJDZRJRtSBITDPiMC4JA",
+        riskId2: "eC14SYz1SiOTclHzfejavQ",
+      },
+      {
+        pro: 'procedureprop("@rVfRekP2Tqeh1SSAU3evCQ", "responseAnswer", "@KXAB5t9TR4GbI5hgqy6udw", "@ZdhCdiB_RQ-HWZ35F5S16Q")',
+        riskId1: "hkVUmoSxRBazIaCnhILtxQ",
+        riskId2: "rQzYrxXxSMurDOByLnQO_g",
+      },
+      {
+        pro: 'procedureprop("@SaAcX1lnToKIqtrVbY7QnQ", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@VbT7VOo4Szym1f_F_DnJZQ")',
+        riskId1: "_j7IryUoTQWiCNNcnYPWAA",
+        riskId2: "m6CdvEyMSxu-Uprl74rsvg",
+      },
+      {
+        pro: 'procedureprop("@Sccs0c6pSySc5RHrZ6TcoQ", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@Ya3NWd9ORwSqK94FYM2Oaw")',
+        riskId1: "J4kinx3yROSOizhy1uF1OA",
+        riskId2: "v1KD9q_9SOGOnDgfPhF71Q",
+      },
+      {
+        pro: 'procedureprop("@shHIklhuQBGQJC1CTiu4Dw", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@INvSKYnbRW-EBQKiNqDs5g")',
+        riskId1: "Nsr63C2OSaiQg4Qkqp7ByA",
+        riskId2: "z0ZRZ-QfTBOyBRBtQLQ0OA",
+      },
+      {
+        pro: 'procedureprop("@Svxz_V9QTWuSsDtzHFqJjw", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@m0YqrCFWT9eSYnSCPqHI1w")',
+        riskId1: "LusZS9O2Q4iIcVvsU7PAww",
+        riskId2: "j1aFOhK7Tuq_n2J2C9JAAg",
+      },
+      {
+        pro: 'procedureprop("@tADjN3uKSICHdXtdcDqYZA", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@poAWJfI1TtiQsF4-jB8Y4A")',
+        riskId1: "2tQL85CLSkqXgSRrzGQTYQ",
+        riskId2: "mV38N5s9SL-Vq7v2R2RXtA",
+      },
+      {
+        pro: 'procedureprop("@tfHVF6yzRT-mBVU9bIDcPA", "responseAnswer", "@W3_HX6r8QDiuRguuuOJ7HQ", "@zKXZlNCtTwmSyOmxiOYSLw")',
+        riskId1: "ZA8WxySRSUyzLY-c12uXwQ",
+        riskId2: "tvmmXG35SfmD8OnIJUXLDg",
+      },
+      {
+        pro: 'procedureprop("@TpRTyeN8SvOWRaSaTH0X2g", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@Ua41TJ-xT3Gq2exaKitgEA")',
+        riskId1: "TbFVGEGJQHq3nZptuDZ6yA",
+        riskId2: "abZz7HCORHScUvPneOnEAQ",
+      },
+      {
+        pro: 'procedureprop("@U_Fn5VZ8SqaEbfXPSZZT3Q", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@hEk6nTe3Td2xg7FJdAZ_6A")',
+        riskId1: "J3AJEHGFTie4tpQ1HihoUg",
+        riskId2: "t4lslLltQCyq5vH7m7rccA",
+      },
+      {
+        pro: 'procedureprop("@uCUtVjpZT5qRcri7U4eFvQ", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@CnWYFWGRRGOGZ9U1FadP8g")',
+        riskId1: "tO60sKPrS_udtUAfsmawKw",
+        riskId2: "fux1mwQeQpegzJTfzjhvJQ",
+      },
+      {
+        pro: 'procedureprop("@uPyH0E16SB2-7RdTqwdzxw", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@hbd66nbERo6g3wpcjrDmLQ")',
+        riskId1: "JPqyxSZ6TqGs3NmkTqnsTQ",
+        riskId2: "Xwt5eP-KRziWd3da2CLoiA",
+      },
+      {
+        pro: 'procedureprop("@vb3uqK6URkCZ4C1cIen0rw", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@nDc12yYYTLaT8dnAfAdwGw")',
+        riskId1: "kL_4xT4kRwO8mnyuJ2PYnQ",
+        riskId2: "mG_TjHZXT8yJA1innH1-7A",
+      },
+      {
+        pro: 'procedureprop("@VtrdwRcaScKofxCI5TOuaQ", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@XOY8e2HfRMKDmXVxISBV2Q")',
+        riskId1: "ECt8TMCxSxKX7QgflL8xGg",
+        riskId2: "mfLoNRVrTdeGKB9rRtjEvA",
+      },
+      {
+        pro: 'procedureprop("@xaTW6KhVTbmQ1xYTTVMZLg", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@u_b_sRQ2QlC-U3Pz5-y1kA")',
+        riskId1: "4nqJ-1RsSSqoAj9rB02LMA",
+        riskId2: "W6P-hrZpTdCxS0q9UIDnag",
+      },
+      {
+        pro: 'procedureprop("@YbGbBdTnR0SH8MLWa3DroQ", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@WgpYCW1sT72HdbG1UiVTgQ")',
+        riskId1: "2cDEyfM0Rlqw0XMIbccV1w",
+        riskId2: "IZDW2-ctQoaFi4qNHtIBFg",
+      },
+      {
+        pro: 'procedureprop("@ycZoxG96RBW3RAYPZbuAQw", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@Ogr9V51aTIyvM6Z9bvwflQ")',
+        riskId1: "2YSM8l7DReu0J34QU2MwpQ",
+        riskId2: "0ZSSWwTsSCa89n7HJ9WeLQ",
+      },
+      {
+        pro: 'procedureprop("@ysatZUWVS3m2IPF0TVXjIg", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@R5EUvbEGQMuVx2WJ0F_2Gg")',
+        riskId1: "iKLkQAWaQuKlYPaIadjNkw",
+        riskId2: "x2cNvy35S2q_jtSx0CMykg",
+      },
+      {
+        pro: 'procedureprop("@z7XgN0b2TECuR9p8fT_2BA", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@w0f3qM69TE-MPZSUlJcPIA")',
+        riskId1: "pc_jRoFVStq4xZNiqsw4tA",
+        riskId2: "pDjPGLSJS-CTC0SJ0fVskg",
+      },
+      {
+        pro: 'procedureprop("@zg1lLw9jSXOqIK_0uBxSsA", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@GaIdDgLDR0mjDzty4sJ_NQ")',
+        riskId1: "84nV9IweST2yk_C7PDbQzw",
+        riskId2: "VQgYSUQxRqWCDp2FlyPJqw",
+      },
+      {
+        pro: 'procedureprop("@zxi0FasnTdOwgDier6nLog", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@q27R_bGjT3mM1LfXl7Lvog")',
+        riskId1: "5wC3vX1DS6CU66_QI_e_ug",
+        riskId2: "rtKpL394SK68LF1LcSMC5Q",
+      },
+      // new relevant logics for Jan 2022 release
+      {
+        pro: 'procedureprop("@_MpEiJGNQkaw65PynmyHng", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@x-qJF0ggTguqll8Y5D31gg")',
+        riskId1: "Oo33iPDvTr6TqlMOyZ7ppw",
+        riskId2: "x4cQhF-uRjSm_XZTt8kjOQ",
+      },
+      {
+        pro: 'procedureprop("@3ZCuWLaZTkmWaCK5aqe-Dg", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@YU-OOGPVTLKrq2eAxkR4CQ")',
+        riskId1: "9c5Ao9hUQfqbQiIJOQlLqA",
+        riskId2: "K0xR4UXRTAWorLqo_eyTPw",
+      },
+      {
+        pro: 'procedureprop("@4EWHAPfFQCiHZbo-Tv-Raw", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@EjDDEAXFRyiwzNUcBjp-Ug")',
+        riskId1: "5wC3vX1DS6CU66_QI_e_ug",
+        riskId2: "rtKpL394SK68LF1LcSMC5Q",
+      },
+      {
+        pro: 'procedureprop("@6FMI1aeQTEqa2AS0BX7EnA", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@b168A5ebStuAnOcDwZZlhA")',
+        riskId1: "hkVUmoSxRBazIaCnhILtxQ",
+        riskId2: "rQzYrxXxSMurDOByLnQO_g",
+      },
+      {
+        pro: 'procedureprop("@C4ZhbdPJSlCAaeA6iccM2g", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@NeDcO9apSzG-fpxRFpCOOw")',
+        riskId1: "SwRHCaSxS3GBFyt5Euh5PQ",
+        riskId2: "aq3jo0f1Q5aoJf4sPb5o0g",
+      },
+      {
+        pro: 'procedureprop("@Di4HQ6MNR4CXR9Dt9ykz1Q", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@EX8k5EE8QmujzbLw6Vadhg")',
+        riskId1: "X-TM4gxvTKqkdknNJfoMnQ",
+        riskId2: "7846XaEORPaJTCH7YAs2Iw",
+      },
+      {
+        pro: 'procedureprop("@FujqsiLaRJ-4JX7-LWEveA", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@TxTz9UIDTimbu18pvxQQBQ")',
+        riskId1: "h4KQcR8LTdO5q-5VXPs2yw",
+        riskId2: "4O0bBPVrR5ul8Zam1SVlLQ",
+      },
+      {
+        pro: 'procedureprop("@jaH0cjOMSh2jkRu_udkaXQ", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@9blAsN_JTaSOznCMuNyfnQ")',
+        riskId1: "J3AJEHGFTie4tpQ1HihoUg",
+        riskId2: "t4lslLltQCyq5vH7m7rccA",
+      },
+      {
+        pro: 'procedureprop("@JB6iLFsqTn2qKYfCLO2wJQ", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@AD-gW2KJTg-kP2O6Rct6mw")',
+        riskId1: "d0iNkXRGRiyZ0a2RnM8UGQ",
+        riskId2: "FLiek-FATyCtnREphrzJQw",
+      },
+      {
+        pro: 'procedureprop("@jBF4YmaJR9qY_WK0nGafYQ", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@E8Zfz60tTOGoCLUwMi0jvg")',
+        riskId1: "pc_jRoFVStq4xZNiqsw4tA",
+        riskId2: "pDjPGLSJS-CTC0SJ0fVskg",
+      },
+      {
+        pro: 'procedureprop("@kkS77FLSTYmch9zxr3TsvA", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@9frwdnGlSpW4lo5-cR8H5Q")',
+        riskId1: "J4kinx3yROSOizhy1uF1OA",
+        riskId2: "v1KD9q_9SOGOnDgfPhF71Q",
+      },
+      {
+        pro: 'procedureprop("@L2xsoz87TBuwuPN49MNq0Q", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@pKHH21a1SWCSqvqCn8TFbQ")',
+        riskId1: "8uj3e1GBQjKP0fTt3nb73Q",
+        riskId2: "6fzxBbFmR-y_45WMnx8niQ",
+      },
+      {
+        pro: 'procedureprop("@ngh6OA83SVC897JAZgxgdQ", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@wJwkvgPFQeCb4ru5cggB1w")',
+        riskId1: "ZA8WxySRSUyzLY-c12uXwQ",
+        riskId2: "tvmmXG35SfmD8OnIJUXLDg",
+      },
+      {
+        pro: 'procedureprop("@NgQ3TQcvRLSmPDvN3wVLtg", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@1jdy3e8ISjCb2gyr4H854w")',
+        riskId1: "ko0kXA0RSSW2in95miIvsw",
+        riskId2: "wJRrJv7tQEmQ5YlmY6mmZA",
+      },
+      {
+        pro: 'procedureprop("@nJ-21prVRBKlN6mIe9clFQ", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@zLBnAgoWRPuO6UTkCKNQzw")',
+        riskId1: "aibNby2oQPWpA7Rlwu_qEg",
+        riskId2: "766r30G7SuuZ9vL-q6iNPQ",
+      },
+      {
+        pro: 'procedureprop("@nqcGmChyQ0-zKmi83Xm9IA", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@TQ95tfHrRtK7Mhm1EGXE_w")',
+        riskId1: "fiOn5eITT-2MKg5ZYzhxEw",
+        riskId2: "ml9BNctkTa2l3WT8GxuBfg",
+      },
+      {
+        pro: 'procedureprop("@OcgatIOsTtK031wSa8Q18w", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@3yheOJDrR5i_N5g1l21OCg")',
+        riskId1: "TOjJDZRJRtSBITDPiMC4JA",
+        riskId2: "eC14SYz1SiOTclHzfejavQ",
+      },
+      {
+        pro: 'procedureprop("@sSy0k9bsTRWSlY0B37tK-g", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@zqga-7rgT_K812_1HaHZvg")',
+        riskId1: "LusZS9O2Q4iIcVvsU7PAww",
+        riskId2: "j1aFOhK7Tuq_n2J2C9JAAg",
+      },
+      {
+        pro: 'procedureprop("@wIHBLBhgQo2OxpddqsSC1A", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@FfrwBa1cTjiMqSMJ9YW_GA")',
+        riskId1: "SoxssoroQqKgL89h01pwlQ",
+        riskId2: "woqr80V5QD6e41zjuhs3LQ",
+      },
+      {
+        pro: 'procedureprop("@xHKSb7VZS5KWay2we3isoQ", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@bPUsSmR9T2-Nlx2W01sW8A")',
+        riskId1: "258WVpVrQ16KfC8WJqYc8g",
+        riskId2: "P0-i0tRfRGy-YW0W9lqYOw",
+      },
+      {
+        pro: 'procedureprop("@xJlvleHORn2EmbhAi3MXCw", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@tbADxB1FQKSaiIhck6KOLA")',
+        riskId1: "HL4LhvW-Sk-YmQ7Jr-Oycg",
+        riskId2: "n2awkpwaTIiwt14NjdIdNA",
+      },
+      {
+        pro: 'procedureprop("@y3Z9fhXVSBG10POdLJ4n9w", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@TUvUF1ygRfuOPBgZf3JZ2Q")',
+        riskId1: "GY_5JBbtS1qFXY0tfA7JRA",
+        riskId2: "tJKIKVjKQI2SV8qcFThilA",
+      },
+      {
+        pro: 'procedureprop("@zVgvTRWXScWiXPaDJQI1Qg", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@f-7DgmHWTGmZaYQeZi6htQ")',
+        riskId1: "84nV9IweST2yk_C7PDbQzw",
+        riskId2: "VQgYSUQxRqWCDp2FlyPJqw",
+      },
+    ];
+
+    // for single risks with Nein answer
+    let data3 = [
+      {
+        pro: 'procedureprop("@1teI7KOnQQGuMyUBXw1buw", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@Uy95nkNtQIW3_OlHBvCsqg")',
+        riskId: "uZ979gIgR0GxVHUVzfBJaw",
+      },
+      {
+        pro: 'procedureprop("@2g7H2hPNSCeX4woPVgHnVg", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@58RV38PET2aP7HY9RaaHSw")',
+        riskId: "jw6_u6ZDTs2-sDHZ9yu1VQ",
+      },
+      {
+        pro: 'procedureprop("@9rDUBwFoT-afr8bP0s7OIQ", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@fjJOykJvRrOy9dYXs_ujMQ")',
+        riskId: "15Ugz9ywQvChhrKVvEK4uA",
+      },
+      {
+        pro: 'procedureprop("@BpvkVw03TIywpFDOf3XzFg", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@Go-BNLDQRESvBbsRrw_YNw")',
+        riskId: "py1yLH_ZQeS8vyJxup-K3w",
+      },
+      {
+        pro: 'procedureprop("@hZRdseYtQ1aue0BUCN7SMQ", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@XCeCTFQZTAy3ucisIW9oCw")',
+        riskId: "nRkXLzQKQXa1U0WF3IoD2A",
+      },
+      {
+        pro: 'procedureprop("@lryXLCslScujKGxZO1AH2Q", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@BnqodUlZQJGL_-5XKHbJ4Q")',
+        riskId: "nl2uV-l1R66T8cy4Aum49A",
+      },
+      {
+        pro: 'procedureprop("@sFJuBesATuawATDeEyY__Q", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@uh2-KnbJRxyshbguM4XHOw")',
+        riskId: "btUtMt_OTga4QHGxczYFxg",
+      },
+      {
+        pro: 'procedureprop("@29qfPNIsSvaA6lQZ3H6kPQ", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@NMVdQ6MvQzqtveuPzSFXAA")',
+        riskId: "MN8Zygi0SIGIHyFFNe1ImA",
+      },
+    ];
+
+    // single item so object
+    let data4 = {
+      pro: 'procedureprop("@LkShjkaeRaGJxvAlY5b-8w", "responseAnswer", "@k2UnHSqISMaVXnqk5NKypg", "@vqK7TZb6TRWRwpsUVbooIQ")',
+      riskId1: "nl2VWOPxQxOcJhGEAVl6xg",
+      riskId2: "yMcL3E_PQMmRVjpF_Q35BA",
+    };
+
+    // data5 one qestion can make many risks relevant
+    let data5 = {
+      pro: 'procedureprop("@PrL1u28JQvuzNXpHrk1xdg", "responseAnswer", "@1tecRLHJSKOEJ_xKvV3URA", "@-BImvdATTFO1faDWn_4fRg")',
+      riskIds: [
+        "jw6_u6ZDTs2-sDHZ9yu1VQ",
+        "MN8Zygi0SIGIHyFFNe1ImA",
+        "btUtMt_OTga4QHGxczYFxg",
+        "nRkXLzQKQXa1U0WF3IoD2A",
+        "nl2uV-l1R66T8cy4Aum49A",
+        "py1yLH_ZQeS8vyJxup-K3w",
+        "15Ugz9ywQvChhrKVvEK4uA",
+        "uZ979gIgR0GxVHUVzfBJaw",
+      ],
+    };
+    let data6 = {
+      pro: 'procedureprop("@WmDFDS1cQvCx22x4QXBwiQ", "responseAnswer", "@o9DMJUFUSKOWLEx6gOIuAg", "@R5kujcNFThe5WpQwn1--3w")',
+      riskId1: "luFuVejySziwoBgIhIMQeA",
+      riskId2: "A7iFMap6Q7i_sZnKGwLDWQ",
+      riskId3: "kyPDvRVWS3yy47vt_hOeMw",
+      //riskId4: "Z1zy1lcpTCSoKX9-55VGzA",
+    };
+    let data7 = {
+      pro: 'procedureprop("@WmDFDS1cQvCx22x4QXBwiQ", "responseAnswer", "@o9DMJUFUSKOWLEx6gOIuAg", "@R5kujcNFThe5WpQwn1--3w")',
+      riskId1: "KCxbAq5BT_WjRIoGyaHk_Q",
+      riskId2: "Mmt-ZvZVQ6a6MCXdfrFQkA",
+      riskId3: "0QeDLVDrReOQ0whdWl22aw",
+      riskId4: "nFOwpeRFSKybw1ea2bKYRQ",
+      riskId5: "ZNMRDPErTWqfy5LqVhumGw",
+    };
+
+    let alwaysRelevantRisks = [
+      "p--qllMkQOOQd77A__MERA",
+      "u8yljFEgTBGJs9BxdU4wBw",
+      "z3YMPvWoRr69KZoftfc5RQ",
+      "vACXZVGJSJSg3ybA93qReA",
+      "W6Df7BTvRzStrR5jhOECIw",
+      "S4ruTtQbRd2Yaz1ucmrTWw",
+      "v0sNNsM_S5yE-Wj6R9Zy6w",
+      "fu8g9EUiSpyz28wylnHqEg",
+      "HziVMqK5RZGQuspmq-DNwg",
+      "uzNyEvZ4TiSYTcU5zapEfg",
+      "AXifxW_0RtuditOgz8fcbw",
+      "-5ZJYnCdQ3GxYSEsMG5FUg",
+      "y3ZsDAg8S9-LHUyy9ke6Gg",
+      "dTmw5Z-SROGkwBhAbOtklw",
+      "jOBX5cxxRK6C9SIhWsuBKQ",
+      "8ZryWck6RpWxYpgaiOb8zg",
+      "z2bSNDANSPW2_F5AyIduFg",
+      "u6iT-X0hS4uUFu2uJ9kG6w",
+      "Rfu6dTgMSeeQHsIcOmsydg",
+      "RTYGvmh-TW-mcxp3CQQthw",
+      "14WuVwsyTUGG8qhRBrm42A",
+      "6_J-8cFVTNysWdqkUPrFeQ",
+      "-1LQCWnMQNi4UwxAWxB4CQ",
+      "Ji6ml5HqToOHIav0Lfpbhg",
+      "ft5bIHF3T9ysEX9eh2rwlA",
+      "2S3Ek4DRSUafjx_tkLbsUg",
+      "jlTs-4DpTbyx7oUzPFPILw",
+      "e57zPl7CT4eIloo2KGzn7w",
+      "s1tSPCnPRXe6JAiS_1hsbQ",
+      "YC4a8ToGS82x0Ay9k4RQAg",
+      "5j8YJzhISE27PJvgNWMcTg",
+      "-Ej7jtFcToe4PlvDdavqog",
+      "HQQ_wWrlSPKg3ZLJeRQ1lQ",
+      "uTV1MzkORqG-7WfS_oV50w",
+      "Z1zy1lcpTCSoKX9-55VGzA",
+    ];
+
+    function responses() {
+      const promises = [];
+      let dataResponse = new Promise(() => {
+        data1.forEach((item) => {
+          promises.push(
+            data1Response(item.pro, item.riskId1, item.riskId2, item.riskId3)
+          );
+        });
+        data2.forEach((item) => {
+          promises.push(data2Response(item.pro, item.riskId1, item.riskId2));
+        });
+        data3.forEach((item) => {
+          promises.push(data3Response(item.pro, item.riskId));
+        });
+
+        // single items
+        promises.push(data4Response(data4.pro, data4.riskId1, data4.riskId2));
+        promises.push(data5Response(data5.pro, data5.riskIds));
+        promises.push(
+          data6Response(data6.pro, data6.riskId1, data6.riskId2, data6.riskId3)
+        );
+        promises.push(
+          data7Response(
+            data7.pro,
+            data7.riskId1,
+            data7.riskId2,
+            data7.riskId3,
+            data7.riskId4,
+            data7.riskId5
+          )
+        );
+      });
+      Promise.all(promises)
+        .then(() => {
+          saveRelevant();
+          endLoadingBar("SAVEQUESTIONAIRE");
+        })
+        .catch((e) => {
+          console.log(e);
+          endLoadingBar("SAVEQUESTIONAIRE");
+          wpw.tax.global.dialogs.error(
+            "Berechnung fehlgeschlagen!",
+            "Berechnung der Risiken fehlgeschlagen! Versuchen Sie es erneut, in dem Sie nochmals speichern."
+          );
+        });
+    }
+
+    function endLoadingBar(formId) {
+      //this function closes the loading bars
+      if (wpw.tax.form &amp;&amp; wpw.tax.form().formId === formId) {
+        wpw.tax.taxCalcLoadBar.forEach((waitBox) => waitBox.close());
+        wpw.tax.taxCalcLoadBar = [];
+      }
+    }
+
+    function data1Response(procedure, riskId1, riskId2, riskId3) {
+      return wpw.tax
+        .evaluate([procedure])
+        .then((res) => {
+          let element = res[0];
+          if (element !== "") {
+            if (element === "Eigene Erstellung") {
+              relevantRisksSet.add(riskId1);
+            } else if (element === "Erstellung durch Steuerberater") {
+              relevantRisksSet.add(riskId2);
+            } else if (element === "Keine Erstellung") {
+              relevantRisksSet.add(riskId3);
+            }
+          }
+        })
+        .catch((e) => {
+          return;
+        });
+    }
+
+    function data2Response(procedure, riskId1, riskId2) {
+      return wpw.tax
+        .evaluate([procedure])
+        .then((res) => {
+          let element = res[0];
+
+          if (element !== "") {
+            if (element === "Nein") {
+              relevantRisksSet.add(riskId1);
+            } else if (element === "Ja") {
+              relevantRisksSet.add(riskId2);
+            }
+          }
+        })
+        .catch((e) => {
+          return;
+        });
+    }
+
+    function data3Response(procedure, riskId) {
+      return wpw.tax
+        .evaluate([procedure])
+        .then((res) => {
+          let element = res[0];
+          if (element === "Nein") {
+            relevantRisksSet.add(riskId);
+          }
+        })
+        .catch((e) => {
+          return;
+        });
+    }
+
+    function data4Response(procedure, riskId1, riskId2) {
+      return wpw.tax
+        .evaluate([procedure])
+        .then((res) => {
+          let element = res[0];
+          if (element !== "") {
+            let arr = element.split(", ");
+            if (
+              arr.includes("Fahrtenbuchmethode") ||
+              arr.includes("Die Privatnutzung der PKW wird nicht versteuert")
+            ) {
+              relevantRisksSet.add(riskId1);
+            }
+            if (
+              arr.includes("1%-Methode") ||
+              arr.includes("1%-Methode (bzw. 0,5 %-Methode bei E-Autos)")
+            ) {
+              relevantRisksSet.add(riskId2);
+            }
+          }
+        })
+        .catch((e) => {
+          return;
+        });
+    }
+
+    function data5Response(procedure, riskIds) {
+      return wpw.tax
+        .evaluate([procedure])
+        .then((res) => {
+          let element = res[0];
+          if (element === "Nein") {
+            riskIds.forEach((riskId) => {
+              relevantRisksSet.add(riskId);
+            });
+          }
+        })
+        .catch((e) => {
+          return;
+        });
+    }
+
+    function data6Response(procedure, riskId1, riskId2, riskId3, riskId4) {
+      return wpw.tax
+        .evaluate([procedure])
+        .then((res) => {
+          let element = res[0];
+          if (element !== "") {
+            let arr = element.split(", ");
+            if (arr.includes("Arbeitgeberdarlehen")) {
+              relevantRisksSet.add(riskId1);
+            }
+            if (arr.includes("Gemeindliche Wohnungen")) {
+              relevantRisksSet.add(riskId2);
+            }
+            if (arr.includes("Kantinennutzung")) {
+              relevantRisksSet.add(riskId3);
+            }
+            if (arr.includes("Sonstige Leistungen")) {
+              relevantRisksSet.add(riskId4);
+            }
+          }
+        })
+        .catch((e) => {
+          return;
+        });
+    }
+
+    function data7Response(
+      procedure,
+      riskId1,
+      riskId2,
+      riskId3,
+      riskId4,
+      riskId5
+    ) {
+      return wpw.tax
+        .evaluate([procedure])
+        .then((res) => {
+          let element = res[0];
+          if (element !== "") {
+            let arr = element.split(", ");
+            if (arr.includes("Handgelder")) {
+              relevantRisksSet.add(riskId1);
+            }
+            if (arr.includes("Geschenke")) {
+              relevantRisksSet.add(riskId2);
+            }
+            if (arr.includes("Reisekostenerstattung")) {
+              relevantRisksSet.add(riskId3);
+            }
+            if (arr.includes("Parkplatzvermietung")) {
+              relevantRisksSet.add(riskId4);
+            }
+            if (arr.includes("Parkplatzvermietung")) {
+              relevantRisksSet.add(riskId5);
+            }
+          }
+        })
+        .catch((e) => {
+          return;
+        });
+    }
+
+    // relevantRisksSet will only contain the risk ids from the questionaire that has an answer
+    // if the user previously answered different and now decides to another answer
+    // the new answers ref risk id need to be relevant as well as active
+    // but the old answer ref risk id need to be not relevant and maintain the active status as it is.
+    let relevantRisksSet = new Set();
+    function relevantRisk(riskId) {
+      return relevantRisksSet.has(riskId);
+    }
+    function saveRelevant() {
+      wpw.tax.getRisks().then((risks) => {
+        risks.forEach((risk) => {
+          const riskRelevantStatus = risk.properties.DE_relevant; // contains "Ja" or ""
+          const riskActiveStatus = risk.properties.DE_activeStatus; // contains "1" or "0" or initial value as ""
+
+          let clonedRisk = wpw.utilities.clone(risk);
+          if (alwaysRelevantRisks.indexOf(risk.id) > -1) {
+            if (risk.properties.DE_relevant !== "Ja") {
+              clonedRisk.properties.DE_relevant = "Ja";
+              clonedRisk.properties.DE_activeStatus = "1";
+            }
+          } else {
+            if (relevantRisk(risk.id)) {
+              //Four states when a risk need to be relevant
+              //relevant	active		        relevant	active
+              //relevant	not active		    relevant	not active
+              //not relevant	active		    relevant	active
+              //not relevant	not active		relevant	active
+
+              if (riskRelevantStatus !== "Ja" &amp;&amp; riskActiveStatus === "1") {
+                clonedRisk.properties.DE_relevant = "Ja";
+              } else if (
+                riskRelevantStatus !== "Ja" &amp;&amp;
+                riskActiveStatus !== "1"
+              ) {
+                clonedRisk.properties.DE_relevant = "Ja";
+                clonedRisk.properties.DE_activeStatus = "1";
+              }
+            } else {
+              // four states when a risk need to be not relevant
+              //  relevant	active		      not relevant	active
+              // relevant	not active		    not relevant	not active
+              // not relevant	active		    not relevant	active
+              // not relevant	not active		not relevant	not active
+
+              if (riskRelevantStatus === "Ja" &amp;&amp; riskActiveStatus === "1") {
+                clonedRisk.properties.DE_relevant = "";
+              } else if (
+                riskRelevantStatus === "Ja" &amp;&amp;
+                riskActiveStatus !== "1"
+              ) {
+                clonedRisk.properties.DE_relevant = "";
+                clonedRisk.properties.DE_activeStatus = "0";
+              }
+            }
+          }
+          return wpw.tax.saveRisk(clonedRisk);
+        });
+      });
+    }
+    /* 
+    // reset all relevants
+    function resetAllRelevants() {
+      let resetRisks = [];
+      return wpw.tax.getRisks().then((risks) => {
+        risks.forEach((risk) => {
+          // risk.properties.DE_relevant = "";
+          // let clonedRisk = wpw.utilities.clone(risk);
+          // clonedRisk.properties.DE_relevant = "";
+          // wpw.tax.saveRisk(clonedRisk);
+          if (
+            alwaysRelevantRisks.indexOf(risk.id) > -1 &amp;&amp;
+            risk.properties.DE_relevant !== "Ja"
+          ) {
+            // check if the risk is already relevant
+            // when comes into this block for the first time when the save button is pressed,
+            // there is no property with relevant status as Ja, so below loop will run for all the ids above
+            // and the user comes again and press the save button, some risks have already the relevant status as Ja,
+            // it needs to skip those risks so it will take the actual values that it already has
+
+            relevantRisksSet.add(risk.id);
+            // saveRelevant(risk.id);
+          }  else if (alwaysRelevantRisks.indexOf(risk.id) == -1) {
+            let clonedRisk = wpw.utilities.clone(risk);
+            clonedRisk.properties.DE_relevant = "";
+            resetRisks.push(wpw.tax.saveRisk(clonedRisk));
+          } 
+        });
+        return resetRisks;
+      });
+    } */
+    calcUtils.custom("saveQuestionaire", function (calcUtils) {
+      relevantRisksSet.clear();
+      gCalcs.startLoadingBar(
+        "SAVEQUESTIONAIRE",
+        "Bitte warten",
+        "Die relevanten Risiken werden berechnet"
+      );
+
+      // set value to dynamic label CLICK
+      calcUtils.field("CLICK").assign("1");
+      // call reset relevants first
+      if (!lockdownStatus) {
+        // resetAllRelevants().then((res) => {
+        //  Promise.all(res).then(() => {
+        responses();
+        //  });
+        // });
+      } else {
+        wpw.tax.global.dialogs.notify(
+          "Lockdown",
+          "Im Lockdown können keine Änderungen vorgenommen werden"
+        );
+      }
+      /*       // Show the three documents that are dependent on central questionaire
+      // Risikoübersicht
+      gCalcs.documentsVisibility("wSaHVdY_QmCAUVFUfJBl6A", true);
+      // Maßnahmenübersicht
+      gCalcs.documentsVisibility("rNOZvu1FQM-ccZZjdNyrOg", true);
+      // Abfragenübersicht
+      gCalcs.documentsVisibility("u7AZYXajSIW2_C_QEKo6Ng", true); */
+    });
+
+    //open Risks Overview form
+    calcUtils.custom("openRiskOverview", function (calcUtils) {
+      // risks overview document id
+      let docId = "wSaHVdY_QmCAUVFUfJBl6A";
+      let firmUrl = wpw.tax.global.location.absUrl().replace(/#.*$/, "");
+      let fileUrl = firmUrl + "#/document/" + docId;
+      window.open(fileUrl, "_self");
+    });
+  });
+})();
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

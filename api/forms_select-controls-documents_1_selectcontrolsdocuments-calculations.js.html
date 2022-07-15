@@ -1,0 +1,217 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> forms/select-controls-documents/1/selectcontrolsdocuments-calculations.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"></div><div class="category"><h2>AgGrid</h2><h3>Classes</h3><ul><li><a href="CheckboxRenderer.html">CheckboxRenderer</a></li><li><a href="DetailsRenderer.html">DetailsRenderer</a></li><li><a href="Utils.html">Utils</a></li></ul></div><div class="category"><h2>Forms</h2><h3>Classes</h3><ul><li><a href="AssignedOverview.html">AssignedOverview</a></li><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="Classification.html">Classification</a></li><li><a href="Classification1.html">Classification1</a></li><li><a href="ControlCard.html">ControlCard</a></li><li><a href="ControlsLibrary.html">ControlsLibrary</a></li><li><a href="ControlsOverview.html">ControlsOverview</a></li><li><a href="DescriptionDialog.html">DescriptionDialog</a></li><li><a href="FooterForm.html">FooterForm</a></li><li><a href="ImportModal.html">ImportModal</a></li><li><a href="Logs.html">Logs</a></li><li><a href="NewRiskReport.html">NewRiskReport</a></li><li><a href="QueriesCockpit.html">QueriesCockpit</a></li><li><a href="RcList.html">RcList</a></li><li><a href="RefDocs.html">RefDocs</a></li><li><a href="RiskCard.html">RiskCard</a></li><li><a href="RiskLibrary.html">RiskLibrary</a></li><li><a href="RiskOverview.html">RiskOverview</a></li><li><a href="RiskReport.html">RiskReport</a></li><li><a href="RpeatForm.html">RpeatForm</a></li><li><a href="SaveQuestionere.html">SaveQuestionere</a></li><li><a href="SelectContacts.html">SelectContacts</a></li><li><a href="SelectControls.html">SelectControls</a></li><li><a href="SelectControlsDocuments.html">SelectControlsDocuments</a></li><li><a href="SelectDocuments.html">SelectDocuments</a></li><li><a href="SelectQueryDocuments.html">SelectQueryDocuments</a></li><li><a href="SendOverview.html">SendOverview</a></li><li><a href="ShowDocument.html">ShowDocument</a></li><li><a href="SWSDB.html">SWSDB</a></li></ul></div><div class="category"><h2>Miscmiscellaneous</h2><h3>Classes</h3><ul><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="ControlsOverviewRollForward.html">ControlsOverviewRollForward</a></li><li><a href="GCalcs.html">GCalcs</a></li><li><a href="GlobalConfigs.html">GlobalConfigs</a></li><li><a href="GlobalFile.html">GlobalFile</a></li><li><a href="RisksOverviewRollForward.html">RisksOverviewRollForward</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>forms/select-controls-documents/1/selectcontrolsdocuments-calculations.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Global iife: Select Controls Documents
+ * @class SelectControlsDocuments
+ * @category Forms
+ */
+(function () {
+  /* global _ */
+  const gCalcs = wpw.tax.de.global.functions.gCalcs;
+  wpw.tax.create.calcBlocks("selectcontrolsdocuments", function (calcUtils) {
+    calcUtils.onFormLoad("selectcontrolsdocuments", function (calcUtils) {
+      const guid = calcUtils.form("controlcard").field("C-GUID").get();
+
+      // set the tab index to 1
+      calcUtils.field("CONTROLDOCUMENTS-TAB-INDEX").assign("1");
+      calcUtils.field("CONTROLDOCUMENTS-TABS").cell(0, 1).config("class", "");
+      calcUtils
+        .field("CONTROLDOCUMENTS-TABS")
+        .cell(0, 0)
+        .config("class", "de-cards-tabs-new");
+      //assign text to einfuhrungs tab
+      calcUtils
+        .field("CONTROLDOCUMENTS-EDITOR")
+        .assign(
+          'Dokumente, welche sie zuordnen möchten, müssen Sie zuerst dem Projekt hinzufügen. Gehen Sie hierzu in die Dokumentenübersicht (Registerkarte "Dokumente"). Entscheiden Sie sich nun für einen Ordner, in welchem Sie das Dokument ablegen möchten. Wir empfehlen Ihnen hierzu den Ordner "Bibliothek" innerhalb des Bereichs "Dokumente". Ziehen Sie nun das Dokument, welches Sie hochladen möchten, per Drag&amp;Drop in den ausgewählen Ordner. Gehen Sie abschließend zurück in diesen Dialog und das hinzugefügte Dokument steht Ihnen nun zur Zuordnung zur Verfügung.'
+        );
+
+      return gCalcs.extractDocuments(
+        calcUtils,
+        "selectcontrolsdocuments",
+        "CONTROLS-DOCUMENTS",
+        guid
+      );
+    });
+
+    calcUtils.custom("btnControlDocuments", function (calcUtils) {
+      // set the tab index to 1
+      calcUtils.field("CONTROLDOCUMENTS-TAB-INDEX").assign("1");
+      calcUtils.field("CONTROLDOCUMENTS-TABS").cell(0, 1).config("class", "");
+      calcUtils
+        .field("CONTROLDOCUMENTS-TABS")
+        .cell(0, 0)
+        .config("class", "de-cards-tabs-new");
+    });
+
+    calcUtils.custom("btnControlDocumentsDescription", function (calcUtils) {
+      // set the tab index to 2
+      calcUtils.field("CONTROLDOCUMENTS-TAB-INDEX").assign("2");
+      calcUtils.field("CONTROLDOCUMENTS-TABS").cell(0, 0).config("class", "");
+      calcUtils
+        .field("CONTROLDOCUMENTS-TABS")
+        .cell(0, 1)
+        .config("class", "de-cards-tabs-new");
+    });
+
+    calcUtils.custom("saveControlsDocuments", function (calcUtils) {
+      let tableRows = calcUtils.field("CONTROLS-DOCUMENTS").getRows();
+      const guid = calcUtils.form("controlcard").field("C-GUID").get();
+      return wpw.tax.getControls().then((controls) => {
+        const control = controls.find((control) => control.id === guid);
+        if (!control.properties.hasOwnProperty("DE_assignedDocuments")) {
+          control.properties.DE_assignedDocuments = "";
+        }
+        const clonedControl = wpw.utilities.clone(control);
+        let docIds = [];
+        if (clonedControl.properties.DE_assignedDocuments !== "") {
+          docIds = clonedControl.properties.DE_assignedDocuments.split(",");
+        }
+        for (let i = 0; i &lt; tableRows.length; i++) {
+          const status = tableRows[i][1].get();
+          const dId = tableRows[i][2].get();
+          // if the checkbox is checked this document id need to be saved
+          if (status === true) {
+            if (!docIds.includes(dId)) {
+              docIds.push(dId);
+            }
+          }
+          // if the checkbox is not checked or it is chnaged from previously checked to uncheck
+          // we need to remove that id if exists already
+          else {
+            const index = docIds.indexOf(dId);
+            if (index > -1) {
+              docIds.splice(index, 1);
+            }
+          }
+          clonedControl.properties.DE_assignedDocuments = docIds.join();
+        }
+        return wpw.tax.saveControl(clonedControl).then((res) => {
+          console.log("saved control documents");
+          gCalcs.generateEngDocs(
+            calcUtils,
+            clonedControl,
+            "controlcard",
+            "EC-DOCS"
+          );
+          wpw.tax.closeModal();
+        });
+      });
+    });
+  });
+})();
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

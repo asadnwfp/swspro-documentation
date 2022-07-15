@@ -1,0 +1,585 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> misc/globalFile.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"></div><div class="category"><h2>AgGrid</h2><h3>Classes</h3><ul><li><a href="CheckboxRenderer.html">CheckboxRenderer</a></li><li><a href="DetailsRenderer.html">DetailsRenderer</a></li><li><a href="Utils.html">Utils</a></li></ul></div><div class="category"><h2>Forms</h2><h3>Classes</h3><ul><li><a href="AssignedOverview.html">AssignedOverview</a></li><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="Classification.html">Classification</a></li><li><a href="Classification1.html">Classification1</a></li><li><a href="ControlCard.html">ControlCard</a></li><li><a href="ControlsLibrary.html">ControlsLibrary</a></li><li><a href="ControlsOverview.html">ControlsOverview</a></li><li><a href="DescriptionDialog.html">DescriptionDialog</a></li><li><a href="FooterForm.html">FooterForm</a></li><li><a href="ImportModal.html">ImportModal</a></li><li><a href="Logs.html">Logs</a></li><li><a href="NewRiskReport.html">NewRiskReport</a></li><li><a href="QueriesCockpit.html">QueriesCockpit</a></li><li><a href="RcList.html">RcList</a></li><li><a href="RefDocs.html">RefDocs</a></li><li><a href="RiskCard.html">RiskCard</a></li><li><a href="RiskLibrary.html">RiskLibrary</a></li><li><a href="RiskOverview.html">RiskOverview</a></li><li><a href="RiskReport.html">RiskReport</a></li><li><a href="RpeatForm.html">RpeatForm</a></li><li><a href="SaveQuestionere.html">SaveQuestionere</a></li><li><a href="SelectContacts.html">SelectContacts</a></li><li><a href="SelectControls.html">SelectControls</a></li><li><a href="SelectControlsDocuments.html">SelectControlsDocuments</a></li><li><a href="SelectDocuments.html">SelectDocuments</a></li><li><a href="SelectQueryDocuments.html">SelectQueryDocuments</a></li><li><a href="SendOverview.html">SendOverview</a></li><li><a href="ShowDocument.html">ShowDocument</a></li><li><a href="SWSDB.html">SWSDB</a></li></ul></div><div class="category"><h2>Miscmiscellaneous</h2><h3>Classes</h3><ul><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="ControlsOverviewRollForward.html">ControlsOverviewRollForward</a></li><li><a href="GCalcs.html">GCalcs</a></li><li><a href="GlobalConfigs.html">GlobalConfigs</a></li><li><a href="GlobalFile.html">GlobalFile</a></li><li><a href="RisksOverviewRollForward.html">RisksOverviewRollForward</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>misc/globalFile.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Global iife: Global File
+ * @class GlobalFile
+ * @category Miscmiscellaneous
+ */
+(function () {
+  "use strict";
+  //specifying global modules
+  wpw.tax.de = wpw.tax.de || {};
+
+  wpw.tax.de.exportTemplate = function () {
+    // find out user language
+    let lang = window.navigator.language;
+    let delimit;
+    let swapText;
+
+    if (lang === "de-DE") {
+      delimit = ";";
+      swapText = "(Semikolons)";
+    } else {
+      delimit = ",";
+      swapText = "(Kommas)";
+    }
+
+    var items = [
+      {
+        ID:
+          "Tragen Sie in diese Spalte die IDs der Risiken ein. Löschen Sie dazu diesen Hinweis und beginnen Sie in dieser Zeile mit der Erfassung der IDs. Geben Sie jede ID in einer neuen Zeile ein. Verändern Sie nicht die Reihenfolge der Spalten. Verwenden Sie keine " +
+          delimit +
+          " " +
+          swapText +
+          " und keine | (senkrechten Striche) in den IDs. Speichern Sie die Datei im Format CSV - UTF-8, nachdem Sie die Risiken erfasst haben.",
+        Titel:
+          "Tragen Sie in diese Spalte die Titel der Risiken ein. Löschen Sie dazu diesen Hinweis und beginnen Sie in dieser Zeile mit der Erfassung der Titel. Geben Sie jeden Titel in einer neuen Zeile ein. Verändern Sie nicht die Reihenfolge der Spalten. Verwenden Sie keine " +
+          delimit +
+          " " +
+          swapText +
+          " und keine | (senkrechten Striche) in den Titeln. Speichern Sie die Datei im Format CSV - UTF-8, nachdem Sie die Risiken erfasst haben.",
+        Beschreibung:
+          "Tragen Sie in diese Spalte die Beschreibungen der Risiken ein. Löschen Sie dazu diesen Hinweis und beginnen Sie in dieser Zeile mit der Erfassung der Beschreibungen. Geben Sie jede Beschreibung in einer neuen Zeile ein. Verändern Sie nicht die Reihenfolge der Spalten. Speichern Sie die Datei im Format CSV - UTF-8, nachdem Sie die Risiken erfasst haben.",
+      },
+    ];
+
+    var fields = Object.keys(items[0]);
+    var replacer = function (key, value) {
+      return value === null ? "" : value;
+    };
+    var csv = items.map(function (row) {
+      return fields
+        .map(function (fieldName) {
+          return JSON.stringify(row[fieldName], replacer);
+        })
+        .join(delimit);
+    });
+    csv.unshift(fields.join(delimit)); // add header column
+    csv = csv.join("\r\n");
+
+    var BOM = "\uFEFF";
+    var csvData = BOM + csv;
+    var blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+    wpw.tax.services.exportService.download(blob, "VorlageRisikoimport.csv");
+  };
+  wpw.tax.de.showSendOverviewData = function () {
+    let flagsArr = [];
+    let table = wpw.tax.form("queriescockpit").field("QUERIES-COCKPIT");
+    for (let i = 0; i &lt; table.getRows().length; i++) {
+      const names = table.cell(i, 6).get();
+      const dueDate = table.cell(i, 4).get();
+      const existingNames = table.cell(i, 7).get();
+      const status = table.cell(i, 2).get();
+      // due date will be  null or object containing date
+      // names will be empty or not empty string
+      if (status !== "Fertiggestellt") {
+        if (names !== "" &amp;&amp; dueDate === null) {
+          table.cell(i, 4).config("class", "border-error");
+          flagsArr.push("false");
+        } else if (names === "" &amp;&amp; dueDate !== null &amp;&amp; existingNames === "") {
+          table.cell(i, 6).config("class", "border-error");
+          flagsArr.push("false");
+        } else if (names === "" &amp;&amp; typeof dueDate === "object") {
+          table.cell(i, 4).config("class", "");
+          table.cell(i, 6).config("class", "");
+          flagsArr.push("true");
+        } else {
+          table.cell(i, 4).config("class", "");
+          table.cell(i, 6).config("class", "");
+        }
+      }
+    }
+
+    if (flagsArr.includes("false")) {
+      wpw.tax.global.dialogs.error(
+        "Unvollständige Daten",
+        "Die Daten sind bei einzelnen Abfragedokumenten unvollständig. Legen Sie bitte das Fälligkeitsdatum und mindestens einen Kontakt für alle Abfragedokumente fest, die informiert werden sollen."
+      );
+    } else {
+      wpw.tax.resetForm("sendoverview");
+      wpw.tax.openModal("sendoverview");
+    }
+  };
+  //#####Supporting Functions####
+  //#############################
+
+  const QUERIESCOCKPIT_FORMID = "queriescockpit";
+  const QUERIESCOCKPIT_TABLEID = "QUERIES-COCKPIT";
+  let staffDataMap = new Map();
+  let usersDataMap = new Map();
+
+  async function createUserEntries() {
+    let userEntriesMap = new Map();
+    await wpw.tax.getAllContacts().then((users) => {
+      for (let i in users) {
+        userEntriesMap.set(users[i].id, users[i].name);
+      }
+    });
+    return userEntriesMap;
+  }
+
+  function createStaffEntries() {
+    let staffEntries = Object.entries(
+      wpw.tax.global.engagementProperties.users
+    );
+    let staffEntriesMap = new Map();
+
+    staffEntries.forEach((entry) => {
+      switch (entry[1].rightsGroup) {
+        case "contact":
+        case "reader":
+          return;
+      }
+      staffEntriesMap.set(entry[0], entry[1].name);
+    });
+    return staffEntriesMap;
+  }
+
+  function cockpitTable(table, i, obj) {
+    // we have to change the document status into German words
+    let documentStatus = obj.status;
+    if (documentStatus === "draft") documentStatus = "Entwurf";
+    else if (documentStatus === "open") documentStatus = "Auf Antwort warten";
+    else if (documentStatus === "responded") documentStatus = "Beantwortet";
+    else if (documentStatus === "reopened") documentStatus = "Erneut geöffnet";
+    else if (documentStatus === "complete") documentStatus = "Fertiggestellt";
+    else if (documentStatus === "cancelled") documentStatus = "Abgebrochen";
+    else {
+      documentStatus = obj.status;
+    }
+    table.cell(i, 0).assign(obj.name);
+    table.cell(i, 2).assign(documentStatus);
+    table.cell(i, 3).assign(obj.responded);
+    table.cell(i, 4).assign(obj.dueDate);
+    // to avoid undefined cell value, we assign empty string
+    table.cell(i, 6).assign("");
+    table.cell(i, 7).assign(obj.contactNames);
+    table.cell(i, 8).assign(obj.sendDate);
+    table.cell(i, 9).assign(obj.contactIds);
+    table.cell(i, 10).assign(obj.docId);
+    table.cell(i, 11).assign(obj.url);
+    // due date need to be disabled when already filled
+    // we additionally need to disable the date field if the document is already complete
+    if (obj.dueDate !== undefined || obj.status === "complete") {
+      table.cell(i, 4).disabled(true);
+      table.cell(i, 4).config("cannotOverride", true);
+    } else {
+      // to avoid undefined field value we make it null
+      table.cell(i, 4).assign({});
+      table.cell(i, 4).disabled(false);
+      table.cell(i, 4).config("cannotOverride", false);
+    }
+    i = i + 1;
+    return;
+  }
+  function endLoadingBar(formId) {
+    //this function closes the loading bars
+
+    //KEEGAN - is it necessary to use waitForDirectivesToLoad here?
+
+    wpw.tax.taxUtils.waitForDirectivesToLoad().then(function () {
+      if (wpw.tax.form &amp;&amp; wpw.tax.form().formId === formId) {
+        wpw.tax.taxCalcLoadBar.forEach((waitBox) => waitBox.close());
+        wpw.tax.taxCalcLoadBar = [];
+      }
+    });
+  }
+
+  function processChecklist(map, engagementData) {
+    consoleMessage("ProcessCheckList Map: ", map);
+    console.log("ProcessCheckList MapKeys: ", map.keys());
+    console.log("ProcessCheckList MapValue: ", map.values());
+    return wpw.tax.getChecklists(Array.from(map.keys())).then((contents) => {
+      // a document occurs at first instance of the array, because we passed only one element in the array
+      consoleMessage("Contents:", contents);
+      let queryDetails = [];
+      contents.forEach((content) => {
+        // to find if a procedure is responded
+        let procedures = content.procedures;
+        let count = 0;
+        procedures.forEach((pro) => {
+          if (pro.status === "responded" &amp;&amp; pro.visible === true) {
+            count++;
+          }
+        });
+        let contentId = content.id;
+        // console.log("Doc: ", map.get(contentId));
+        queryDetails.push({
+          status: content.status,
+          id: contentId,
+          count: count,
+          doc: map.get(contentId),
+        });
+      });
+      return queryDetail(queryDetails, engagementData);
+    });
+  }
+
+  async function queryDetail(queries, engagementData) {
+    let staffEntriesMap = createStaffEntries();
+    let userEntriesMap = await createUserEntries();
+    consoleMessage("QuerryDetail: ", queries);
+    let queryObjs = [];
+    queries.forEach((query) => {
+      let doc = query.doc;
+      let status = query.status;
+      let id = query.id;
+      let count = query.count;
+      if (
+        status !== "draft" &amp;&amp;
+        status !== "complete" &amp;&amp;
+        status !== "cancelled"
+      ) {
+        // contact data can be found in queryDetails
+        // if a document is not assigned to any contact then cwGuid will be empty
+
+        // implement the logic to go in three steps
+        // 1.  go through default db 2. use our db 3. just show basic properties,e,g, title etc
+        // let queryFound = engagementData[query.id];
+        // if (queryFound !== undefined) {
+        let contactData = engagementData[id];
+        if (contactData == undefined) {
+          // Engagment Data is not available for the mentioned query document
+          // we noew have to look into db form
+          let tableRows = wpw.tax.field("swsdb.tbl_staffData").getRows();
+          // it will be more than one row so use filter. this way we get multiple rows, each row with a new staff id, else data is same
+          let rowData = tableRows.filter((row) => row[0].get() === id);
+          let dueDate = {};
+          let createdDate = "";
+          let contactNames = [];
+          let emails = [];
+          rowData.forEach((row) => {
+            dueDate = row[2].get();
+            createdDate = row[3].get();
+            let staffId = row[1].get();
+            let name = userEntriesMap.get(staffId);
+            if (name != undefined) {
+              // staffTables also contains normal users, which become undefined in staffEntriesMap.
+              contactNames.push(name);
+            }
+          });
+          contactData = {
+            DueDate: dueDate.year + "-" + dueDate.month + "-" + dueDate.day,
+            CreateDate: createdDate,
+            Names: contactNames,
+            Emails: emails,
+            QueryStatus: query.status,
+            Subject: query.doc.name,
+            Url: "",
+          };
+        }
+        // Now this contact data has Subject, CollaborateId, DueDate, and URL of the query document
+        // names and emails is of type array because one query can be assigned to many contacts
+        // So to assign it to a cell in a table, we can convert these arrays into a string
+        let names = [];
+        if (staffDataMap.has(doc.content)) {
+          // If there is even a single user, which is not staff,
+          // this condition will run, as we are saving user doc Id also.
+          names = contactData.Names.concat(
+            Array.from(staffDataMap.get(doc.content))
+          );
+        }
+        let strNames = names.join(", ");
+        if (contactData.Names.length > 0 &amp;&amp; strNames === "") {
+          // to cover the scenario, where db was not created for older enagements
+          strNames = contactData.Names.join(", ");
+        }
+        let dueDate = new Date(contactData.DueDate);
+        let url = contactData.Url;
+        let documentSendDate = new Date(contactData.CreateDate);
+        const year = documentSendDate.getFullYear();
+        const month = documentSendDate.getMonth() + 1;
+        const day = documentSendDate.getDate();
+        let sendDate = day + "." + month + "." + year;
+
+        let obj = {
+          name: doc.name,
+          status: doc.status,
+          dueDate: dueDate,
+          contactNames: strNames,
+          contactIds: "",
+          docId: doc.content,
+          url: url,
+          responded: count.toString(),
+          sendDate: sendDate,
+        };
+        queryObjs.push(obj);
+        /*   } else {
+          // it was not there in default database
+          // now look into form database from us
+          // if still does not exist there, just only show whatever you have
+          return;
+        } */
+      } else {
+        let usersSet = usersDataMap.get(doc.content);
+        let names = new Set();
+        let dueDate = undefined;
+        let sendDate = undefined;
+        if (usersSet !== undefined) {
+          usersSet.forEach((user) => {
+            names.add(user.name);
+            dueDate = user.dateDue;
+            sendDate = user.dateSend;
+          });
+        }
+        let completed = "";
+        let completedDate = "";
+        if (sendDate !== undefined) {
+          completed = new Date(sendDate);
+
+          const year = completed.getFullYear();
+          const month = completed.getMonth() + 1;
+          const day = completed.getDate();
+          completedDate = day + "." + month + "." + year;
+        }
+
+        let obj = {
+          name: doc.name,
+          status: doc.status,
+          dueDate: dueDate,
+          contactNames: Array.from(names).join(", "),
+          contactIds: "",
+          docId: doc.content,
+          responded: count.toString(),
+          sendDate: completedDate,
+        };
+        queryObjs.push(obj);
+      }
+    });
+    console.log("QueryObjs: ", queryObjs);
+    return queryObjs;
+  }
+  function compare(a, b) {
+    if (a.name > b.name) return 1;
+    if (a.name &lt; b.name) return -1;
+    return 0;
+  }
+
+  function queryDocuments(calcUtils) {
+    // Generate Staff and User Maps
+    return generateQueriesCockpitMaps(calcUtils).then(function (cockpitMaps) {
+      return wpw.tax.getEngagementQueryData().then(function (queryData) {
+        return wpw.tax.getDocuments().then(function (queryDocuments) {
+          let docContentMap = new Map();
+          queryDocuments.forEach((doc) => {
+            //KEEGAN - why does this need an if statement? Seems like nothing except populating docContentMap
+            // if (!queryDocumentFilter(doc, docContentMap)) {
+            //   return;
+            // }
+            queryDocumentFilter(doc, docContentMap);
+          });
+          //KEEGAN - cockpitMaps NOT USED?
+          return processChecklist(docContentMap, queryData);
+        });
+      });
+    });
+  }
+
+  function queryDocumentFilter(doc, map) {
+    if (doc.type === "query" &amp;&amp; doc.visible === true) {
+      map.set(doc.content, doc);
+      return true;
+    }
+    return false;
+  }
+  async function generateQueriesCockpitMaps(calcUtils) {
+    let staffEntriesMap = createStaffEntries();
+    let userEntriesMap = await createUserEntries();
+    let table_staffData = calcUtils.field("swsdb.tbl_staffData");
+    let staffDataRows = table_staffData.getRows();
+
+    for (let rowIndex in staffDataRows) {
+      let docId = table_staffData.cell(rowIndex, 0).get();
+      staffDataMap.set(docId, new Set());
+      usersDataMap.set(docId, new Set());
+    }
+    for (let rowIndex in staffDataRows) {
+      let userObj = {};
+      let docId = table_staffData.cell(rowIndex, 0).get();
+      let staffId = table_staffData.cell(rowIndex, 1).get();
+      let dateDue = table_staffData.cell(rowIndex, 2).get();
+      let dateSend = table_staffData.cell(rowIndex, 3).get();
+      let staffName = staffEntriesMap.get(staffId);
+      userObj.docId = docId;
+
+      // Some times date is a string other times its an object
+      // to handle this issue, we have to use the if case.
+      if (typeof dateDue === "string") {
+        userObj.dateDue = new Date(dateDue);
+      } else {
+        userObj.dateDue = new Date();
+        userObj.dateDue.setDate(dateDue.day);
+        userObj.dateDue.setMonth(dateDue.month - 1);
+        userObj.dateDue.setFullYear(dateDue.year);
+      }
+
+      userObj.dateSend = new Date(dateSend);
+      userObj.name = "*" + staffName;
+      if (staffName == undefined) {
+        // staffTables also contains normal users, which become undefined in staffEntriesMap.
+        let userName = userEntriesMap.get(staffId);
+        userObj.name = userName;
+        usersDataMap.get(docId).add(userObj);
+        continue;
+      }
+      // Adding '*' to differentiate between normal and staff user
+      // this code is check against '*' in select-contacts form.
+      usersDataMap.get(docId).add(userObj);
+      staffDataMap.get(docId).add("*" + staffName);
+    }
+  }
+
+  //##############Additional Functions###############
+  //#################################################
+  wpw.tax.de.querryDocument = (calcUtils) => {
+    return generateQueryDocuments(calcUtils);
+    // return generateQueryDocuments(calcUtils);
+  };
+  function clearTable(calcUtils, tableLength) {
+    for (let i = 0; i &lt; tableLength; i++) {
+      calcUtils.removeTableRow(
+        QUERIESCOCKPIT_FORMID,
+        QUERIESCOCKPIT_TABLEID,
+        0
+      );
+    }
+  }
+  function generateQueryDocuments(calcUtils) {
+    let table = calcUtils
+      .form(QUERIESCOCKPIT_FORMID)
+      .field(QUERIESCOCKPIT_TABLEID);
+
+    // Clear the querriescockpit table if already rows are added, by removing each row
+    let tableLength = table.getRows().length;
+    consoleMessage("TableLength: ", tableLength);
+    clearTable(calcUtils, tableLength);
+    // filter the documents to queries only
+    return queryDocuments(calcUtils).then((docs, err) => {
+      consoleMessage("FinalArray: ", docs);
+      docs.sort(compare).forEach((doc, i) => {
+        calcUtils.addTableRow(QUERIESCOCKPIT_FORMID, QUERIESCOCKPIT_TABLEID, i);
+        cockpitTable(table, i, doc);
+      });
+      endLoadingBar("QUERIESCOCKPIT");
+    });
+  }
+
+  function consoleMessage(message, ...values) {
+    console.log(message, values);
+  }
+})();
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

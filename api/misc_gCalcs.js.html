@@ -1,0 +1,1911 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> misc/gCalcs.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"></div><div class="category"><h2>AgGrid</h2><h3>Classes</h3><ul><li><a href="CheckboxRenderer.html">CheckboxRenderer</a></li><li><a href="DetailsRenderer.html">DetailsRenderer</a></li><li><a href="Utils.html">Utils</a></li></ul></div><div class="category"><h2>Forms</h2><h3>Classes</h3><ul><li><a href="AssignedOverview.html">AssignedOverview</a></li><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="Classification.html">Classification</a></li><li><a href="Classification1.html">Classification1</a></li><li><a href="ControlCard.html">ControlCard</a></li><li><a href="ControlsLibrary.html">ControlsLibrary</a></li><li><a href="ControlsOverview.html">ControlsOverview</a></li><li><a href="DescriptionDialog.html">DescriptionDialog</a></li><li><a href="FooterForm.html">FooterForm</a></li><li><a href="ImportModal.html">ImportModal</a></li><li><a href="Logs.html">Logs</a></li><li><a href="NewRiskReport.html">NewRiskReport</a></li><li><a href="QueriesCockpit.html">QueriesCockpit</a></li><li><a href="RcList.html">RcList</a></li><li><a href="RefDocs.html">RefDocs</a></li><li><a href="RiskCard.html">RiskCard</a></li><li><a href="RiskLibrary.html">RiskLibrary</a></li><li><a href="RiskOverview.html">RiskOverview</a></li><li><a href="RiskReport.html">RiskReport</a></li><li><a href="RpeatForm.html">RpeatForm</a></li><li><a href="SaveQuestionere.html">SaveQuestionere</a></li><li><a href="SelectContacts.html">SelectContacts</a></li><li><a href="SelectControls.html">SelectControls</a></li><li><a href="SelectControlsDocuments.html">SelectControlsDocuments</a></li><li><a href="SelectDocuments.html">SelectDocuments</a></li><li><a href="SelectQueryDocuments.html">SelectQueryDocuments</a></li><li><a href="SendOverview.html">SendOverview</a></li><li><a href="ShowDocument.html">ShowDocument</a></li><li><a href="SWSDB.html">SWSDB</a></li></ul></div><div class="category"><h2>Miscmiscellaneous</h2><h3>Classes</h3><ul><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="ControlsOverviewRollForward.html">ControlsOverviewRollForward</a></li><li><a href="GCalcs.html">GCalcs</a></li><li><a href="GlobalConfigs.html">GlobalConfigs</a></li><li><a href="GlobalFile.html">GlobalFile</a></li><li><a href="RisksOverviewRollForward.html">RisksOverviewRollForward</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>misc/gCalcs.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Global iife: GCalcs
+ * @class GCalcs
+ * @category Miscmiscellaneous
+ */
+(function () {
+  "use strict";
+  /* global _ */
+  // global functions
+
+  //specifying global modules
+  wpw.tax.de = wpw.tax.de || {};
+  wpw.tax.de.global = wpw.tax.de.global || {};
+  wpw.tax.de.global.functions = wpw.tax.de.global.functions || {};
+  wpw.tax.de.global.functions.gCalcs = wpw.tax.de.global.functions.gCalcs || {};
+
+  function endLoadingBar(formId) {
+    //this function closes the loading bars
+    if (wpw.tax.form &amp;&amp; wpw.tax.form().formId === formId) {
+      wpw.tax.taxCalcLoadBar.forEach((waitBox) => waitBox.close());
+      wpw.tax.taxCalcLoadBar = [];
+    }
+  }
+
+  //global variable set up to hold the loading bars
+  wpw.tax.taxCalcLoadBar = [];
+  wpw.tax.de.global.functions.gCalcs.startLoadingBar = function (
+    formId,
+    header,
+    message
+  ) {
+    //this function triggers the loading bar
+    if (wpw.tax.form &amp;&amp; wpw.tax.form().formId === formId) {
+      //checking for the valid form to run the loading bar
+      wpw.tax.taxCalcLoadBar.push(
+        wpw.tax.global.dialogs.wait(
+          header, //header of loading bar
+          message, //body text of loading bar
+          100 //portion of loading bar to be filled, we have set to be full to look like it's loading without giving any indication of how long it may take
+        )
+      );
+    }
+  };
+
+  wpw.tax.de.global.functions.gCalcs.objectMaping = (a, b) => {
+    objectMaping(a, b);
+  };
+  /**
+   * Maps the object, and redefine the values of the first object if it has the same key but different values in the other object.
+   * @param {object} target - The object whos's values we want to change.
+   * @param {object} source - Source of values for the target object.
+   */
+  function objectMaping(a, b) {
+    Object.keys(a).map(function (key, index) {
+      if (typeof b[key] !== "undefined" || b[key] != null) {
+        if (typeof a[key] == "object" &amp;&amp; Object.keys(a[key]).length !== 0) {
+          if (b[key] != null) {
+            objectMaping(a[key], b[key]);
+          }
+        } else {
+          a[key] = b[key];
+        }
+      }
+    });
+  }
+
+  function populateTable(calcUtils, tableArr, formId, tableId, name) {
+    let table = calcUtils.form(formId).field(tableId);
+    // Clear the table if already rows are added, by removing each row
+    let tableLength = table.getRows().length;
+    for (let i = 0; i &lt; tableLength; i++) {
+      calcUtils.removeTableRow(formId, tableId, 0);
+    }
+    // add rows to the table
+    for (let i = 0; i &lt; tableArr.length; i++) {
+      calcUtils.addTableRow(formId, tableId, i);
+      if (tableId === "T-DOCUMENTS") {
+        table.cell(i, 0).label(tableArr[i].name);
+        table.cell(i, 1).set(tableArr[i].active);
+        table.cell(i, 3).assign(tableArr[i].guid);
+        table.cell(i, 4).assign(tableArr[i].statusRF);
+        table.cell(i, 6).assign(tableArr[i].docLink);
+        // if the engagement is a rollforward one and query is completed in previous year
+        // then we disable the two cells
+        if (tableArr[i].docLink == "") {
+          table.cell(i, 4).localData.type = "none";
+          table.cell(i, 5).localData.type = "none";
+        } else {
+          table.cell(i, 4).disabled(false);
+          table.cell(i, 4).config("cannotOverride", false);
+        }
+      } else if (
+        tableId === "E-DOCUMENTS" ||
+        tableId === "TC-DOCS" ||
+        tableId === "EC-DOCS" ||
+        tableId === "T-DOCS" ||
+        tableId === "E-DOCS"
+      ) {
+        table.cell(i, 0).label(tableArr[i].name);
+        table.cell(i, 2).assign(tableArr[i].guid);
+      } else if (tableId === "REF-DOCS") {
+        table.cell(i, 0).label(tableArr[i].id);
+        table.cell(i, 1).label(tableArr[i].name);
+      } else if (
+        tableId === "CONNECTED-RISKS" ||
+        tableId === "NOT-CONNECTED-RISKS"
+      ) {
+        table.cell(i, 0).label(tableArr[i].id);
+        table.cell(i, 1).label(tableArr[i].name);
+        table.cell(i, 2).assign(tableArr[i].guid);
+      } else if (
+        tableId === "SELECT-DOCUMENTS" ||
+        tableId === "CONTROLS-DOCUMENTS"
+      ) {
+        table.cell(i, 0).label(tableArr[i].name);
+        table.cell(i, 1).set(tableArr[i].status);
+        table.cell(i, 2).assign(tableArr[i].guid);
+      } else if (tableId === "T-CONTROLS") {
+        table.cell(i, 0).label(tableArr[i].id);
+        table.cell(i, 1).label(tableArr[i].name);
+        table.cell(i, 2).set(tableArr[i].active);
+        table.cell(i, 4).assign(tableArr[i].guid);
+      } else if (tableId === "E-CONTROLS") {
+        table.cell(i, 0).label(tableArr[i].id);
+        table.cell(i, 1).label(tableArr[i].name);
+        table.cell(i, 3).assign(tableArr[i].guid);
+      } else if (tableId === "RISKS-OVERVIEW") {
+        table.cell(i, 0).assign(tableArr[i].id);
+        table.cell(i, 1).assign(tableArr[i].name);
+        table.cell(i, 2).set(tableArr[i].taxType);
+        table.cell(i, 3).set(tableArr[i].relevantStatus);
+        table.cell(i, 4).set(tableArr[i].activeControls);
+        table.cell(i, 5).set(tableArr[i].status);
+        table.cell(i, 7).set(tableArr[i].guid);
+      } else if (tableId === "ERISKS-OVERVIEW") {
+        table.cell(i, 0).assign(tableArr[i].id);
+        table.cell(i, 1).assign(tableArr[i].name);
+        table.cell(i, 2).set(tableArr[i].taxType);
+        table.cell(i, 3).set(tableArr[i].activeControls);
+        table.cell(i, 5).set(tableArr[i].guid);
+      } else if (tableId === "CONTROLS-OVERVIEW") {
+        table.cell(i, 0).assign(tableArr[i].id);
+        table.cell(i, 1).assign(tableArr[i].name);
+        table.cell(i, 2).assign(tableArr[i].type);
+        table.cell(i, 3).assign(tableArr[i].person);
+        table.cell(i, 5).assign(tableArr[i].assignedToRisk);
+        table.cell(i, 6).assign(tableArr[i].guid);
+        table.cell(i, 7).assign(tableArr[i].assignedToQuery);
+      } else if (tableId === "ECONTROLS-OVERVIEW") {
+        table.cell(i, 0).assign(tableArr[i].id);
+        table.cell(i, 1).assign(tableArr[i].name);
+        table.cell(i, 2).assign(tableArr[i].type);
+        table.cell(i, 3).assign(tableArr[i].person);
+        table.cell(i, 5).assign(tableArr[i].assignedToRisk);
+        table.cell(i, 6).assign(tableArr[i].guid);
+        table.cell(i, 7).assign(tableArr[i].assignedToQuery);
+      }
+    }
+
+    // check if the name exists
+    if (
+      angular.isDefined(name) &amp;&amp;
+      (tableId == "ERISKS-OVERVIEW" || tableId === "ECONTROLS-OVERVIEW")
+    ) {
+      //let tableRow = table.getRows().find((row) => row.name === name);
+      const row = table.getRows().find((row) => row[1].valueObj.value === name);
+      const rowId = row[1].fieldInfo.row;
+      for (let i = 0; i &lt; row.length; i++) {
+        table.cell(rowId, i).config("class", "background-yellow");
+      }
+      setTimeout(function () {
+        for (let i = 0; i &lt; row.length; i++) {
+          table.cell(rowId, i).config("class", "");
+        }
+      }, 10000);
+    }
+    /*     wpw.tax.actions.runCalcBlocks().then(() => {
+      endLoadingBar();
+    }); */
+    //wpw.tax.global.rootScope.$broadcast("invalidate.cache");
+    wpw.tax.taxUtils.waitForDirectivesToLoad().then(function () {
+      //Form is done rendering at this point
+      const formIdToUpperCase = formId.toUpperCase();
+      endLoadingBar(formIdToUpperCase);
+      // patch to fix css styles
+      window.dispatchEvent(new Event("resize"));
+      $(window).trigger("resize");
+    });
+  }
+  // map of staff and rowId
+  wpw.tax.de.global.staffContactMap = new Map();
+  // just to simply call populateTable function
+  wpw.tax.de.global.functions.gCalcs.generateTable = function (
+    calcUtils,
+    tableArr,
+    formId,
+    tableId
+  ) {
+    populateTable(calcUtils, tableArr, formId, tableId);
+  };
+
+  wpw.tax.de.global.functions.gCalcs.reloadTable = function (
+    calcUtils,
+    formId,
+    tableId,
+    name
+  ) {
+    if (tableId === "ERISKS-OVERVIEW") {
+      // Generate new risks based on changes
+      let eRisksArr = [];
+      return wpw.tax.getRisks().then((risks) => {
+        risks.forEach((risk) => {
+          if (risk.properties.DE_templateLevel !== "1") {
+            let strActiveControls = risk.properties.DE_activeControls;
+            let activeControls = strActiveControls ? "Ja" : "Nein";
+            eRisksArr.push({
+              id: risk.properties.DE_number,
+              name: risk.name,
+              taxType: risk.properties.DE_taxType,
+              guid: risk.id,
+              activeControls: activeControls,
+            });
+          }
+        });
+        let sortedArr = _.sortBy(eRisksArr, "id");
+        populateTable(calcUtils, sortedArr, formId, tableId, name);
+      });
+    } else if (tableId === "ECONTROLS-OVERVIEW") {
+      let eControlsArr = [];
+      return wpw.tax.getControls().then((controls) => {
+        controls.forEach(function (control) {
+          if (control.properties.DE_templateLevel !== "1") {
+            // addtional logic to assign assigned and not assigned
+            let assignedToRisk = control.risks.length > 0 ? "Ja" : "Nein";
+            // we need to check if there are queries that are assigned to this control
+            let assignedToQuery = assignedQuery(control);
+            eControlsArr.push({
+              id: control.properties.DE_number,
+              name: control.name,
+              type: control.properties.DE_controlType,
+              person: control.properties.DE_rPerson,
+              guid: control.id,
+              assignedToRisk: assignedToRisk,
+              assignedToQuery: assignedToQuery,
+            });
+          }
+        });
+        let sortedArr = _.sortBy(eControlsArr, "id");
+        populateTable(calcUtils, sortedArr, formId, tableId, name);
+      });
+    }
+  };
+
+  wpw.tax.de.global.functions.gCalcs.openDocument = function (
+    tableId,
+    calcUtils
+  ) {
+    const row = calcUtils.fieldInfo.row;
+    let guid;
+    if (tableId === "T-DOCUMENTS") {
+      guid = calcUtils.getCellValue(tableId, row, 3);
+    } else {
+      guid = calcUtils.getCellValue(tableId, row, 2);
+    }
+    wpw.tax.getDocuments().then((documents) => {
+      let document = documents.find((doc) => doc.id === guid);
+      let docType = document.type;
+      let convertedType;
+      if (docType === "file") convertedType = "document";
+      else if (docType === "form") convertedType = "document";
+      // if document type is query we have to transform it
+      else if (docType === "query") {
+        convertedType = "equery";
+        guid = document.content;
+      } else {
+        convertedType = docType;
+      }
+      let url = wpw.tax.global.location.absUrl().replace(/#.*$/, "");
+      let fileUrl = url + "#/" + convertedType + "/" + guid;
+      window.open(fileUrl, "_blank");
+    });
+  };
+
+  wpw.tax.de.global.functions.gCalcs.openControlCard = function (
+    tableId,
+    calcUtils
+  ) {
+    const form = calcUtils.form("controlcard");
+    const row = calcUtils.fieldInfo.row;
+    let source;
+    let guid;
+    if (tableId === "CONTROLS-OVERVIEW") {
+      source = tableId;
+      guid = calcUtils.getCellValue(tableId, row, 6);
+      form.field("C-ORIGIN").assign("Standardmaßnahme");
+    } else if (tableId === "T-CONTROLS") {
+      source = tableId;
+      guid = calcUtils.getCellValue(tableId, row, 4);
+      form.field("C-ORIGIN").assign("Standardmaßnahme");
+    } else if (tableId === "ECONTROLS-OVERVIEW") {
+      source = tableId;
+      guid = calcUtils.getCellValue(tableId, row, 6);
+      form.field("C-ORIGIN").assign("Individuelle Maßnahme");
+    } else if (tableId === "E-CONTROLS") {
+      source = tableId;
+      guid = calcUtils.getCellValue(tableId, row, 3);
+      form.field("C-ORIGIN").assign("Individuelle Maßnahme");
+    }
+    form.field("SOURCE").assign(source);
+    return wpw.tax.getControls().then((controls) => {
+      const control = controls.find((control) => control.id === guid);
+      // lets know the active status and change it to understandable string
+      let activeStatus =
+        control.properties.DE_activeStatus === "1" ? "Aktiv" : "Nicht Aktiv";
+
+      form.field("C-GUID").assign(control.id);
+      form.field("CONTROL-TITLE").assign(control.name);
+      form.field("CONTROL-NUMBER").assign(control.properties.DE_number);
+      form.field("CONTROL-DESCRIPTION").assign(control.description);
+      form.field("CONTROL-DETDESC").assign(control.properties.DE_detDesc);
+      form.field("CONTROL-TYPE").assign(control.properties.DE_controlType);
+      form.field("CONTROL-RP").assign(control.properties.DE_rPerson);
+
+      // Some fields always need to be editable
+      form.field("CONTROL-DETDESC").disabled(false);
+      form.field("CONTROL-DETDESC").setCannotOverride(false);
+      form.field("CONTROL-RP").disabled(false);
+      form.field("CONTROL-RP").setCannotOverride(false);
+
+      // check template level
+      if (control.properties.DE_templateLevel == "1") {
+        form.field("C-ACTIVE-STATUS").assign(activeStatus);
+        form.field("CONTROL-TITLE").disabled(true);
+        form.field("CONTROL-TITLE").setCannotOverride(true);
+        form.field("CONTROL-DESCRIPTION").disabled(true);
+        form.field("CONTROL-DESCRIPTION").setCannotOverride(true);
+        form.field("CONTROL-NUMBER").disabled(true);
+        form.field("CONTROL-NUMBER").setCannotOverride(true);
+        form.field("CONTROL-TYPE").disabled(true);
+        form.field("CONTROL-TYPE").setCannotOverride(true);
+
+        // In the template level,we are also interested in setting overridden title
+        let overriddenTitle = getTitle(control);
+        form.field("C-OVERRIDDEN-TITLE").assign(overriddenTitle);
+        // if title is overridden , we want to show it on the card
+        if (overriddenTitle !== control.name) {
+          form.field("C-OVERRIDE-TITLE-STATUS").assign("1");
+        } else {
+          form.field("C-OVERRIDE-TITLE-STATUS").assign("0");
+        }
+      } else {
+        form.field("CONTROL-TITLE").disabled(false);
+        form.field("CONTROL-TITLE").setCannotOverride(false);
+        form.field("CONTROL-DESCRIPTION").disabled(false);
+        form.field("CONTROL-DESCRIPTION").setCannotOverride(false);
+        form.field("CONTROL-NUMBER").disabled(false);
+        form.field("CONTROL-NUMBER").setCannotOverride(false);
+        form.field("CONTROL-TYPE").disabled(false);
+        form.field("CONTROL-TYPE").setCannotOverride(false);
+        // set the overridden title field to empty
+        form.field("C-OVERRIDDEN-TITLE").assign("");
+      }
+      // Read the template level documents
+      if (control.attachables.count() > 0) {
+        // find all the documents on documents surfacce and put in into a map
+        wpw.tax.getDocuments().then((docs) => {
+          let documentsMap = new Map();
+          docs.forEach(function (doc) {
+            documentsMap.set(doc.id, doc);
+          });
+          let tempDocs = []; // this will take all the temp level documents other than query docs associated to a single control
+          let tempQueryDocs = []; // this will take all the temp level query documents associated to a single control
+
+          // find any documents that are already marked as active
+          let activeDocsArr = [];
+          if (control.properties.DE_activeDocuments !== "") {
+            activeDocsArr = control.properties.DE_activeDocuments.split(",");
+          }
+          // new on 28.06.2022
+          // create DE_queriesRF property if not exists
+          if (!control.properties.hasOwnProperty("DE_queriesRF")) {
+            control.properties.DE_queriesRF = "";
+          }
+          // find any documents that are rollforwarded
+          let queriesRFArr = control.properties.DE_queriesRF.split(",");
+          // Rollforward eng data comes through this promise
+          const suggestionIdC =
+            wpw.tax.global.engagementProperties.getPriorYearSuggestionId();
+          wpw.tax.utilities.getServices(["suggestionsService"]).then((serv) => {
+            serv.getSuggestions(suggestionIdC, "checklist").then((deltas) => {
+              // remember these documents are not directly referenced here, they have a separate id in attachables model,
+              // so we have to look for the id of attachable and then look for the link id
+              //(here link property inside attachable has the actual document id)
+              // id here is just a link of attachable model
+              let attachablesIds = Object.keys(control.attachables);
+              for (let i = 0; i &lt; attachablesIds.length; i++) {
+                let id = attachablesIds[i];
+                let docId = control.attachables[id].link;
+                try {
+                  const cDocument = documentsMap.get(docId);
+                  //let dId = activeDocsArr.find((res) => res === cDocument.id);
+                  let queryActiveStatus = activeDocsArr.indexOf(docId) > -1;
+                  let queryRFStatus = queriesRFArr.indexOf(docId) > -1;
+                  if (cDocument.type === "query") {
+                    /* =====================================================
+                        find if the engagement is rollforwarded one or not
+                        Also find if the query is completed in previous year or not
+                        If query is completed we need to enable the last two columns of defualt queries table
+                        Otherwise these two columns need to be empty
+                    ======================================================*/
+                    const PYEngId =
+                      wpw.tax.global.engagementProperties.priorYearEngagementId;
+                    const CYEngId = wpw.tax.global.engagementProperties.id;
+                    const firmUrl = wpw.tax.global.location
+                      .absUrl()
+                      .replace(/#.*$/, "");
+                    if (PYEngId !== "") {
+                      // the engagement is rollforwarded one
+                      const PYEng = firmUrl.replace(CYEngId, PYEngId);
+                      // there will be many queries that come through roll forward with different statuses
+                      // we are interested in completed statuses only
+                      let completedQuerySuggestions = deltas.filter(
+                        (delta) => delta.change.status == "complete"
+                      );
+                      // Find if cDocument.content even exists in the array of objects of completedQuerySuggestions
+                      const found = completedQuerySuggestions.some(
+                        (el) => el.id === cDocument.content
+                      );
+                      if (found) {
+                        const PYEngWithDocId =
+                          PYEng + "#/equery/" + cDocument.content;
+                        tempQueryDocs.push({
+                          name: cDocument.name,
+                          active: queryActiveStatus,
+                          guid: cDocument.id,
+                          docLink: PYEngWithDocId,
+                          statusRF: queryRFStatus,
+                        });
+                      } else {
+                        tempQueryDocs.push({
+                          name: cDocument.name,
+                          active: queryActiveStatus,
+                          guid: cDocument.id,
+                          docLink: "",
+                          statusRF: queryRFStatus,
+                        });
+                      }
+                    } else {
+                      // The engagement is not the rollforwarded one
+                      tempQueryDocs.push({
+                        name: cDocument.name,
+                        active: queryActiveStatus,
+                        guid: cDocument.id,
+                        docLink: "",
+                        statusRF: queryRFStatus,
+                      });
+                    }
+                  } else {
+                    tempDocs.push({
+                      name: cDocument.name,
+                      guid: cDocument.id,
+                    });
+                  }
+                } catch (e) {
+                  console.log("The required document is not found or removed");
+                }
+              }
+              let sortedTempDocs = _.sortBy(tempDocs, "name");
+              populateTable(
+                calcUtils,
+                sortedTempDocs,
+                "controlcard",
+                "TC-DOCS"
+              );
+              let sortedTQDocs = _.sortBy(tempQueryDocs, "name");
+              populateTable(
+                calcUtils,
+                sortedTQDocs,
+                "controlcard",
+                "T-DOCUMENTS"
+              );
+              if (activeStatus === "Nicht Aktiv") {
+                let table = calcUtils.form("controlcard").field("T-DOCUMENTS");
+                for (let i = 0; i &lt; table.getRows().length; i++) {
+                  table.cell(i, 1).disabled(true);
+                  table.cell(i, 1).config("cannotOverride", true);
+                }
+              }
+            });
+          });
+        });
+      }
+      // individual docs from engagement level
+      let assignedDocIds = [];
+      let engQueryDocs = [];
+      let engCDocs = [];
+      if (
+        control.properties.hasOwnProperty("DE_assignedDocuments") &amp;&amp;
+        control.properties.DE_assignedDocuments !== ""
+      ) {
+        assignedDocIds = control.properties.DE_assignedDocuments.split(",");
+      }
+      // look for the documents from the above ids
+      wpw.tax.getDocuments().then((documents) => {
+        for (let i = 0; i &lt; assignedDocIds.length; i++) {
+          try {
+            let doc = documents.find((doc) => doc.id === assignedDocIds[i]);
+            if (doc.type === "query") {
+              engQueryDocs.push({
+                name: doc.name,
+                guid: doc.id,
+              });
+            } else {
+              engCDocs.push({
+                name: doc.name,
+                guid: doc.id,
+              });
+            }
+          } catch (e) {
+            console.log(
+              "the document is not found for the id " + assignedDocIds[i]
+            );
+          }
+        }
+        let sortedECDocs = _.sortBy(engCDocs, "name");
+        populateTable(calcUtils, sortedECDocs, "controlcard", "EC-DOCS");
+        let sortedEQDocs = _.sortBy(engQueryDocs, "name");
+        populateTable(calcUtils, sortedEQDocs, "controlcard", "E-DOCUMENTS");
+
+        // get the attached risks to the control
+        if (control.risks.length > 0) {
+          connectedRisksTable(calcUtils, control);
+        }
+      });
+      wpw.tax.openModal("controlcard");
+    });
+  };
+
+  wpw.tax.de.global.functions.gCalcs.generateConnectedRisksTable = function (
+    calcUtils,
+    control
+  ) {
+    connectedRisksTable(calcUtils, control);
+  };
+
+  function connectedRisksTable(calcUtils, control) {
+    let connectedRisks = [];
+    let notConnectedRisks = [];
+
+    return wpw.tax.getRisks().then((risks) => {
+      control.risks.forEach((riskId) => {
+        const risk = risks.find((risk) => risk.id === riskId);
+        let activeControlsArr = risk.properties.DE_activeControls.split(",");
+        if (activeControlsArr.includes(control.id)) {
+          connectedRisks.push({
+            id: risk.properties.DE_number,
+            name: getTitle(risk),
+            guid: risk.id,
+          });
+        } else {
+          // find the risks that are active only
+          if (risk.properties.DE_activeStatus === "1") {
+            calcUtils.field("controlcard.NOT-CONNECTED-RISKS-ROWS").assign("1");
+            notConnectedRisks.push({
+              id: risk.properties.DE_number,
+              name: getTitle(risk),
+              guid: risk.id,
+            });
+          }
+        }
+      });
+      // we need to write a condition to check if the control has connected risks or not
+      // based on this we are setting visibility to set inactive button
+      if (connectedRisks.length === 0) {
+        calcUtils.field("controlcard.CONNECTED-RISKS-ROWS").assign("0");
+      } else {
+        calcUtils.field("controlcard.CONNECTED-RISKS-ROWS").assign("1");
+      }
+
+      let sortedConnectedRisks = _.sortBy(connectedRisks, "id");
+      populateTable(
+        calcUtils,
+        sortedConnectedRisks,
+        "controlcard",
+        "CONNECTED-RISKS"
+      );
+      let sortedNCRisks = _.sortBy(notConnectedRisks, "id");
+      populateTable(
+        calcUtils,
+        sortedNCRisks,
+        "controlcard",
+        "NOT-CONNECTED-RISKS"
+      );
+    });
+  }
+
+  function getRisk(id) {
+    return wpw.tax.getRisks().then((risks) => {
+      const risk = risks.find((risk) => risk.id === id);
+      return risk;
+    });
+  }
+
+  function getControl(id) {
+    return wpw.tax.getControls().then((controls) => {
+      const control = controls.find((control) => control.id === id);
+      return control;
+    });
+  }
+  // Extract documents in risks and controls
+  wpw.tax.de.global.functions.gCalcs.extractDocuments = function (
+    calcUtils,
+    formId,
+    tableId,
+    id
+  ) {
+    let documentsArr = [];
+    return wpw.tax.getDocuments().then((docs) => {
+      docs.forEach(function (doc) {
+        if (
+          (!doc.hasOwnProperty("origin") || doc.origin === null) &amp;&amp;
+          doc.type !== "query"
+        ) {
+          let model = {};
+          if (formId === "selectdocuments") {
+            model = getRisk(id);
+          } else if (formId === "selectcontrolsdocuments") {
+            model = getControl(id);
+          }
+          model.then((modelobj) => {
+            let docsIdArr = [];
+            if (
+              modelobj.properties.hasOwnProperty("DE_assignedDocuments") &amp;&amp;
+              modelobj.properties.DE_assignedDocuments !== ""
+            ) {
+              docsIdArr = modelobj.properties.DE_assignedDocuments.split(",");
+            }
+            // assign the stuatus
+            const status = docsIdArr.includes(doc.id);
+            documentsArr.push({
+              name: doc.name,
+              status: status,
+              guid: doc.id,
+            });
+
+            let sortedArr = _.sortBy(documentsArr, "name");
+            populateTable(calcUtils, sortedArr, formId, tableId);
+          });
+        } else {
+          console.log("template level docs not needed to show");
+        }
+      });
+    });
+  };
+
+  wpw.tax.de.global.functions.gCalcs.extractRisks = function (calcUtils) {
+    // create an array to store the risks extracted from the database
+    let riskArr = [];
+    let eRiskArr = [];
+    wpw.tax.getRisks().then((risks) => {
+      risks.forEach(function (risk) {
+        const activeStatus = parseInt(risk.properties.DE_activeStatus);
+        if (risk.properties.DE_templateLevel === "1") {
+          // To find if the risk is relevant or not
+          try {
+            // convert relevant information from the database to a meaningful string
+            let relevantStatus;
+            if (risk.properties.DE_relevant === "Ja") {
+              relevantStatus = "Relevant";
+            } else {
+              relevantStatus = "Nicht Relevant";
+            }
+            // we have to show the risks , if it is relevant based on checklist answers, or
+            // if the status is marked as active before, and relevant status is changed from the checklist answers
+            if (risk.properties.DE_relevant === "Ja" || activeStatus === 1) {
+              riskArr.push({
+                id: risk.properties.DE_number,
+                name: risk.name,
+                taxType: risk.properties.DE_taxType,
+                relevantStatus: relevantStatus,
+                status: activeStatus,
+                guid: risk.id,
+              });
+            }
+          } catch (e) {
+            console.log(
+              "Risks are no relevant risks. Please go back to the central questionaire"
+            );
+          }
+        } else {
+          eRiskArr.push({
+            id: risk.properties.DE_number,
+            name: risk.name,
+            taxType: risk.properties.DE_taxType,
+            guid: risk.id,
+          });
+        }
+      });
+      // send the risks extracted to populate the table
+      populateTable(calcUtils, riskArr, "risksoverview", "RISKS-OVERVIEW");
+      populateTable(calcUtils, eRiskArr, "risksoverview", "ERISKS-OVERVIEW");
+    });
+  };
+
+  // generate eng level documents for risks and controls
+  wpw.tax.de.global.functions.gCalcs.generateEngDocs = function (
+    calcUtils,
+    model,
+    formId,
+    tableId
+  ) {
+    // individual docs from engagement level
+    let assignedDocIds = [];
+    let engDocsArr = [];
+    let engQueryDocs = [];
+    let engCDocs = [];
+    if (
+      model.properties.hasOwnProperty("DE_assignedDocuments") &amp;&amp;
+      model.properties.DE_assignedDocuments !== ""
+    ) {
+      assignedDocIds = model.properties.DE_assignedDocuments.split(",");
+    }
+    // look for the documents from the above ids
+    return wpw.tax.getDocuments().then((documents) => {
+      for (let i = 0; i &lt; assignedDocIds.length; i++) {
+        try {
+          let doc = documents.find((doc) => doc.id === assignedDocIds[i]);
+          if (tableId === "E-DOCS") {
+            engDocsArr.push({
+              name: doc.name,
+              guid: doc.id,
+            });
+          } else if (tableId === "EC-DOCS" &amp;&amp; doc.type !== "query") {
+            engCDocs.push({
+              name: doc.name,
+              guid: doc.id,
+            });
+          } else if (tableId === "E-DOCUMENTS" &amp;&amp; doc.type === "query") {
+            engQueryDocs.push({
+              name: doc.name,
+              guid: doc.id,
+            });
+          }
+        } catch (e) {
+          console.log(
+            "the document is not found for the id " + assignedDocIds[i]
+          );
+        }
+      }
+      if (tableId === "E-DOCS") {
+        let sortedArr = _.sortBy(engDocsArr, "name");
+        populateTable(calcUtils, sortedArr, formId, tableId);
+      } else if (tableId === "EC-DOCS")
+        populateTable(calcUtils, engCDocs, formId, tableId);
+      else if (tableId === "E-DOCUMENTS")
+        populateTable(calcUtils, engQueryDocs, formId, tableId);
+    });
+  };
+  // extract controls from the risk
+  wpw.tax.de.global.functions.gCalcs.extractControlsFromRisk = function (
+    calcUtils,
+    risk
+  ) {
+    // Store the controls
+    let controlsMap = new Map();
+    return wpw.tax.getControls().then((controls) => {
+      controls.forEach(function (control) {
+        controlsMap.set(control.id, control);
+      });
+      // Adding controls related to that risk from the template mapping
+      let tempControlsArr = [];
+      let engControlsArr = [];
+      let activeControlsArr = [];
+      // Find that risk has contorls active
+      if (
+        risk.properties.DE_templateLevel === "1" &amp;&amp;
+        risk.properties.DE_activeControls !== ""
+      ) {
+        activeControlsArr = risk.properties.DE_activeControls.split(",");
+      }
+      // find if any controls are assigned to the risk
+      if (risk.controls.length > 0) {
+        risk.controls.forEach(function (rCon) {
+          var cControl = controlsMap.get(rCon);
+          if (cControl.properties.DE_templateLevel === "1") {
+            let cId = activeControlsArr.find((res) => res === cControl.id);
+            if (activeControlsArr.indexOf(cId) > -1) {
+              tempControlsArr.push({
+                id: cControl.properties.DE_number,
+                name: getTitle(cControl),
+                active: true,
+                guid: cControl.id,
+              });
+            } else {
+              tempControlsArr.push({
+                id: cControl.properties.DE_number,
+                name: getTitle(cControl),
+                active: "",
+                guid: cControl.id,
+              });
+            }
+          } else {
+            engControlsArr.push({
+              id: cControl.properties.DE_number,
+              name: cControl.name,
+              guid: cControl.id,
+            });
+          }
+        });
+
+        let sortedTempControlsArr = _.sortBy(tempControlsArr, "id");
+        populateTable(
+          calcUtils,
+          sortedTempControlsArr,
+          "riskcard",
+          "T-CONTROLS"
+        );
+        let sortedEngControlsArr = _.sortBy(engControlsArr, "id");
+        populateTable(
+          calcUtils,
+          sortedEngControlsArr,
+          "riskcard",
+          "E-CONTROLS"
+        );
+        // Disable the controls active checkbox if the risk is not active
+        if (risk.properties.DE_activeStatus !== "1") {
+          let table = wpw.tax.form("riskcard").field("T-CONTROLS");
+          for (let i = 0; i &lt; table.getRows().length; i++) {
+            table.cell(i, 2).disabled(true);
+            table.cell(i, 2).config("cannotOverride", true);
+          }
+        }
+      }
+    });
+  };
+
+  function getAllActiveControls() {
+    let allActiveControls = [];
+    let activeControls = [];
+    return wpw.tax.getRisks().then((risks) => {
+      risks.forEach((risk) => {
+        if (risk.properties.hasOwnProperty("DE_activeControls"))
+          activeControls = risk.properties.DE_activeControls.split(",");
+        allActiveControls.push(...activeControls);
+      });
+      let filteredArr = allActiveControls.filter((item) => item);
+      return filteredArr;
+    });
+  }
+
+  function assignedQuery(control) {
+    let assignedToQuery = "Nein";
+
+    if (control.properties.hasOwnProperty("DE_activeDocuments")) {
+      const activeQueries = control.properties.DE_activeDocuments.split(",");
+
+      let filtered = activeQueries.filter(function (el) {
+        return el != "";
+      });
+      if (filtered.length > 0) {
+        assignedToQuery = "Ja";
+      }
+    }
+    return assignedToQuery;
+  }
+  // extract controls for controls overview
+  wpw.tax.de.global.functions.gCalcs.extractControls = function (calcUtils) {
+    // create an array to store the controls extracted from the database
+    let controlsArr = [];
+    let eControlsArr = [];
+    // for an additional hint that a control is active but unassigned
+    // we can go through control.risks, and find the risk from the id there,
+    // that risk has activeControls property
+    // if the active controls property has the id of the control, then it means the control is active and assinged
+    // if it dont have the control id, then it means the control is active but not assigned
+    // all active control ids from every risk
+    return getAllActiveControls().then((activeControlsArr) => {
+      return wpw.tax.getControls().then((controls) => {
+        controls.forEach(function (control) {
+          // need to specify this property seperately for template level and engagement level
+          // for engagement level this condition is good, but for template level we need additional promise
+          let assignedToQuery = assignedQuery(control);
+          // Split the template level and eng level controls
+          if (control.properties.DE_templateLevel === "1") {
+            // again only look for active controls, not active controls dont need to show
+            if (control.properties.DE_activeStatus === "1") {
+              // here we need to find assignedToQuery Status
+              if (activeControlsArr.includes(control.id)) {
+                // this means control  is active/assinged in that risk
+                controlsArr.push({
+                  id: control.properties.DE_number,
+                  name: getTitle(control),
+                  type: control.properties.DE_controlType,
+                  person: control.properties.DE_rPerson,
+                  assignedToRisk: "Ja",
+                  guid: control.id,
+                  assignedToQuery: assignedToQuery,
+                });
+              } else {
+                controlsArr.push({
+                  id: control.properties.DE_number,
+                  name: getTitle(control),
+                  type: control.properties.DE_controlType,
+                  person: control.properties.DE_rPerson,
+                  assignedToRisk: "Nein",
+                  guid: control.id,
+                  assignedToQuery: assignedToQuery,
+                });
+              }
+            }
+          } else {
+            // addtional logic to assign assigned and not assigned
+            if (control.risks.length > 0) {
+              eControlsArr.push({
+                id: control.properties.DE_number,
+                name: control.name,
+                type: control.properties.DE_controlType,
+                person: control.properties.DE_rPerson,
+                guid: control.id,
+                assignedToRisk: "Ja",
+                assignedToQuery: assignedToQuery,
+              });
+            } else {
+              eControlsArr.push({
+                id: control.properties.DE_number,
+                name: control.name,
+                type: control.properties.DE_controlType,
+                person: control.properties.DE_rPerson,
+                guid: control.id,
+                assignedToRisk: "Nein",
+                assignedToQuery: assignedToQuery,
+              });
+            }
+          }
+        });
+        // send the controls extracted to populate the table
+        let sortedControlsArr = _.sortBy(controlsArr, "id");
+        populateTable(
+          calcUtils,
+          sortedControlsArr,
+          "controlsoverview",
+          "CONTROLS-OVERVIEW"
+        );
+        let sortedEControlsArr = _.sortBy(eControlsArr, "id");
+        populateTable(
+          calcUtils,
+          sortedEControlsArr,
+          "controlsoverview",
+          "ECONTROLS-OVERVIEW"
+        );
+      });
+    });
+  };
+
+  // set the documents visibility condition
+  wpw.tax.de.global.functions.gCalcs.documentsVisibility = function (
+    id,
+    status
+  ) {
+    return wpw.tax.getDocuments().then((documents) => {
+      let document = documents.find((document) => document.id === id);
+      wpw.tax.taxUtils.setDocumentVisibility(document, status); // if status is true, show the doc, else hide
+    });
+  };
+
+  // generate query documents that are visible
+  function queryDocuments() {
+    // TODO: First For Loop
+    return wpw.tax.getDocuments().then((documents) => {
+      let docs = [];
+      documents.forEach((document) => {
+        if (document.type === "query" &amp;&amp; document.visible === true) {
+          docs.push(document);
+        }
+      });
+      return docs;
+    });
+  }
+
+  // ##########################################
+  // ########## Queries Cockpit ###############
+  // ######## Supporting Functions ############
+
+  // create cockpit table
+  function cockpitTable(table, i, obj) {
+    // we have to change the document status into German words
+    let documentStatus = obj.status;
+    if (documentStatus === "draft") documentStatus = "Entwurf";
+    else if (documentStatus === "open") documentStatus = "Auf Antwort warten";
+    else if (documentStatus === "responded") documentStatus = "Beantwortet";
+    else if (documentStatus === "reopened") documentStatus = "Erneut geöffnet";
+    else if (documentStatus === "complete") documentStatus = "Fertiggestellt";
+    else if (documentStatus === "cancelled") documentStatus = "Abgebrochen";
+    else {
+      documentStatus = obj.status;
+    }
+    table.cell(i, 0).assign(obj.name);
+    table.cell(i, 2).assign(documentStatus);
+    table.cell(i, 3).assign(obj.responded);
+    table.cell(i, 4).assign(obj.dueDate);
+    // to avoid undefined cell value, we assign empty string
+    table.cell(i, 6).assign("");
+    table.cell(i, 7).assign(obj.contactNames);
+    table.cell(i, 8).assign(obj.sendDate);
+    table.cell(i, 9).assign(obj.contactIds);
+    table.cell(i, 10).assign(obj.docId);
+    table.cell(i, 11).assign(obj.url);
+    // due date need to be disabled when already filled
+    // we additionally need to disable the date field if the document is already complete
+    if (obj.dueDate !== undefined || obj.status === "complete") {
+      table.cell(i, 4).disabled(true);
+      table.cell(i, 4).config("cannotOverride", true);
+    } else {
+      // to avoid undefined field value we make it null
+      table.cell(i, 4).assign({});
+      table.cell(i, 4).disabled(false);
+      table.cell(i, 4).config("cannotOverride", false);
+    }
+    i = i + 1;
+    return;
+  }
+
+  async function createUserEntries() {
+    let userEntriesMap = new Map();
+    await wpw.tax.getAllContacts().then((users) => {
+      for (let i in users) {
+        userEntriesMap.set(users[i].id, users[i].name);
+      }
+    });
+    return userEntriesMap;
+  }
+
+  /**
+   * Checks for the function "wpw.tax.global.engagementProperties.users"
+   * and look for the rightsGroup of the users.
+   * Any user who is not a writer is considered a Staff
+   * The map store the id and name of the staff.
+   * @returns StaffEntriesMap
+   * @name #createStaffEntries
+   * @function
+   * @memberOf GCalcs
+   */
+  function createStaffEntries() {
+    let staffEntries = Object.entries(
+      wpw.tax.global.engagementProperties.users
+    );
+    let staffEntriesMap = new Map();
+
+    staffEntries.forEach((entry) => {
+      if (Object.values(entry)[1].rightsGroup != "writer") {
+        return;
+      }
+      staffEntriesMap.set(entry[0], entry[1].name);
+    });
+    return staffEntriesMap;
+  }
+
+  async function generateQueriesCockpitMaps(calcUtils) {
+    let staffEntriesMap = createStaffEntries();
+    let userEntriesMap = await createUserEntries();
+    let table_staffData = calcUtils.field("swsdb.tbl_staffData");
+    let staffDataRows = table_staffData.getRows();
+
+    for (let rowIndex in staffDataRows) {
+      let docId = table_staffData.cell(rowIndex, 0).get();
+      staffDataMap.set(docId, new Set());
+      usersDataMap.set(docId, new Set());
+    }
+    for (let rowIndex in staffDataRows) {
+      let userObj = {};
+      let docId = table_staffData.cell(rowIndex, 0).get();
+      let staffId = table_staffData.cell(rowIndex, 1).get();
+      let dateDue = table_staffData.cell(rowIndex, 2).get();
+      let dateSend = table_staffData.cell(rowIndex, 3).get();
+      let staffName = staffEntriesMap.get(staffId);
+      userObj.docId = docId;
+      userObj.dateDue = new Date(dateDue);
+      userObj.dateSend = new Date(dateSend);
+      userObj.name = "*" + staffName;
+      if (staffName == undefined) {
+        // staffTables also contains normal users, which become undefined in staffEntriesMap.
+        let userName = userEntriesMap.get(staffId);
+        userObj.name = userName;
+        usersDataMap.get(docId).add(userObj);
+        continue;
+      }
+      // Adding '*' to differentiate between normal and staff user
+      // this code is check against '*' in select-contacts form.
+      usersDataMap.get(docId).add(userObj);
+      staffDataMap.get(docId).add("*" + staffName);
+    }
+  }
+
+  // // ##########################################
+  // // ########## Engagement Data ###############
+  // // ##########################################
+  // let preprocessed = false;
+  // let queryDocIds = [];
+  // function createEngagementData() {
+  //   let queryDocuments = wpw.tax.getDocuments();
+  //   return new Promise.all([queryDocuments]).then((array) => {
+  //     let docs = array[0];
+  //     docs.forEach((doc) => {
+  //       if (!queryFilter(doc, queryDocIds)) {
+  //         return;
+  //       }
+  //     });
+  //     console.log("QueryDocs", queryDocIds);
+  //     return true;
+  //   });
+  // }
+
+  // /*
+  // This code requiers to be edited in the Global file
+  // On load of engagement so the rest of the process can also be enhancesd
+  // that is loading of queriesCockpit upon engagement load.
+  // */
+  // function queryDocHasId(id) {
+  //   if (preprocessed) {
+  //     return new Promise((res, rej) => {
+  //       return queryDocIds.includes(id);
+  //     });
+  //   } else {
+  //     let cre = new Promise((res, rej) => {
+  //       let ans = createEngagementData();
+  //       res(ans);
+  //     });
+  //     return cre.then((res) => {
+  //       preprocessed = res;
+  //       return queryDocIds.includes(id);
+  //     });
+  //   }
+  // }
+
+  // function queryFilter(doc) {
+  //   if (doc.type === "query" &amp;&amp; doc.visible === true) {
+  //     queryDocIds.push(doc.id);
+  //     return true;
+  //   }
+  //   return false;
+  // }
+
+  wpw.tax.de.global.functions.gCalcs.getStaffEntriesMap = function () {
+    return createStaffEntries();
+  };
+  // ##########################################
+  // ########## Queries Cockpit ###############
+  // ##########################################
+
+  const QUERIESCOCKPIT_FORMID = "queriescockpit";
+  const QUERIESCOCKPIT_TABLEID = "QUERIES-COCKPIT";
+  let staffDataMap = new Map();
+  let usersDataMap = new Map();
+  // generate the query documents for query cockpit
+  wpw.tax.de.global.functions.gCalcs.generateQueryDocuments = (calcUtils) => {
+    // generateQueryDocuments(calcUtils);
+    // return wpw.tax.de.querryDocument(calcUtils);
+    return wpw.tax.de.querryDocument(calcUtils);
+  };
+
+  async function generateQueryDocuments(calcUtils) {
+    let table = calcUtils
+      .form(QUERIESCOCKPIT_FORMID)
+      .field(QUERIESCOCKPIT_TABLEID);
+
+    // Generate Staff and User Maps
+    await generateQueriesCockpitMaps(calcUtils);
+    // Clear the querriescockpit table if already rows are added, by removing each row
+    let tableLength = table.getRows().length;
+
+    for (let i = 0; i &lt; tableLength; i++) {
+      calcUtils.removeTableRow(
+        QUERIESCOCKPIT_FORMID,
+        QUERIESCOCKPIT_TABLEID,
+        0
+      );
+    }
+    // filter the documents to queries only
+    queryDocuments().then((docs) => {
+      if (docs.length === 0) {
+        wpw.tax.taxUtils.waitForDirectivesToLoad().then(function () {
+          //Form is done rendering at this point
+          endLoadingBar("QUERIESCOCKPIT");
+        });
+      } else {
+        // creating query documents with contacts
+        // TODO: 2nd ForLoop
+        for (const doc of docs) {
+          wpw.tax.getChecklists([doc.content]).then(async (checklists) => {
+            // a document occurs at first instance of the array, because we passed only one element in the array
+            let checklist = checklists[0];
+            // to find if a procedure is responded
+            let procedures = checklist.procedures;
+            let count = 0;
+            // TODO: 3rd ForLoop
+            procedures.forEach((pro) => {
+              if (pro.status === "responded" &amp;&amp; pro.visible === true) {
+                count++;
+              }
+            });
+            // now from that checklist doc we can get other details
+            // documents are assigned to contacts
+            await wpw.tax.getEngagementQueryData().then((queryDetails) => {
+              let i = 0;
+              // after beta 2021-05 this was throwing error because it seems like the property cwGuid is removed from the checklist
+              // So we have to test if the property exists
+              //if (checklist.hasOwnProperty("cwGuid") &amp;&amp; checklist.cwGuid !== "") {
+              if (
+                checklist.status !== "draft" &amp;&amp;
+                checklist.status !== "complete" &amp;&amp;
+                checklist.status !== "cancelled"
+              ) {
+                //contact data can be found in queryDetails
+                // if a document is not assigned to any contact then cwGuid will be empty
+                let contactData = queryDetails[checklist.id];
+                // Now this contact data has Subject, CollaborateId, DueDate, and URL of the query document
+                // names and emails is of type array because one query can be assigned to many contacts
+                // So to assign it to a cell in a table, we can convert these arrays into a string
+                let names = [];
+                if (staffDataMap.has(doc.content)) {
+                  // If there is even a single user, which is not staff,
+                  // this condition will run, as we are saving user doc Id also.
+                  names = contactData.Names.concat(
+                    Array.from(staffDataMap.get(doc.content))
+                  );
+                }
+                let strNames = names.join(", ");
+                if (contactData.Names.length > 0 &amp;&amp; strNames === "") {
+                  // to cover the scenario, where db was not created for older enagements
+                  strNames = contactData.Names.join(", ");
+                }
+                let dueDate = new Date(contactData.DueDate);
+                let url = contactData.Url;
+                let documentSendDate = new Date(contactData.CreateDate);
+                const year = documentSendDate.getFullYear();
+                const month = documentSendDate.getMonth() + 1;
+                const day = documentSendDate.getDate();
+                let sendDate = day + "." + month + "." + year;
+
+                let obj = {
+                  name: doc.name,
+                  status: doc.status,
+                  dueDate: dueDate,
+                  contactNames: strNames,
+                  contactIds: "",
+                  docId: doc.content,
+                  url: url,
+                  responded: count.toString(),
+                  sendDate: sendDate,
+                };
+                calcUtils.addTableRow(
+                  QUERIESCOCKPIT_FORMID,
+                  QUERIESCOCKPIT_TABLEID,
+                  i
+                );
+                cockpitTable(table, i, obj);
+              } else {
+                let usersSet = usersDataMap.get(doc.content);
+                let names = new Set();
+                let dueDate = undefined;
+                let sendDate = undefined;
+                if (usersSet !== undefined) {
+                  usersSet.forEach((user) => {
+                    names.add(user.name);
+                    dueDate = user.dateDue;
+                    sendDate = user.dateSend;
+                  });
+                }
+                let completed = "";
+                let completedDate = "";
+                if (sendDate !== undefined) {
+                  completed = new Date(sendDate);
+
+                  const year = completed.getFullYear();
+                  const month = completed.getMonth() + 1;
+                  const day = completed.getDate();
+                  completedDate = day + "." + month + "." + year;
+                }
+
+                let obj = {
+                  name: doc.name,
+                  status: doc.status,
+                  dueDate: dueDate,
+                  contactNames: Array.from(names).join(", "),
+                  contactIds: "",
+                  docId: doc.content,
+                  responded: count.toString(),
+                  sendDate: completedDate,
+                };
+                calcUtils.addTableRow(
+                  QUERIESCOCKPIT_FORMID,
+                  QUERIESCOCKPIT_TABLEID,
+                  i
+                );
+                cockpitTable(table, i, obj);
+              }
+              wpw.tax.taxUtils.waitForDirectivesToLoad().then(function () {
+                //Form is done rendering at this point
+                endLoadingBar("QUERIESCOCKPIT");
+              });
+            });
+          });
+        }
+      }
+    });
+  }
+
+  // Send email functionality
+  // send email service
+  let checklistService;
+  wpw.tax.utilities.getServices(
+    ["checklistService"],
+    (service) => {
+      checklistService = service;
+    },
+    (e) => {
+      if (e) {
+        console.log(e);
+      }
+    }
+  );
+  /**
+   * Takes in a checklistID for a query and sends emails with custom message body to specified contacts
+   *
+   * Example usage:
+   * wpw.tax.create.calcBlocks('formId', function(calcUtils) {
+   *   calcUtils.calc('formId', function (calcUtils, field, form) {
+   *    return wpw.tax.getDocuments().then(docs => {
+   *      docs.forEach(doc=> {
+   *          if(doc.type=== 'query' &amp;&amp; doc.visible === true) {
+   *              wpw.tax.sendQueryEmail(doc.content, 'Hello from CaseWare', [3,4,5]); //CollaborateIds will may differ, use wpw.tax.getAllContacts()
+   *          }
+   *      });
+   *   });
+   * });
+   *
+   * @param {string} [id] - Checklist ID, also known as the contentId of a wpw.document
+   * @param {string} [messageBody] - Message to be included in email body
+   * @param  {Array&lt;Number>} [assigneeIds] - Array of assigneeIds to receive email. If none provided, all contacts assigned the query will receive emails.
+   * @param {Date} [dueDate] - New query due date, must be a valid Date() object (Accepts String only: 2022-10-03)
+   * @param {wpw.models.QUERY_STATUS} [status] - New query status, one of the following:
+   *       wpw.models.QUERY_STATUS.DRAFT
+   *       wpw.models.QUERY_STATUS.OPEN
+   *       wpw.models.QUERY_STATUS.REOPENED
+   *       wpw.models.QUERY_STATUS.RESPONDED
+   *       wpw.models.QUERY_STATUS.COMPLETE
+   *       wpw.models.QUERY_STATUS.CANCELLED
+   * @param {boolean} [assignToAllContacts]
+   * @return {promise}
+   */
+  function sendQueryEmail(
+    id,
+    messageBody,
+    assigneeIds,
+    dueDate,
+    status,
+    assignToAllContacts
+  ) {
+    //Get the checklist object from its id
+    return checklistService.getChecklist(id).then((checklist) => {
+      if (!checklist) {
+        alert("sendQueryEmail error: Could not find query with ID " + id);
+        return;
+      }
+      //Create a queryModal object to send
+      const queryModel = new wpw.models.QuerySaveModel();
+      queryModel.customEmailBody = messageBody;
+      queryModel.assigneeIds = assigneeIds;
+      //Invalid dates create type issues in SE causing the email not to send
+      // check if the due date exists
+      if (angular.isDefined(dueDate)) {
+        queryModel.dueDate = new Date(dueDate);
+      }
+      // check if the assign to all contacts exists
+      if (angular.isDefined(assignToAllContacts)) {
+        queryModel.assignToAllContacts = assignToAllContacts;
+      }
+      // check if the status exists
+      if (angular.isDefined(status)) {
+        queryModel.status = status;
+        checklist.status = status;
+      }
+      return checklistService.saveChecklist(
+        wpw.utilities.clone(checklist),
+        queryModel,
+        true
+      );
+    });
+  }
+
+  // ics
+  wpw.tax.de.global.functions.gCalcs.getICS = function (docName, url, dueDate) {
+    const strBody = "Please follow this link for the query document ";
+    let activity = {};
+    activity.date = new Date(dueDate);
+    var sParams =
+      "?summary=" +
+      encodeURIComponent(docName) +
+      "&amp;body=" +
+      encodeURIComponent(strBody) +
+      encodeURIComponent(url) +
+      "&amp;day=" +
+      activity.date.getDate().toString() +
+      "&amp;month=" +
+      (activity.date.getMonth() + 1).toString() +
+      "&amp;year=" +
+      activity.date.getFullYear() +
+      "&amp;hours=" +
+      activity.date.getUTCHours() +
+      "&amp;minutes=" +
+      activity.date.getUTCMinutes();
+    return "iCal/ics.html" + sParams;
+  };
+
+  wpw.tax.de.global.functions.gCalcs.reloadControlsInRiskCard = function (
+    calcUtils,
+    risk
+  ) {
+    let controlIds = risk.controls;
+    let controlsArr = [];
+    return wpw.tax.getControls().then((controls) => {
+      if (controlIds.length > 0) {
+        for (let i = 0; i &lt; controlIds.length; i++) {
+          let control = controls.find(
+            (control) => control.id === controlIds[i]
+          );
+          if (control.properties.DE_templateLevel !== "1") {
+            controlsArr.push({
+              id: control.properties.DE_number,
+              name: getTitle(control),
+              guid: control.id,
+            });
+          }
+        }
+      }
+      let sortedArr = _.sortBy(controlsArr, "id");
+      populateTable(calcUtils, sortedArr, "riskcard", "E-CONTROLS");
+    });
+  };
+
+  wpw.tax.de.global.functions.gCalcs.sendEmails = function (
+    calcUtils,
+    data,
+    bodyText,
+    fieldId
+  ) {
+    // Get the table from from
+    let table = calcUtils.field(fieldId);
+    let sendEmailSuccess = true;
+    console.log("Sendemail: DATA OBJ: ", data);
+    const message =
+      "Mit dem Link Details anzeigen öffnen Sie das Ihnen zur Bearbeitung zugeordnete Abfragedokument. Der folgende Link führt Sie auf die Audicon Webseite, um alle Ihnen zugewiesenen Aktivitäten in Ihren persönlichen Kalender zu importieren. ";
+    const helpLink =
+      "https://docu.audicon.net/CWCloud/Apps/SWS.pro/de/Content/Abfrage_erhalten.htm";
+
+    const helpText =
+      "Ihnen wurden Abfragedokumente zur Bearbeitung zugeordnet. Auf der Hilfeseite finden sie weitere Informationen zur Bearbeitung von Abfragedokumenten: ";
+    const help = helpText + helpLink + " ";
+    let staffObjs = [];
+    let urlMap = new Map(); // Url map for each CID
+
+    // maiking email count 13 to counter for equality of 12 and more.
+    // we want to inform the user when the count is more then 12
+    let totalEmailCount = (() => {
+      let counter = 0;
+      data.forEach((doc) => {
+        counter += doc.length;
+      });
+      return counter;
+    })();
+    const EMAILS_TO_DELETTE = 12;
+    let emailCount = EMAILS_TO_DELETTE;
+    let doesEmailExceedsTwelve = false;
+    let parameterCountExceed = false;
+
+    const ParameterCount = 2048;
+    data.forEach((docData, key) => {
+      if (doesEmailExceedsTwelve || parameterCountExceed) {
+        return;
+      }
+      let cId = key;
+      let url = "https://audicon.net/termine/?";
+      console.log(
+        "%c #################################",
+        "background: #222; color: #bada55"
+      );
+      let index = 0;
+      let docLen = docData.length - 1;
+      while (docData.length > 0) {
+        let obj = docData[0];
+        if (doesEmailExceedsTwelve || parameterCountExceed) {
+          break;
+        }
+        let urlCount = index + 1;
+        // change date format from 1.10.2021 to 2021-10-01
+        let date =
+          obj.dueDate.year + "-" + obj.dueDate.month + "-" + obj.dueDate.day;
+        if (obj.dueDate instanceof Date) {
+          // date = obj.dueDate.toISOString().split("T")[0];
+
+          // date = obj.dueDate.getUTCFullYear() +
+          // "-" +
+          // (obj.dueDate.getUTCMonth() + 1) +
+          // "-" +
+          // obj.dueDate.getUTCDate();
+
+          date =
+            obj.dueDate.getFullYear() +
+            "-" +
+            (obj.dueDate.getMonth() + 1) +
+            "-" +
+            obj.dueDate.getDate();
+          console.log("DateEmail-DateInstance: ", date);
+          console.log("DateEmail-Obj: ", obj.dueDate);
+        }
+        const documentName = obj.queryName;
+        const docName = encodeURIComponent(documentName);
+        const strBody = encodeURIComponent(bodyText);
+        // generate the query link from doc id
+        const docId = obj.docId;
+        const docLink = encodeURIComponent(obj.url);
+
+        let currentUrl =
+          "date" +
+          urlCount +
+          "=" +
+          date +
+          "&amp;summary" +
+          urlCount +
+          "=" +
+          docName +
+          "&amp;body" +
+          urlCount +
+          "=" +
+          strBody +
+          docLink +
+          "&amp;";
+
+        let urlLength = url + currentUrl;
+        console.log("DocName: ", docName);
+        console.log("strBody: ", strBody);
+        console.log("URL:", urlLength);
+        console.log("URLCount", urlCount);
+        console.log("DocData-Length:", docData.length);
+
+        if (urlLength.length > ParameterCount) {
+          parameterCountExceed = true;
+          break;
+        } else {
+          // Code to remove data from the Map .Array
+          data.get(key).splice(0, 1);
+        }
+        url += currentUrl;
+
+        // Creating data for Staff
+        let staff = {
+          docId: docId,
+          cId: cId,
+          dueDate: obj.dueDate,
+          emailDate: date,
+          documentName: documentName,
+        };
+        staffObjs.push(staff);
+        index++;
+        doesEmailExceedsTwelve = --emailCount == 0 ? true : false;
+      }
+      // We need to slice the last character of the string
+      // which is &amp; .
+      url = url.slice(0, -1);
+      console.log("URL in Map: ", url);
+      urlMap.set(key, url);
+    });
+
+    if (parameterCountExceed) {
+      sendEmailSuccess = false;
+      console.log("ParameterCount Exceeds: ", ParameterCount);
+      wpw.tax.global.dialogs.notify(
+        "Limit überschritten",
+        "Damit der Termingenerator fuktionieren kann, darf nur eine beschränkte Anzahl von Abfragen an den selben Kontakt/Mitarbeiter versendet werden. Dieses Limit ist überschritten. Es wird daher nur eine begrenzte Anzahl von Abfragen versendet. Wählen Sie erneut Senden, um weitere Abfragen zu versenden."
+      );
+    }
+    if (totalEmailCount > EMAILS_TO_DELETTE) {
+      sendEmailSuccess = false;
+      console.log("Email Exceeds count of 12");
+      wpw.tax.global.dialogs.notify(
+        "Limit überschritten",
+        "Es können maximal 12 Abfragen gleichzeitig versendet werden. sie haben dieses Limit überschritten. Wählen Sie erneut Senden, um weitere 12 Abfragen zu versenden."
+      );
+    }
+
+    console.log("StaffObjs: ", staffObjs);
+    console.log("UrlMaps: ", urlMap);
+
+    staffObjs.forEach((obj) => {
+      let emailMessage = help + message + urlMap.get(obj.cId);
+      // console.log("EmailMessage: ", emailMessage);
+      // Send Email to Each User
+      // console.log(
+      //   "Send Query Email\nDocId: %s\nCId: %s\nDueDate: %s\nStatus: %s",
+      //   obj.docId,
+      //   obj.cId,
+      //   JSON.stringify(obj.emailDate),
+      //   wpw.models.QUERY_STATUS.OPEN
+      // );
+      try {
+        // Sending emails
+        sendQueryEmail(
+          obj.docId,
+          emailMessage,
+          [obj.cId],
+          obj.emailDate,
+          wpw.models.QUERY_STATUS.OPEN
+        );
+
+        let tableRowIdToRemove = table
+          .getRows()
+          .find((row) => row[3].get() == obj.docId);
+
+        let rowIndex = tableRowIdToRemove[0].fieldInfo.parentInfo.row;
+        calcUtils.removeTableRow("sendoverview", fieldId, rowIndex);
+      } catch (err) {
+        console.error("Email Not Send\n", err);
+      }
+
+      // Saving data into swsdb for data mapping
+      createStaffTable(
+        calcUtils,
+        obj.docId,
+        obj.cId,
+        obj.dueDate,
+        new Date(),
+        obj.documentName
+      );
+    });
+    return sendEmailSuccess;
+  };
+  // staff table functiond definition
+  function createStaffTable(
+    calcUtils,
+    docId,
+    StaffId,
+    dueDate,
+    createdDate,
+    docName
+  ) {
+    let staffContactsTable = calcUtils.field("swsdb.tbl_staffData");
+    let rowIndex = staffContactsTable.getRows().length;
+
+    calcUtils.addTableRow("swsdb", "tbl_staffData", rowIndex);
+    staffContactsTable.cell(rowIndex, 0).assign(docId);
+    staffContactsTable.cell(rowIndex, 1).assign(StaffId);
+    staffContactsTable.cell(rowIndex, 2).assign(dueDate);
+    staffContactsTable.cell(rowIndex, 3).assign(createdDate);
+    staffContactsTable.cell(rowIndex, 4).assign(docName);
+    staffContactsTable.save();
+  }
+
+  // logs function
+  let logs = [];
+  wpw.tax.de.global.functions.gCalcs.logs = function (log) {
+    logs.push(log);
+  };
+
+  // generate the logs in form
+  wpw.tax.de.global.functions.gCalcs.generateLogs = function (calcUtils) {
+    let table = calcUtils.field("LOGS-DATA");
+    let tableLength = table.getRows().length;
+    for (let i = 0; i &lt; logs.length; i++) {
+      calcUtils.addTableRow("logs", "LOGS-DATA", tableLength + i);
+      table.cell(tableLength + i, 0).assign(logs[i]);
+      table.save();
+    }
+  };
+
+  function isQueryId(ids) {
+    return wpw.tax.getDocuments().then((docs) => {
+      let queryIds = [];
+      ids.forEach((id) => {
+        let doc = docs.find((doc) => doc.id === id);
+        if (doc.type === "query") {
+          queryIds.push(id);
+        }
+      });
+      return queryIds;
+    });
+  }
+
+  function isAssignedToQuery(control, table, i) {
+    // we need to check if there are queries that are assigned to this control
+    const number = control.properties.DE_number;
+    const title = getTitle(control);
+    const turnus = control.properties.DE_controlType;
+    const rPerson = control.properties.DE_rPerson;
+    if (control.properties.hasOwnProperty("DE_activeDocuments")) {
+      // we need a proper solution here , but a shorthand solution would be
+      const activeQueries = control.properties.DE_activeDocuments.split(",");
+
+      let filteredArr = activeQueries.filter(function (el) {
+        return el != "";
+      });
+      if (filteredArr.length === 0) {
+        table.cell(i, 0).assign(number);
+        table.cell(i, 1).assign(title);
+        table.cell(i, 2).assign(turnus);
+        table.cell(i, 3).assign(rPerson);
+        table.cell(i, 7).assign("Nein");
+      } else {
+        isQueryId(filteredArr).then((res) => {
+          let assignedToQuery = res.length > 0 ? "Ja" : "Nein";
+          table.cell(i, 0).assign(number);
+          table.cell(i, 1).assign(title);
+          table.cell(i, 2).assign(turnus);
+          table.cell(i, 3).assign(rPerson);
+          table.cell(i, 7).assign(assignedToQuery);
+        });
+      }
+    }
+  }
+
+  // refresh the controls overview table 30.08.2021 ,, calling only for engagement level controls
+  wpw.tax.de.global.functions.gCalcs.refreshControlsOverviewTable = function (
+    table,
+    control,
+    guid
+  ) {
+    for (let i = 0; i &lt; table.getRows().length; i++) {
+      const controlId = table.cell(i, 6).get();
+      // comparing riskId to the guid so that you only target the row where you want to change the cell value
+      // and update only if you have different previous Value and activeControls value
+      if (controlId === guid) {
+        isAssignedToQuery(control, table, i);
+      }
+    }
+  };
+
+  function getTitle(obj) {
+    // 09.12.2021 we also need a filter for the title
+    let title = "";
+    if (obj.properties.hasOwnProperty("DE_overriddenTitle")) {
+      title =
+        obj.properties.DE_overriddenTitle !== ""
+          ? obj.properties.DE_overriddenTitle
+          : obj.name;
+    } else {
+      title = obj.name;
+    }
+    return title;
+  }
+
+  wpw.tax.de.global.functions.gCalcs.getTitle = function (risk) {
+    return getTitle(risk);
+  };
+
+  wpw.tax.de.global.functions.gCalcs.assignedControlsToRisk = function (
+    calcUtils,
+    origin,
+    risk,
+    guid
+  ) {
+    if (origin === "Standardrisiko") {
+      // if the risk has an active control assigned or removed an active control we need to refresh that row in risks overview
+      let table = calcUtils.field("risksoverview.RISKS-OVERVIEW");
+      for (let i = 0; i &lt; table.getRows().length; i++) {
+        const riskId = table.cell(i, 7).get();
+        const strActiveControls = risk.properties.DE_activeControls;
+        const activeControls = strActiveControls ? "Ja" : "Nein";
+        if (riskId === guid) {
+          table.cell(i, 1).assign(getTitle(risk));
+          table.cell(i, 4).assign(activeControls);
+        }
+      }
+    } else if (origin === "Individuelles Risiko") {
+      // if the risk has an active control assigned or removed an active control we need to refresh that row in risks overview
+      let table = calcUtils.field("risksoverview.ERISKS-OVERVIEW");
+      for (let i = 0; i &lt; table.getRows().length; i++) {
+        const riskId = table.cell(i, 5).get();
+        const strActiveControls = risk.properties.DE_activeControls;
+        const activeControls = strActiveControls ? "Ja" : "Nein";
+        const number = risk.properties.DE_number;
+        const name = getTitle(risk);
+        const taxType = risk.properties.DE_taxType;
+        // comparing riskId to the guid so that you only target the row where you want to change the cell value
+        // and update only if you have different previous Value and activeControls value
+        if (riskId === guid) {
+          table.cell(i, 0).assign(number);
+          table.cell(i, 1).assign(name);
+          table.cell(i, 2).assign(taxType);
+          table.cell(i, 3).assign(activeControls);
+        }
+      }
+    }
+    return;
+  };
+})();
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

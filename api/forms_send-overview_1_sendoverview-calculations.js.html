@@ -1,0 +1,282 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> forms/send-overview/1/sendoverview-calculations.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"></div><div class="category"><h2>AgGrid</h2><h3>Classes</h3><ul><li><a href="CheckboxRenderer.html">CheckboxRenderer</a></li><li><a href="DetailsRenderer.html">DetailsRenderer</a></li><li><a href="Utils.html">Utils</a></li></ul></div><div class="category"><h2>Forms</h2><h3>Classes</h3><ul><li><a href="AssignedOverview.html">AssignedOverview</a></li><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="Classification.html">Classification</a></li><li><a href="Classification1.html">Classification1</a></li><li><a href="ControlCard.html">ControlCard</a></li><li><a href="ControlsLibrary.html">ControlsLibrary</a></li><li><a href="ControlsOverview.html">ControlsOverview</a></li><li><a href="DescriptionDialog.html">DescriptionDialog</a></li><li><a href="FooterForm.html">FooterForm</a></li><li><a href="ImportModal.html">ImportModal</a></li><li><a href="Logs.html">Logs</a></li><li><a href="NewRiskReport.html">NewRiskReport</a></li><li><a href="QueriesCockpit.html">QueriesCockpit</a></li><li><a href="RcList.html">RcList</a></li><li><a href="RefDocs.html">RefDocs</a></li><li><a href="RiskCard.html">RiskCard</a></li><li><a href="RiskLibrary.html">RiskLibrary</a></li><li><a href="RiskOverview.html">RiskOverview</a></li><li><a href="RiskReport.html">RiskReport</a></li><li><a href="RpeatForm.html">RpeatForm</a></li><li><a href="SaveQuestionere.html">SaveQuestionere</a></li><li><a href="SelectContacts.html">SelectContacts</a></li><li><a href="SelectControls.html">SelectControls</a></li><li><a href="SelectControlsDocuments.html">SelectControlsDocuments</a></li><li><a href="SelectDocuments.html">SelectDocuments</a></li><li><a href="SelectQueryDocuments.html">SelectQueryDocuments</a></li><li><a href="SendOverview.html">SendOverview</a></li><li><a href="ShowDocument.html">ShowDocument</a></li><li><a href="SWSDB.html">SWSDB</a></li></ul></div><div class="category"><h2>Miscmiscellaneous</h2><h3>Classes</h3><ul><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="ControlsOverviewRollForward.html">ControlsOverviewRollForward</a></li><li><a href="GCalcs.html">GCalcs</a></li><li><a href="GlobalConfigs.html">GlobalConfigs</a></li><li><a href="GlobalFile.html">GlobalFile</a></li><li><a href="RisksOverviewRollForward.html">RisksOverviewRollForward</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>forms/send-overview/1/sendoverview-calculations.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Global iife: Send Overview
+ * @class SendOverview
+ * @category Forms
+ */
+(function () {
+  /*global _ */
+  const gCalcs = wpw.tax.de.global.functions.gCalcs;
+  wpw.tax.create.calcBlocks("sendoverview", function (calcUtils) {
+    let lockdownStatus = wpw.tax.global.engagementProperties.lockdownStatus;
+    // generate the table rows
+    function populateTable(calcUtils, contactsMap, tableId, nameMap) {
+      let table = calcUtils.field(tableId);
+      // Clear the table if already rows are added, by removing each row
+      let tableLength = table.getRows().length;
+      for (let i = 0; i &lt; tableLength; i++) {
+        calcUtils.removeTableRow("sendoverview", tableId, 0);
+      }
+      // add rows to the table
+      let contactMapIndex = 0;
+      contactsMap.forEach((value, key) => {
+        // First Row of group belongs to Name
+        calcUtils.addTableRow("sendoverview", tableId);
+        table.cell(contactMapIndex, 0).assign(nameMap.get(key));
+        table.cell(contactMapIndex, 1).assign(null);
+        table.cell(contactMapIndex, 3).assign(null);
+        table.cell(contactMapIndex++, 2).assign(null); //Increase Index for other rows
+        value.forEach((obj) => {
+          if (!obj.contactIds.has(key)) {
+            // If no key found, then proceed to next obj
+            return;
+          }
+          // Table can only print string, so converting date to string.
+          let due =
+            obj.dueDate.day + "." + obj.dueDate.month + "." + obj.dueDate.year;
+          calcUtils.addTableRow("sendoverview", tableId);
+          table.cell(contactMapIndex, 0).assign(null);
+          table.cell(contactMapIndex, 1).assign(obj.queryName);
+          table.cell(contactMapIndex, 3).assign(obj.docId);
+          table.cell(contactMapIndex++, 2).assign(due); // Increase Index, for next group.
+        });
+      });
+    }
+
+    const contactsMap = new Map(); // map of Id with Row Obj
+    calcUtils.onFormLoad("sendoverview", function (calcUtils) {
+      // required to clear the map for new load.
+      contactsMap.clear();
+      let table = calcUtils.form("queriescockpit").field("QUERIES-COCKPIT");
+      let rowObjs = new Set(); // Data related to Rows of Table
+      let contactIDFilter = new Set();
+      let contactNameFilter = new Set();
+      let url = wpw.tax.global.location.absUrl().replace(/\/e\/.*$/, "/");
+
+      for (let i = 0; i &lt; table.getRows().length; i++) {
+        // Setting date
+        let rowDueDate = table.cell(i, 4).get();
+        let contactNames = new Set();
+        let contactIds = new Set();
+        // Names and Ids
+        let names = table.cell(i, 6).get().split(", ");
+        let ids = table.cell(i, 9).get().split(", ");
+        if (rowDueDate == undefined || names == "") {
+          // If due date is not selected, then it will not process the row.
+          continue;
+        }
+        names.map((name) => contactNames.add(name));
+        names.map((name) => contactNameFilter.add(name));
+        ids.map((id) => contactIds.add(id));
+        ids.map((id) => contactIDFilter.add(id));
+        contactNames.delete("");
+        contactIds.delete("");
+
+        // Querry Name,
+        let rowQueryName = table.cell(i, 0).get();
+
+        // Setting DocId
+        let rowDocId = table.cell(i, 10).get();
+
+        let row = {
+          dueDate: rowDueDate,
+          queryName: rowQueryName,
+          docId: rowDocId,
+          contactNames: contactNames,
+          contactIds: contactIds,
+          url: url,
+        };
+        rowObjs.add(row);
+      }
+
+      contactIDFilter.delete("");
+      contactNameFilter.delete("");
+      console.log("RowOBj-: ", rowObjs);
+      console.log("ContactIdFilter-: ", contactIDFilter);
+
+      let zipArrays = (contactIds, rowObjs) => {
+        contactIds.forEach((key) => {
+          let value = [];
+          rowObjs.forEach((obj) => {
+            if (obj.contactIds.has(key)) {
+              value.push(obj);
+              contactsMap.set(key, value);
+            }
+          });
+        });
+      };
+
+      zipArrays(contactIDFilter, rowObjs);
+      let nameMap = createNameMap(
+        Array.from(contactIDFilter),
+        Array.from(contactNameFilter)
+      );
+      Object.entries(nameMap).forEach((item) => {
+        console.log("Item: ", item);
+      });
+      console.log("ContactMap: ", contactsMap);
+      console.log("NameMap: ", nameMap);
+      populateTable(
+        calcUtils,
+        contactsMap,
+        "SEND-OVERVIEW",
+        new Map(Object.entries(nameMap))
+      );
+    });
+
+    function createNameMap(ids, names) {
+      return Object.fromEntries(ids.map((id, index) => [id, names[index]]));
+    }
+
+    calcUtils.custom("cancel", function () {
+      wpw.tax.closeModal("sendoverview");
+    });
+
+    calcUtils.custom("sendEmail", function (calcUtils) {
+      if (!lockdownStatus) {
+        let bodyText =
+          "Mit dem folgenden Link öffnen Sie die Übersicht mit allen Ihnen zur Bearbeitung zugeordneten Abfragedokumente. ";
+        console.log("EmailData-SendOverView: docsObjArr: ", contactsMap);
+        console.log("ContactsMap: ", contactsMap);
+        let emailDataSucceed = gCalcs.sendEmails(
+          calcUtils,
+          contactsMap,
+          bodyText,
+          "SEND-OVERVIEW"
+        );
+        if (emailDataSucceed) {
+          console.log("EmailData-SendOverView: ", emailDataSucceed);
+          gCalcs.generateQueryDocuments(calcUtils);
+          wpw.tax.closeModal("sendoverview");
+          gCalcs.startLoadingBar(
+            "QUERIESCOCKPIT",
+            "Bitte Warten",
+            "Abfrageübersicht wird geladen. Bitte warten."
+          );
+        }
+      } else {
+        wpw.tax.global.dialogs.notify(
+          "Lockdown",
+          "Im Lockdown können keine Änderungen vorgenommen werden"
+        );
+        wpw.tax.closeModal();
+      }
+    });
+  });
+})();
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

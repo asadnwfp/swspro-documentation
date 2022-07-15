@@ -1,0 +1,233 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> forms/classification-1/1/classification1-calculations.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"></div><div class="category"><h2>AgGrid</h2><h3>Classes</h3><ul><li><a href="CheckboxRenderer.html">CheckboxRenderer</a></li><li><a href="DetailsRenderer.html">DetailsRenderer</a></li><li><a href="Utils.html">Utils</a></li></ul></div><div class="category"><h2>Forms</h2><h3>Classes</h3><ul><li><a href="AssignedOverview.html">AssignedOverview</a></li><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="Classification.html">Classification</a></li><li><a href="Classification1.html">Classification1</a></li><li><a href="ControlCard.html">ControlCard</a></li><li><a href="ControlsLibrary.html">ControlsLibrary</a></li><li><a href="ControlsOverview.html">ControlsOverview</a></li><li><a href="DescriptionDialog.html">DescriptionDialog</a></li><li><a href="FooterForm.html">FooterForm</a></li><li><a href="ImportModal.html">ImportModal</a></li><li><a href="Logs.html">Logs</a></li><li><a href="NewRiskReport.html">NewRiskReport</a></li><li><a href="QueriesCockpit.html">QueriesCockpit</a></li><li><a href="RcList.html">RcList</a></li><li><a href="RefDocs.html">RefDocs</a></li><li><a href="RiskCard.html">RiskCard</a></li><li><a href="RiskLibrary.html">RiskLibrary</a></li><li><a href="RiskOverview.html">RiskOverview</a></li><li><a href="RiskReport.html">RiskReport</a></li><li><a href="RpeatForm.html">RpeatForm</a></li><li><a href="SaveQuestionere.html">SaveQuestionere</a></li><li><a href="SelectContacts.html">SelectContacts</a></li><li><a href="SelectControls.html">SelectControls</a></li><li><a href="SelectControlsDocuments.html">SelectControlsDocuments</a></li><li><a href="SelectDocuments.html">SelectDocuments</a></li><li><a href="SelectQueryDocuments.html">SelectQueryDocuments</a></li><li><a href="SendOverview.html">SendOverview</a></li><li><a href="ShowDocument.html">ShowDocument</a></li><li><a href="SWSDB.html">SWSDB</a></li></ul></div><div class="category"><h2>Miscmiscellaneous</h2><h3>Classes</h3><ul><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="ControlsOverviewRollForward.html">ControlsOverviewRollForward</a></li><li><a href="GCalcs.html">GCalcs</a></li><li><a href="GlobalConfigs.html">GlobalConfigs</a></li><li><a href="GlobalFile.html">GlobalFile</a></li><li><a href="RisksOverviewRollForward.html">RisksOverviewRollForward</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>forms/classification-1/1/classification1-calculations.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Global iife: Classification 1
+ * @class Classification1
+ * @category Forms
+ */
+(function () {
+  wpw.tax.create.calcBlocks("classification1", function (calcUtils) {
+    calcUtils.onFormLoad("classification1", function (calcUtils) {
+      // set the tab index to 1
+      calcUtils.field("CLASSIFICATION1-TAB-INDEX").assign("1");
+      calcUtils.field("CLASSIFICATION1-TABS").cell(0, 1).config("class", "");
+      calcUtils
+        .field("CLASSIFICATION1-TABS")
+        .cell(0, 0)
+        .config("class", "de-cards-tabs-new");
+      //assign text to einfuhrungs tab
+      calcUtils
+        .field("CLASSIFICATION1-EDITOR")
+        .assign(
+          "Nehmen Sie hier die betragsmäßige Zuordnung der Schadenshöhe vor, definieren Sie also einen Wertebereich innerhalb dessen ein Risiko Hoch, Mittel bzw. Niedrig sein soll. Beachten Sie hierbei bitte, dass die hier getroffene Zuordnung den Wertebereich nicht nur für das eine Risiko definiert, welches Sie gerade betrachten, sondern global für sämtliche Risiken der Kommune gilt."
+        );
+
+      const table = calcUtils.field("CLASSIFICATION1-TABLE");
+      // assign colors to each cell
+      table.cell(0, 0).config("class", "nmh");
+      table.cell(0, 1).config("class", "green");
+      table.cell(0, 2).config("class", "green");
+      table.cell(1, 0).config("class", "nmh");
+      table.cell(1, 1).config("class", "yellow");
+      table.cell(1, 2).config("class", "yellow");
+      table.cell(2, 0).config("class", "nmh");
+      table.cell(2, 1).config("class", "red");
+      table.cell(2, 2).config("class", "red");
+
+      // assign text to first col
+      table.cell(0, 0).assign("Niedrig");
+      table.cell(1, 0).assign("Mittel");
+      table.cell(2, 0).assign("Hoch");
+    });
+
+    calcUtils.custom("btnClassification1", function (calcUtils) {
+      // set the tab index to 1
+      calcUtils.field("CLASSIFICATION1-TAB-INDEX").assign("1");
+      calcUtils.field("CLASSIFICATION1-TABS").cell(0, 1).config("class", "");
+      calcUtils
+        .field("CLASSIFICATION1-TABS")
+        .cell(0, 0)
+        .config("class", "de-cards-tabs-new");
+    });
+
+    calcUtils.custom("btnClassificationDescription1", function (calcUtils) {
+      // set the tab index to 2
+      calcUtils.field("CLASSIFICATION1-TAB-INDEX").assign("2");
+      calcUtils.field("CLASSIFICATION1-TABS").cell(0, 0).config("class", "");
+      calcUtils
+        .field("CLASSIFICATION1-TABS")
+        .cell(0, 1)
+        .config("class", "de-cards-tabs-new");
+    });
+    /* 
+    function formatNumber(n) {
+      if (n === "") return;
+      else {
+        let newNumber = n.split(",");
+        let leftSide = newNumber[0];
+        let rightSide = "";
+        let noDecimal = false;
+        if (newNumber.length > 1) {
+          rightSide = newNumber[1];
+        } else {
+          noDecimal = true;
+        }
+
+        // format number 1000000 to 1.234.567
+        let convertedStr = leftSide
+          .replace(/\D/g, "")
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        if (noDecimal) {
+          return convertedStr;
+        } else {
+          return convertedStr + "," + rightSide;
+        }
+      }
+    } */
+
+    calcUtils.onlyOnForm("classification1", function (calcUtils) {
+      let table = calcUtils.field("CLASSIFICATION1-TABLE");
+      const niedrigKleinerNum = table.cell(0, 2).get();
+      const mittelKleinerNum = table.cell(1, 2).get();
+
+      if (niedrigKleinerNum === 0 || mittelKleinerNum === 0) {
+        calcUtils
+          .field("CALCULATION-FILL")
+          .assign(
+            "Geben Sie in der jeweils rechten Spalte die Grenzwerte der Risikoklassen ein."
+          );
+      } else {
+        calcUtils.field("CALCULATION-FILL").assign("");
+      }
+
+      table.cell(1, 1).assign(parseFloat(niedrigKleinerNum));
+      table.cell(2, 1).assign(parseFloat(mittelKleinerNum));
+      if (niedrigKleinerNum &lt;= mittelKleinerNum) {
+        calcUtils.field("CALCULATION-ERROR").clear();
+        table.cell(2, 1).assign(parseFloat(mittelKleinerNum));
+        table.cell(1, 2).set(parseFloat(mittelKleinerNum));
+      } else {
+        calcUtils
+          .field("CALCULATION-ERROR")
+          .set(
+            "Der Grenzwert der niedrigen Risikoklasse liegt über dem der mittleren Risikoklasse. Geben Sie konsistente Werte ein."
+          );
+      }
+    });
+  });
+})();
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

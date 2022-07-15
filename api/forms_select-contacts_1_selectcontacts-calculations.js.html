@@ -1,0 +1,295 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> forms/select-contacts/1/selectcontacts-calculations.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"></div><div class="category"><h2>AgGrid</h2><h3>Classes</h3><ul><li><a href="CheckboxRenderer.html">CheckboxRenderer</a></li><li><a href="DetailsRenderer.html">DetailsRenderer</a></li><li><a href="Utils.html">Utils</a></li></ul></div><div class="category"><h2>Forms</h2><h3>Classes</h3><ul><li><a href="AssignedOverview.html">AssignedOverview</a></li><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="Classification.html">Classification</a></li><li><a href="Classification1.html">Classification1</a></li><li><a href="ControlCard.html">ControlCard</a></li><li><a href="ControlsLibrary.html">ControlsLibrary</a></li><li><a href="ControlsOverview.html">ControlsOverview</a></li><li><a href="DescriptionDialog.html">DescriptionDialog</a></li><li><a href="FooterForm.html">FooterForm</a></li><li><a href="ImportModal.html">ImportModal</a></li><li><a href="Logs.html">Logs</a></li><li><a href="NewRiskReport.html">NewRiskReport</a></li><li><a href="QueriesCockpit.html">QueriesCockpit</a></li><li><a href="RcList.html">RcList</a></li><li><a href="RefDocs.html">RefDocs</a></li><li><a href="RiskCard.html">RiskCard</a></li><li><a href="RiskLibrary.html">RiskLibrary</a></li><li><a href="RiskOverview.html">RiskOverview</a></li><li><a href="RiskReport.html">RiskReport</a></li><li><a href="RpeatForm.html">RpeatForm</a></li><li><a href="SaveQuestionere.html">SaveQuestionere</a></li><li><a href="SelectContacts.html">SelectContacts</a></li><li><a href="SelectControls.html">SelectControls</a></li><li><a href="SelectControlsDocuments.html">SelectControlsDocuments</a></li><li><a href="SelectDocuments.html">SelectDocuments</a></li><li><a href="SelectQueryDocuments.html">SelectQueryDocuments</a></li><li><a href="SendOverview.html">SendOverview</a></li><li><a href="ShowDocument.html">ShowDocument</a></li><li><a href="SWSDB.html">SWSDB</a></li></ul></div><div class="category"><h2>Miscmiscellaneous</h2><h3>Classes</h3><ul><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="ControlsOverviewRollForward.html">ControlsOverviewRollForward</a></li><li><a href="GCalcs.html">GCalcs</a></li><li><a href="GlobalConfigs.html">GlobalConfigs</a></li><li><a href="GlobalFile.html">GlobalFile</a></li><li><a href="RisksOverviewRollForward.html">RisksOverviewRollForward</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>forms/select-contacts/1/selectcontacts-calculations.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Global iife: Select Contacts
+ * @class SelectContacts
+ * @category Forms
+ */
+(function () {
+  /* global _ */
+  const gCalcs = wpw.tax.de.global.functions.gCalcs;
+  wpw.tax.create.calcBlocks("selectcontacts", function (calcUtils) {
+    // create table
+    function populateTable(calcUtils, tableArr, formId, tableId) {
+      let table = calcUtils.field(tableId);
+      // Clear the table if already rows are added, by removing each row
+      let tableLength = table.getRows().length;
+      for (let i = 0; i &lt; tableLength; i++) {
+        calcUtils.removeTableRow(formId, tableId, 0);
+      }
+      // add rows to the table
+      for (let i = 0; i &lt; tableArr.length; i++) {
+        calcUtils.addTableRow(formId, tableId, i);
+        table.cell(i, 0).assign(tableArr[i].name);
+        table.cell(i, 1).set(tableArr[i].status);
+        table.cell(i, 2).assign(tableArr[i].guid);
+      }
+    }
+
+    let docId = undefined;
+    calcUtils.onFormLoad("selectcontacts", function (calcUtils) {
+      // generate all contacts from the collaborate surface
+      let rowId = calcUtils.field("ROW-REF").get();
+      let table = calcUtils.form("queriescockpit").field("QUERIES-COCKPIT");
+      let assignedContacts = table.cell(rowId, 6).get().split(", ");
+      let contactsArr = table.cell(rowId, 7).get().split(", ");
+      docId = table.cell(rowId, 10).get();
+      //return
+      let allContacts = wpw.tax.getAllContacts();
+      let staffContacts = wpw.tax.global.engagementProperties.users;
+      Promise.all([allContacts, staffContacts]).then((res) => {
+        populateContactTable(
+          res[0],
+          assignedContacts,
+          contactsArr,
+          "SELECT-CONTACTS",
+          calcUtils
+        );
+        populateStaffTable(
+          res[1],
+          assignedContacts,
+          contactsArr,
+          "SELECT-STAFF",
+          calcUtils
+        );
+      });
+    });
+
+    function addStaffData(calcUtils, staffData) {
+      // add staff data to the form swsdb
+      let table = calcUtils.form("swsdb").field("tbl_staffData");
+
+      let rowIndex = table.getRows().length;
+      // add rows to the table
+      for (let i = 0; i &lt; staffData.length; i++) {
+        calcUtils.addTableRow("swsdb", "tbl_staffData", rowIndex);
+        table.cell(rowIndex, 0).assign(staffData[i].name);
+        table.cell(rowIndex, 1).assign(staffData[i].guid);
+        table.cell(rowIndex, 2).assign(staffData[i].status);
+        rowIndex++;
+      }
+    }
+    function populateStaffTable(
+      res,
+      assignedContacts,
+      contactsArr,
+      tableName,
+      calcUtils
+    ) {
+      let contacts = [];
+      let keys = Object.keys(res);
+      for (let i of keys) {
+        const unknownUser = "Unknown User";
+        const systemUser = "System User";
+        var staff = res[i];
+        let staffName = "*" + staff.name;
+        if (
+          staff.name === unknownUser ||
+          staff.name === systemUser ||
+          staff.rightsGroup == "contact" ||
+          staff.rightsGroup !== "writer"
+        ) {
+          continue;
+        }
+        if (!contactsArr.includes(staffName)) {
+          const status = assignedContacts.includes(staffName);
+          contacts.push({
+            name: staffName,
+            status: status,
+            guid: staff.id,
+          });
+        }
+      }
+      let sortedContacts = _.sortBy(contacts, "name");
+      let staffNameIds = [];
+      sortedContacts.forEach((el) => {
+        staffNameIds.push(el.guid);
+      });
+
+      //wpw.tax.de.global.staffContactMap.set(docId, staffNameIds);
+      //addStaffData(calcUtils, sortedContacts);
+      populateTable(calcUtils, sortedContacts, "selectcontacts", tableName);
+    }
+    function populateContactTable(
+      res,
+      assignedContacts,
+      contactsArr,
+      tableName,
+      calcUtils
+    ) {
+      let contacts = [];
+      for (let i in res) {
+        if (!contactsArr.includes(res[i].name)) {
+          const status = assignedContacts.includes(res[i].name);
+          contacts.push({
+            name: res[i].name,
+            status: status,
+            guid: res[i].id,
+          });
+        }
+      }
+      let sortedContacts = _.sortBy(contacts, "name");
+      populateTable(calcUtils, sortedContacts, "selectcontacts", tableName);
+    }
+
+    // Populate Neu Kontact upon Save
+    function populateNeuKontact(table, additionalContactsArr, contactIdsArr) {
+      for (let i = 0; i &lt; table.getRows().length; i++) {
+        let name = table.cell(i, 0).get();
+        let id = table.cell(i, 2).get();
+        let status = table.cell(i, 1).get();
+        if (status === true) {
+          additionalContactsArr.push(name);
+          contactIdsArr.push(id);
+          // we also need to create an entry in staffContacts table
+          //addStaffData(calcUtils, sortedContacts);
+        } else {
+          const index = additionalContactsArr.indexOf(name);
+          if (index > -1) {
+            additionalContactsArr.splice(index, 1);
+          }
+          const indexIds = contactIdsArr.indexOf(id);
+          if (indexIds > -1) {
+            contactIdsArr.splice(indexIds, 1);
+          }
+        }
+      }
+    }
+
+    calcUtils.custom("saveAssignedContacts", function (calcUtils) {
+      let contactsTable = calcUtils.field("SELECT-CONTACTS");
+      let staffTable = calcUtils.field("SELECT-STAFF");
+
+      let queriesTable = calcUtils
+        .form("queriescockpit")
+        .field("QUERIES-COCKPIT");
+      let rowId = calcUtils.field("ROW-REF").get();
+      let additionalContactsArr = [];
+      let contactIdsArr = [];
+
+      populateNeuKontact(contactsTable, additionalContactsArr, contactIdsArr);
+      populateNeuKontact(staffTable, additionalContactsArr, contactIdsArr);
+
+      let additionalContacts = additionalContactsArr.join(", ");
+      let contactIds = contactIdsArr.join(", ");
+      queriesTable.cell(rowId, 6).assign(additionalContacts);
+      queriesTable.cell(rowId, 9).assign(contactIds);
+      wpw.tax.closeModal();
+    });
+  });
+})();
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

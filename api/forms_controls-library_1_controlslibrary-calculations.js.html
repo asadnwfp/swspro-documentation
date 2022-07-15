@@ -1,0 +1,461 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> forms/controls-library/1/controlslibrary-calculations.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"></div><div class="category"><h2>AgGrid</h2><h3>Classes</h3><ul><li><a href="CheckboxRenderer.html">CheckboxRenderer</a></li><li><a href="DetailsRenderer.html">DetailsRenderer</a></li><li><a href="Utils.html">Utils</a></li></ul></div><div class="category"><h2>Forms</h2><h3>Classes</h3><ul><li><a href="AssignedOverview.html">AssignedOverview</a></li><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="Classification.html">Classification</a></li><li><a href="Classification1.html">Classification1</a></li><li><a href="ControlCard.html">ControlCard</a></li><li><a href="ControlsLibrary.html">ControlsLibrary</a></li><li><a href="ControlsOverview.html">ControlsOverview</a></li><li><a href="DescriptionDialog.html">DescriptionDialog</a></li><li><a href="FooterForm.html">FooterForm</a></li><li><a href="ImportModal.html">ImportModal</a></li><li><a href="Logs.html">Logs</a></li><li><a href="NewRiskReport.html">NewRiskReport</a></li><li><a href="QueriesCockpit.html">QueriesCockpit</a></li><li><a href="RcList.html">RcList</a></li><li><a href="RefDocs.html">RefDocs</a></li><li><a href="RiskCard.html">RiskCard</a></li><li><a href="RiskLibrary.html">RiskLibrary</a></li><li><a href="RiskOverview.html">RiskOverview</a></li><li><a href="RiskReport.html">RiskReport</a></li><li><a href="RpeatForm.html">RpeatForm</a></li><li><a href="SaveQuestionere.html">SaveQuestionere</a></li><li><a href="SelectContacts.html">SelectContacts</a></li><li><a href="SelectControls.html">SelectControls</a></li><li><a href="SelectControlsDocuments.html">SelectControlsDocuments</a></li><li><a href="SelectDocuments.html">SelectDocuments</a></li><li><a href="SelectQueryDocuments.html">SelectQueryDocuments</a></li><li><a href="SendOverview.html">SendOverview</a></li><li><a href="ShowDocument.html">ShowDocument</a></li><li><a href="SWSDB.html">SWSDB</a></li></ul></div><div class="category"><h2>Miscmiscellaneous</h2><h3>Classes</h3><ul><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="ControlsOverviewRollForward.html">ControlsOverviewRollForward</a></li><li><a href="GCalcs.html">GCalcs</a></li><li><a href="GlobalConfigs.html">GlobalConfigs</a></li><li><a href="GlobalFile.html">GlobalFile</a></li><li><a href="RisksOverviewRollForward.html">RisksOverviewRollForward</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>forms/controls-library/1/controlslibrary-calculations.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Global iife: Controls Library
+ * @class ControlsLibrary
+ * @category Forms
+ */
+(function () {
+  /* global _ */
+  const gCalcs = wpw.tax.de.global.functions.gCalcs;
+  wpw.tax.create.calcBlocks("controlslibrary", function (calcUtils) {
+    function populateTable(calcUtils, tableArr, formId, tableId) {
+      let sortedArr = _.sortBy(tableArr, "id");
+      let table = calcUtils.form(formId).field(tableId);
+      // Clear the table if already rows are added, by removing each row
+      let tableLength = table.getRows().length;
+      for (let i = 0; i &lt; tableLength; i++) {
+        calcUtils.removeTableRow(formId, tableId, 0);
+      }
+      for (let i = 0; i &lt; tableArr.length; i++) {
+        calcUtils.addTableRow(formId, tableId, i);
+        table.cell(i, 0).assign(sortedArr[i].id);
+        table.cell(i, 1).assign(sortedArr[i].name);
+        table.cell(i, 2).assign(sortedArr[i].description);
+        if (tableId === "CONTROLS-LIBRARY") {
+          table.cell(i, 5).assign(sortedArr[i].guid);
+        } else if (tableId === "ECONTROLS-LIBRARY") {
+          table.cell(i, 3).assign(sortedArr[i].guid);
+        }
+      }
+    }
+
+    function extractControls(calcUtils) {
+      // create an array to store the controls extracted from the database
+      let controlsArr = [];
+      let eControlsArr = [];
+      wpw.tax.getControls().then((controls) => {
+        controls.forEach(function (control) {
+          if (control.properties.DE_templateLevel === "1") {
+            controlsArr.push({
+              id: control.properties.DE_number,
+              name: control.name,
+              description: control.description,
+              guid: control.id,
+            });
+          } else {
+            eControlsArr.push({
+              id: control.properties.DE_number,
+              name: control.name,
+              description: control.description,
+              guid: control.id,
+            });
+          }
+        });
+        let sortedArr = _.sortBy(controlsArr, "id");
+        let i = 0;
+        while (sortedArr.length) {
+          sortedArr.splice(0, 30);
+          let label = i + 1 + " (30 controls)";
+          let table = calcUtils.field("INDEX");
+          calcUtils.addTableRow("controlslibrary", "INDEX", i);
+          table.cell(i, 0).assign(label);
+          i++;
+        }
+        // send the controls extracted to populate the table
+        /*         populateTable(
+          calcUtils,
+          controlsArr,
+          "controlslibrary",
+          "CONTROLS-LIBRARY"
+        );*/
+        populateTable(
+          calcUtils,
+          eControlsArr,
+          "controlslibrary",
+          "ECONTROLS-LIBRARY"
+        );
+      });
+    }
+
+    calcUtils.custom("rangedControls", function (calcUtils) {
+      const rangedRow = calcUtils.fieldInfo.row;
+      let controlsArr = [];
+      wpw.tax.getControls().then((controls) => {
+        controls.forEach(function (control) {
+          if (control.properties.DE_templateLevel === "1") {
+            controlsArr.push({
+              id: control.properties.DE_number,
+              name: control.name,
+              description: control.description,
+              guid: control.id,
+            });
+          }
+        });
+        let sortedArr = _.sortBy(controlsArr, "id");
+        let i = 0;
+        let newArr = [];
+        while (sortedArr.length) {
+          newArr.push(sortedArr.splice(0, 30));
+          i++;
+        }
+        for (let j = 0; j &lt; newArr.length; j++) {
+          if (j === rangedRow) {
+            populateTable(
+              calcUtils,
+              newArr[j],
+              "controlslibrary",
+              "CONTROLS-LIBRARY"
+            );
+          }
+        }
+      });
+    });
+
+    function openControlCard(buttonId, calcUtils) {
+      const form = calcUtils.form("controlcard");
+      const row = calcUtils.fieldInfo.row;
+      const guid = calcUtils.getCellValue("CONTROLS-LIBRARY", row, 5);
+      wpw.tax.getControls().then((controls) => {
+        const control = controls.find((control) => control.id === guid);
+        form.field("C-GUID").assign(control.id);
+        form.field("C-ORIGIN").assign("Standard Maßnahme");
+        form.field("CONTROL-TITLE").assign(control.name);
+        form.field("CONTROL-NUMBER").assign(control.properties.DE_number);
+        form.field("CONTROL-DESCRIPTION").assign(control.description);
+        form.field("CONTROL-DETDESC").assign(control.properties.DE_detDesc);
+        form.field("CONTROL-TYPE").assign(control.properties.DE_controlType);
+        form.field("CONTROL-RP").assign(control.properties.DE_rPerson);
+
+        // All fields needs to be editable as this is controls library
+        form.field("CONTROL-DETDESC").disabled(false);
+        form.field("CONTROL-DETDESC").setCannotOverride(false);
+        form.field("CONTROL-RP").disabled(false);
+        form.field("CONTROL-RP").setCannotOverride(false);
+        form.field("CONTROL-TITLE").disabled(false);
+        form.field("CONTROL-TITLE").setCannotOverride(false);
+        form.field("CONTROL-DESCRIPTION").disabled(false);
+        form.field("CONTROL-DESCRIPTION").setCannotOverride(false);
+        form.field("CONTROL-NUMBER").disabled(false);
+        form.field("CONTROL-NUMBER").setCannotOverride(false);
+        form.field("CONTROL-TYPE").disabled(false);
+        form.field("CONTROL-TYPE").setCannotOverride(false);
+        form.field("CONTROL-TITLE").disabled(false);
+        form.field("CONTROL-TITLE").setCannotOverride(false);
+        form.field("CONTROL-DESCRIPTION").disabled(false);
+        form.field("CONTROL-DESCRIPTION").setCannotOverride(false);
+        form.field("CONTROL-NUMBER").disabled(false);
+        form.field("CONTROL-NUMBER").setCannotOverride(false);
+        form.field("CONTROL-TYPE").disabled(false);
+        form.field("CONTROL-TYPE").setCannotOverride(false);
+
+        //new place to open card
+        wpw.tax.openModal("controlcard");
+        // Read the template level query documents
+        if (control.attachables.count() > 0) {
+          // find all the documents on documents surfacce and put in into a map
+          wpw.tax.getDocuments().then((docs) => {
+            let documentsMap = new Map();
+            docs.forEach(function (doc) {
+              if (doc.type === "query") {
+                documentsMap.set(doc.id, doc);
+              }
+            });
+            let tempDocsArr = []; // this will take all the temp level documents associated to a single control
+            // find any documents that are already marked as active
+            let activeDocsArr = [];
+            if (control.properties.DE_assignedDocuments !== "") {
+              activeDocsArr = control.properties.DE_activeDocuments.split(",");
+            }
+            // remember these documents are not directly referenced here, they have a separate id in attachables model,
+            // so we have to look for the id of attachable and then look for the link id
+            //(here link property inside attachable has the actual document id)
+            // id here is just a link of attachable model
+            let attachablesIds = Object.keys(control.attachables);
+            for (let i = 0; i &lt; attachablesIds.length; i++) {
+              let id = attachablesIds[i];
+              let docId = control.attachables[id].link;
+              const cDocument = documentsMap.get(docId);
+              let dId = activeDocsArr.find((res) => res === cDocument.id);
+              if (activeDocsArr.indexOf(dId) > -1) {
+                tempDocsArr.push({
+                  name: cDocument.name,
+                  active: true,
+                  guid: cDocument.id,
+                });
+              } else {
+                tempDocsArr.push({
+                  name: cDocument.name,
+                  guid: cDocument.id,
+                });
+              }
+            }
+            gCalcs.generateTable(
+              calcUtils,
+              tempDocsArr,
+              "controlcard",
+              "T-DOCUMENTS"
+            );
+          });
+        } else {
+          // It brings last documents in the control card when there are no documents in the new open card
+          // SO the new open card needs to refresh the tables with an empty rows
+          gCalcs.populateTable(calcUtils, [], "controlcard", "T-DOCUMENTS");
+        }
+        // individual query docs from engagement level
+        let assignedDocIds = [];
+        let engDocsArr = [];
+        if (
+          control.properties.hasOwnProperty("DE_assignedDocuments") &amp;&amp;
+          control.properties.DE_assignedDocuments !== ""
+        ) {
+          assignedDocIds = control.properties.DE_assignedDocuments.split(",");
+        }
+        // look for the documents from the above ids
+        wpw.tax.getDocuments().then((documents) => {
+          for (let i = 0; i &lt; assignedDocIds.length; i++) {
+            try {
+              let doc = documents.find((doc) => doc.id === assignedDocIds[i]);
+              engDocsArr.push({
+                name: doc.name,
+                guid: doc.id,
+              });
+            } catch (e) {
+              console.log(
+                "the document is not found for the id " + assignedDocIds[i]
+              );
+            }
+          }
+          gCalcs.generateTable(
+            calcUtils,
+            engDocsArr,
+            "controlcard",
+            "E-DOCUMENTS"
+          );
+        });
+
+        // get the attached risks to the control
+        if (control.risks.length > 0) {
+          let riskNamesArr = [];
+
+          wpw.tax.getRisks().then((risks) => {
+            control.risks.forEach((riskId) => {
+              const risk = risks.find((risk) => risk.id === riskId);
+              riskNamesArr.push({
+                id: risk.properties.DE_number,
+                name: risk.name,
+              });
+            });
+            gCalcs.generateTable(
+              calcUtils,
+              riskNamesArr,
+              "controlcard",
+              "CONNECTED-RISKS"
+            );
+          });
+        }
+        // removed the open card and take it in the getControls
+        //wpw.tax.openModal("controlcard");
+      });
+    }
+
+    calcUtils.onFormLoad("controlslibrary", function (calcUtils) {
+      extractControls(calcUtils);
+    });
+
+    calcUtils.custom("saveControlsLibrary", function (calcUtils) {
+      let tableRows = calcUtils.field("CONTROLS-LIBRARY").getRows();
+      for (let i = 0; i &lt; tableRows.length; i++) {
+        // check if CONTROLS already exists , by comparing the number property from the tableRows and the CONTROLS property number
+        let num = tableRows[i][0].get();
+        wpw.tax.getControls().then((controls) => {
+          let controlNumbers = [];
+          for (let i = 0; i &lt; controls.length; i++) {
+            controlNumbers.push(controls[i].properties.DE_number);
+          }
+          const controlExists = controlNumbers.indexOf(num) > -1;
+          if (!controlExists) {
+            // To save new CONTROLS
+            let newControl = new wpw.models.Control();
+            newControl.properties = {};
+            newControl.properties.DE_templateLevel = "1";
+            newControl.properties.DE_assignedDocuments = "";
+            newControl.properties.DE_activeStatus = "0";
+            newControl.properties.DE_activeDocuments = "";
+            newControl.properties.DE_number = tableRows[i][0].get();
+            newControl.name = tableRows[i][1].get();
+            newControl.description = tableRows[i][2].get();
+            wpw.tax.saveControl(newControl).then((res) => {
+              console.log("control is saved");
+            });
+          }
+        });
+      }
+    });
+
+    /*     function removeTableRows(calcUtils) {
+      // Clear the table by removing each row
+      let tableLength = calcUtils.field("CONTROLS-LIBRARY").getRows().length;
+      for (let i = 0; i &lt; tableLength; i++) {
+        calcUtils.removeTableRow("controlslibrary", "CONTROLS-LIBRARY", 0);
+      }
+      tableLength = calcUtils.field("ECONTROLS-LIBRARY").getRows().length;
+      for (let i = 0; i &lt; tableLength; i++) {
+        calcUtils.removeTableRow("controlslibrary", "ECONTROLS-LIBRARY", 0);
+      }
+    }
+
+    calcUtils.custom("deleteControls", function (calcUtils) {
+      if (confirm("Do you want to remove all CONTROLS ?")) {
+        wpw.tax.getControls().then((res) => {
+          let controls = [];
+          for (let i = 0; i &lt; res.length; i++) {
+            controls.push(res[i].id);
+          }
+          wpw.tax.deleteControls(controls).then((res) => {
+            removeTableRows(calcUtils);
+          });
+        });
+        alert("Controls removed Successfully!");
+      } else {
+        alert("Cannot able to remove the Controls");
+      }
+    });
+ */
+    calcUtils.custom("editControl", function (calcUtils) {
+      wpw.tax.resetForm("controlcard");
+      openControlCard("editControl", calcUtils);
+    });
+
+    calcUtils.custom("deleteSingleControl", function (calcUtils) {
+      const row = calcUtils.fieldInfo.row;
+      let guid = calcUtils.getCellValue("CONTROLS-LIBRARY", row, 5);
+      if (confirm("Do you want to delete the control?")) {
+        wpw.tax.getControls().then((controls) => {
+          const control = controls.find((control) => control.id === guid);
+          wpw.tax.deleteControls([control.id]).then((res) => {
+            console.log("control removed");
+            extractControls(calcUtils);
+          });
+        });
+      } else {
+        alert("Cannot able to remove the control");
+      }
+    });
+  });
+})();
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

@@ -1,0 +1,281 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> forms/select-controls/1/selectcontrols-calculations.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"></div><div class="category"><h2>AgGrid</h2><h3>Classes</h3><ul><li><a href="CheckboxRenderer.html">CheckboxRenderer</a></li><li><a href="DetailsRenderer.html">DetailsRenderer</a></li><li><a href="Utils.html">Utils</a></li></ul></div><div class="category"><h2>Forms</h2><h3>Classes</h3><ul><li><a href="AssignedOverview.html">AssignedOverview</a></li><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="Classification.html">Classification</a></li><li><a href="Classification1.html">Classification1</a></li><li><a href="ControlCard.html">ControlCard</a></li><li><a href="ControlsLibrary.html">ControlsLibrary</a></li><li><a href="ControlsOverview.html">ControlsOverview</a></li><li><a href="DescriptionDialog.html">DescriptionDialog</a></li><li><a href="FooterForm.html">FooterForm</a></li><li><a href="ImportModal.html">ImportModal</a></li><li><a href="Logs.html">Logs</a></li><li><a href="NewRiskReport.html">NewRiskReport</a></li><li><a href="QueriesCockpit.html">QueriesCockpit</a></li><li><a href="RcList.html">RcList</a></li><li><a href="RefDocs.html">RefDocs</a></li><li><a href="RiskCard.html">RiskCard</a></li><li><a href="RiskLibrary.html">RiskLibrary</a></li><li><a href="RiskOverview.html">RiskOverview</a></li><li><a href="RiskReport.html">RiskReport</a></li><li><a href="RpeatForm.html">RpeatForm</a></li><li><a href="SaveQuestionere.html">SaveQuestionere</a></li><li><a href="SelectContacts.html">SelectContacts</a></li><li><a href="SelectControls.html">SelectControls</a></li><li><a href="SelectControlsDocuments.html">SelectControlsDocuments</a></li><li><a href="SelectDocuments.html">SelectDocuments</a></li><li><a href="SelectQueryDocuments.html">SelectQueryDocuments</a></li><li><a href="SendOverview.html">SendOverview</a></li><li><a href="ShowDocument.html">ShowDocument</a></li><li><a href="SWSDB.html">SWSDB</a></li></ul></div><div class="category"><h2>Miscmiscellaneous</h2><h3>Classes</h3><ul><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="ControlsOverviewRollForward.html">ControlsOverviewRollForward</a></li><li><a href="GCalcs.html">GCalcs</a></li><li><a href="GlobalConfigs.html">GlobalConfigs</a></li><li><a href="GlobalFile.html">GlobalFile</a></li><li><a href="RisksOverviewRollForward.html">RisksOverviewRollForward</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>forms/select-controls/1/selectcontrols-calculations.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Global iife: Select Controls
+ * @class SelectControls
+ * @category Forms
+ */
+(function () {
+  /* global _ */
+  // define global object
+  const gCalcs = wpw.tax.de.global.functions.gCalcs;
+  wpw.tax.create.calcBlocks("selectcontrols", function (calcUtils) {
+    function populateTable(calcUtils, tableArr, formId, tableId) {
+      let sortedArr = _.sortBy(tableArr, "id");
+      let table = calcUtils.field(tableId);
+      // Clear the table if already rows are added, by removing each row
+      let tableLength = table.getRows().length;
+      for (let i = 0; i &lt; tableLength; i++) {
+        calcUtils.removeTableRow(formId, tableId, 0);
+      }
+      // add rows to the table
+      for (var i = 0; i &lt; sortedArr.length; i++) {
+        calcUtils.addTableRow(formId, tableId, i);
+        table.cell(i, 0).label(sortedArr[i].id);
+        table.cell(i, 1).label(sortedArr[i].name);
+        table.cell(i, 2).set(sortedArr[i].status);
+        table.cell(i, 3).set(sortedArr[i].guid);
+      }
+    }
+
+    function extractControls(calcUtils) {
+      // create an array to store the CONTROLS extracted from the database
+      let controlsArr = [];
+      return wpw.tax.getControls().then((controls) => {
+        controls.forEach(function (control) {
+          if (control.properties.DE_templateLevel !== "1") {
+            // To find the control is already assigned to that risk or not
+            const guid = calcUtils.form("riskcard").field("GUID").get();
+            wpw.tax.getRisks().then((risks) => {
+              const risk = risks.find((risk) => risk.id === guid);
+              const status = risk.controls.includes(control.id);
+              controlsArr.push({
+                id: control.properties.DE_number,
+                name: control.name,
+                status: status,
+                guid: control.id,
+              });
+              // send the CONTROLS extracted to populate the table
+              populateTable(
+                calcUtils,
+                controlsArr,
+                "selectcontrols",
+                "SELECT-CONTROLS"
+              );
+            });
+          }
+        });
+      });
+    }
+
+    calcUtils.onFormLoad("selectcontrols", function (calcUtils) {
+      // set the tab index to 1
+      calcUtils.field("SELECTCONTROLS-TAB-INDEX").assign("1");
+      calcUtils.field("SELECTCONTROLS-TABS").cell(0, 1).config("class", "");
+      calcUtils
+        .field("SELECTCONTROLS-TABS")
+        .cell(0, 0)
+        .config("class", "de-cards-tabs-new");
+      //assign text to einfuhrungs tab
+      calcUtils
+        .field("SELECTCONTROLS-EDITOR")
+        .assign(
+          'Bitte beachten Sie, dass Sie hier nur Maßnahmen auswählen können, welche Sie zuvor als individuelle Maßnahmen​ angelegt haben. Wählen Sie eine oder mehrere Maßnahmen aus und klicken Sie anschließend auf die Schaltfläche "Speichern".'
+        );
+      return extractControls(calcUtils);
+    });
+
+    calcUtils.custom("btnSelectControls", function (calcUtils) {
+      // set the tab index to 1
+      calcUtils.field("SELECTCONTROLS-TAB-INDEX").assign("1");
+      calcUtils.field("SELECTCONTROLS-TABS").cell(0, 1).config("class", "");
+      calcUtils
+        .field("SELECTCONTROLS-TABS")
+        .cell(0, 0)
+        .config("class", "de-cards-tabs-new");
+    });
+
+    calcUtils.custom("btnSelectControlsDescription", function (calcUtils) {
+      // set the tab index to 2
+      calcUtils.field("SELECTCONTROLS-TAB-INDEX").assign("2");
+      calcUtils.field("SELECTCONTROLS-TABS").cell(0, 0).config("class", "");
+      calcUtils
+        .field("SELECTCONTROLS-TABS")
+        .cell(0, 1)
+        .config("class", "de-cards-tabs-new");
+    });
+
+    calcUtils.custom("saveAssignedControls", function (calcUtils) {
+      let tableRows = calcUtils.field("SELECT-CONTROLS").getRows();
+      const guid = calcUtils.form("riskcard").field("GUID").get();
+      const risks = wpw.tax.getRisks();
+      const controls = wpw.tax.getControls();
+      return new Promise.all([risks, controls]).then((data) => {
+        const risksData = data[0];
+        const controlsData = data[1];
+        const risk = risksData.find((risk) => risk.id === guid);
+        let clonedRisk = wpw.utilities.clone(risk);
+        let activeControlsArr =
+          clonedRisk.properties.DE_activeControls.split(",");
+        for (let i = 0; i &lt; tableRows.length; i++) {
+          const status = tableRows[i][2].get();
+          const cId = tableRows[i][3].get();
+          // control will also need to update so clone it
+          const control = controlsData.find((control) => control.id === cId);
+          let clonedControl = wpw.utilities.clone(control);
+          if (status) {
+            // to assign the control id to the controls array in risk
+            if (!clonedRisk.controls.includes(cId)) {
+              clonedRisk.controls.push(cId);
+            }
+            // to assign the control id to the activeControls property
+            if (!activeControlsArr.includes(cId)) {
+              activeControlsArr.push(cId);
+            }
+            // if a control ref is added to a risk, the control also need to take the ref of the risk
+            // e.g. this control is now assigned to another risk
+            const control = controlsData.find((control) => control.id === cId);
+            let clonedControl = wpw.utilities.clone(control);
+            if (!clonedControl.risks.includes(guid)) {
+              clonedControl.risks.push(guid);
+            }
+            wpw.tax.saveControl(clonedControl);
+          } else {
+            // remove the control id from risk if it was assigned before and now it is removed
+            const index = clonedRisk.controls.indexOf(cId);
+            if (index > -1) {
+              clonedRisk.controls.splice(index, 1);
+            }
+            // remove the active control id that was assinged before but now it is removed
+            const activeControlsIndex = activeControlsArr.indexOf(cId);
+            if (activeControlsIndex > -1) {
+              activeControlsArr.splice(activeControlsIndex, 1);
+            }
+            // to remove the risk id to the risks array in a control
+            const cRiskIndex = clonedControl.risks.indexOf(guid);
+            if (cRiskIndex > -1) {
+              clonedControl.risks.splice(cRiskIndex, 1);
+            }
+            wpw.tax.saveControl(clonedControl);
+          }
+        }
+        clonedRisk.properties.DE_activeControls = activeControlsArr.join(",");
+        return wpw.tax.saveRisk(clonedRisk).then((res) => {
+          console.log("saved changes");
+          // we also need to show the status of assignedControls to Ja in risksoverview
+          const origin = calcUtils.field("riskcard.ORIGIN").get();
+          const source = calcUtils.field("controlcard.SOURCE").get();
+          // this also means we need to make the status of Maßnahmen Zugeordnet in Risksoverview to "Ja"
+          gCalcs.assignedControlsToRisk(calcUtils, origin, res, source);
+          gCalcs.reloadControlsInRiskCard(calcUtils, clonedRisk);
+          wpw.tax.closeModal();
+        });
+      });
+    });
+  });
+})();
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

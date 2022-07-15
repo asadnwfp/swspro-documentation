@@ -1,0 +1,740 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> forms/risk-card/1/riskcard-calculations.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"></div><div class="category"><h2>AgGrid</h2><h3>Classes</h3><ul><li><a href="CheckboxRenderer.html">CheckboxRenderer</a></li><li><a href="DetailsRenderer.html">DetailsRenderer</a></li><li><a href="Utils.html">Utils</a></li></ul></div><div class="category"><h2>Forms</h2><h3>Classes</h3><ul><li><a href="AssignedOverview.html">AssignedOverview</a></li><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="Classification.html">Classification</a></li><li><a href="Classification1.html">Classification1</a></li><li><a href="ControlCard.html">ControlCard</a></li><li><a href="ControlsLibrary.html">ControlsLibrary</a></li><li><a href="ControlsOverview.html">ControlsOverview</a></li><li><a href="DescriptionDialog.html">DescriptionDialog</a></li><li><a href="FooterForm.html">FooterForm</a></li><li><a href="ImportModal.html">ImportModal</a></li><li><a href="Logs.html">Logs</a></li><li><a href="NewRiskReport.html">NewRiskReport</a></li><li><a href="QueriesCockpit.html">QueriesCockpit</a></li><li><a href="RcList.html">RcList</a></li><li><a href="RefDocs.html">RefDocs</a></li><li><a href="RiskCard.html">RiskCard</a></li><li><a href="RiskLibrary.html">RiskLibrary</a></li><li><a href="RiskOverview.html">RiskOverview</a></li><li><a href="RiskReport.html">RiskReport</a></li><li><a href="RpeatForm.html">RpeatForm</a></li><li><a href="SaveQuestionere.html">SaveQuestionere</a></li><li><a href="SelectContacts.html">SelectContacts</a></li><li><a href="SelectControls.html">SelectControls</a></li><li><a href="SelectControlsDocuments.html">SelectControlsDocuments</a></li><li><a href="SelectDocuments.html">SelectDocuments</a></li><li><a href="SelectQueryDocuments.html">SelectQueryDocuments</a></li><li><a href="SendOverview.html">SendOverview</a></li><li><a href="ShowDocument.html">ShowDocument</a></li><li><a href="SWSDB.html">SWSDB</a></li></ul></div><div class="category"><h2>Miscmiscellaneous</h2><h3>Classes</h3><ul><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="ControlsOverviewRollForward.html">ControlsOverviewRollForward</a></li><li><a href="GCalcs.html">GCalcs</a></li><li><a href="GlobalConfigs.html">GlobalConfigs</a></li><li><a href="GlobalFile.html">GlobalFile</a></li><li><a href="RisksOverviewRollForward.html">RisksOverviewRollForward</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>forms/risk-card/1/riskcard-calculations.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Global iife: Risk Card
+ * @class RiskCard
+ * @category Forms
+ */
+(function () {
+  const gCalcs = wpw.tax.de.global.functions.gCalcs;
+  wpw.tax.create.calcBlocks("riskcard", function (calcUtils) {
+    // calculate the matrix
+    /* 
+                L      M       H
+
+        L      L      L       L
+
+        M      L      M       M
+
+        H     L       M       H
+        
+         */
+    let poo, paod, rl, calculatedRL;
+    let lockdownStatus = wpw.tax.global.engagementProperties.lockdownStatus;
+
+    calcUtils.onlyOnForm("riskcard", function (calcUtils) {
+      poo = calcUtils.field("POO").get();
+      paod = calcUtils.field("PAOD").get();
+      if (poo === "Niedrig" &amp;&amp; paod === "Niedrig") calculatedRL = "Niedrig";
+      else if (poo === "Niedrig" &amp;&amp; paod === "Mittel") calculatedRL = "Mittel";
+      else if (poo === "Niedrig" &amp;&amp; paod === "Hoch") calculatedRL = "Mittel";
+      else if (poo === "Mittel" &amp;&amp; paod === "Niedrig") calculatedRL = "Mittel";
+      else if (poo === "Mittel" &amp;&amp; paod === "Mittel") calculatedRL = "Mittel";
+      else if (poo === "Mittel" &amp;&amp; paod === "Hoch") calculatedRL = "Hoch";
+      else if (poo === "Hoch" &amp;&amp; paod === "Niedrig") calculatedRL = "Mittel";
+      else if (poo === "Hoch" &amp;&amp; paod === "Mittel") calculatedRL = "Hoch";
+      else if (poo === "Hoch" &amp;&amp; paod === "Hoch") calculatedRL = "Hoch";
+      else calculatedRL = "";
+
+      rl = calcUtils.field("RL").get();
+      calcUtils.field("CALCULATED-RL").set(calculatedRL);
+      if (rl === calculatedRL) {
+        calcUtils.field("CALCULATED-RL").clear();
+      }
+    });
+
+    calcUtils.custom("assignDocuments", function (calcUtils) {
+      if (!lockdownStatus) {
+        wpw.tax.resetForm("selectdocuments");
+        wpw.tax.openModal("selectdocuments");
+      } else {
+        wpw.tax.global.dialogs.notify(
+          "Lockdown",
+          "Im Lockdown können keine Änderungen vorgenommen werden"
+        );
+      }
+    });
+
+    //upload Document to risk
+    calcUtils.custom("browsdoc", function (calcUtils) {
+      //open file upload window
+
+      let inputFile = $('&lt;input type="file"/>');
+      inputFile[0].onchange = function () {
+        const fileSize = inputFile.get(0).files[0].size / 1000000;
+        if (fileSize > 500) {
+          wpw.tax.global.dialogs.error(
+            "Datei-Upload fehlgeschlagen",
+            "Die Dateigröße überschreitet 500 MiB"
+          );
+        } else {
+          wpw.tax.taxUtils
+            .saveUploadedFile(
+              inputFile.get(0).files[0],
+              "MYsctuUWQw68BuDkAMm0kA"
+            )
+            .then((uploadedDoc) => {
+              const guid = calcUtils.form("riskcard").field("GUID").get();
+              wpw.tax.getRisks().then((risks) => {
+                const risk = risks.find((risk) => risk.id === guid);
+                if (!risk.properties.hasOwnProperty("DE_assignedDocuments")) {
+                  risk.properties.DE_assignedDocuments = "";
+                }
+                const clonedRisk = wpw.utilities.clone(risk);
+                let docIds = [];
+
+                if (clonedRisk.properties.DE_assignedDocuments !== "") {
+                  docIds =
+                    clonedRisk.properties.DE_assignedDocuments.split(",");
+                  docIds.push(uploadedDoc.id);
+                  clonedRisk.properties.DE_assignedDocuments = docIds.join();
+                } else {
+                  clonedRisk.properties.DE_assignedDocuments = uploadedDoc.id;
+                }
+                wpw.tax.saveRisk(clonedRisk).then((res) => {
+                  console.log("saved new document to risk");
+                  // re generate
+                  gCalcs.generateEngDocs(
+                    calcUtils,
+                    clonedRisk,
+                    "riskcard",
+                    "E-DOCS"
+                  );
+                });
+              });
+            });
+        }
+      };
+      inputFile[0].click();
+    });
+
+    calcUtils.custom("saveRisk", function (calcUtils) {
+      if (!lockdownStatus) {
+        saveRisk(calcUtils);
+      } else {
+        wpw.tax.global.dialogs.notify(
+          "Lockdown",
+          "Im Lockdown können keine Änderungen vorgenommen werden"
+        );
+        wpw.tax.closeModal();
+      }
+    });
+
+    calcUtils.custom("deleteRisk", function (calcUtils) {
+      if (!lockdownStatus) {
+        deleteRisk(calcUtils);
+      } else {
+        wpw.tax.global.dialogs.notify(
+          "Lockdown",
+          "Im Lockdown können keine Änderungen vorgenommen werden"
+        );
+      }
+    });
+
+    calcUtils.custom("assignControls", function (calcUtils) {
+      if (!lockdownStatus) {
+        wpw.tax.resetForm("selectControls");
+        // set the source e.g. riskId to the control card
+        let guid = calcUtils.field("GUID").get();
+        calcUtils.field("controlcard.SOURCE").assign(guid);
+        wpw.tax.openModal("selectControls");
+      } else {
+        wpw.tax.global.dialogs.notify(
+          "Lockdown",
+          "Im Lockdown können keine Änderungen vorgenommen werden"
+        );
+      }
+    });
+
+    calcUtils.custom("newControl", function (calcUtils) {
+      if (!lockdownStatus) {
+        wpw.tax.resetForm("controlcard");
+        // set the source to control card.
+        //Here the source is riskcard so we get the id of the risk to assign the new control directly to that risk
+        let guid = calcUtils.field("GUID").get();
+        calcUtils.field("controlcard.SOURCE").assign(guid);
+        wpw.tax.openModal("controlcard");
+      } else {
+        wpw.tax.global.dialogs.notify(
+          "Lockdown",
+          "Im Lockdown können keine Änderungen vorgenommen werden"
+        );
+      }
+    });
+    calcUtils.custom("openTDoc", function (calcUtils) {
+      gCalcs.openDocument("T-DOCS", calcUtils);
+    });
+
+    calcUtils.custom("openEDoc", function (calcUtils) {
+      gCalcs.openDocument("E-DOCS", calcUtils);
+    });
+
+    calcUtils.custom("openCTCard", function (calcUtils) {
+      wpw.tax.resetForm("controlcard");
+      gCalcs.openControlCard("T-CONTROLS", calcUtils);
+    });
+
+    calcUtils.custom("openCECard", function (calcUtils) {
+      wpw.tax.resetForm("controlcard");
+      gCalcs.openControlCard("E-CONTROLS", calcUtils);
+    });
+
+    calcUtils.custom("openClassification", function (calcUtils) {
+      wpw.tax.openModal("classification");
+    });
+
+    calcUtils.custom("openDialog", function (calcUtils) {
+      wpw.tax.openModal("descriptiondialog");
+      let str = calcUtils.field("RISK-DESCRIPTION").get();
+      calcUtils
+        .form("descriptiondialog")
+        .field("DESCRIPTION-DIALOG")
+        .assign(str);
+    });
+
+    calcUtils.onFormLoad("riskcard", function (calcUtils) {
+      calcUtils.field("TAB-INDEX").assign("1");
+      // default state of overrride title
+      calcUtils.field("OVERRIDDEN-TITLE").disabled(false);
+      calcUtils.field("OVERRIDDEN-TITLE").setCannotOverride(false);
+      // calcUtils.field("OVERRIDE-TITLE-STATUS").assign("0");
+      calcUtils
+        .field("RISKCARD-TABS")
+        .cell(0, 0)
+        .config("class", "de-cards-tabs-new");
+
+      // Placeholder for business area data
+      let businessAreaArr = [];
+      let businessAreaTable = wpw.tax
+        .form("businessarea")
+        .field("BUSINESSAREA-TABLE");
+      businessAreaTable.getRows().forEach((row) => {
+        businessAreaArr.push({ option: row[0].value(), value: row[0].value() });
+      });
+
+      let dropdownField = calcUtils.field("BA");
+      dropdownField.config("options", businessAreaArr);
+    });
+
+    calcUtils.custom("TAB1", function (calcUtils) {
+      calcUtils.field("TAB-INDEX").assign("1");
+      calcUtils.field("RISKCARD-TABS").cell(0, 1).config("class", "");
+      calcUtils.field("RISKCARD-TABS").cell(0, 2).config("class", "");
+      calcUtils.field("RISKCARD-TABS").cell(0, 3).config("class", "");
+      calcUtils
+        .field("RISKCARD-TABS")
+        .cell(0, 0)
+        .config("class", "de-cards-tabs-new");
+    });
+
+    calcUtils.custom("TAB2", function (calcUtils) {
+      calcUtils.field("TAB-INDEX").assign("2");
+      calcUtils.field("RISKCARD-TABS").cell(0, 0).config("class", "");
+      calcUtils.field("RISKCARD-TABS").cell(0, 2).config("class", "");
+      calcUtils.field("RISKCARD-TABS").cell(0, 3).config("class", "");
+      calcUtils
+        .field("RISKCARD-TABS")
+        .cell(0, 1)
+        .config("class", "de-cards-tabs-new");
+    });
+
+    calcUtils.custom("TAB3", function (calcUtils) {
+      calcUtils.field("TAB-INDEX").assign("3");
+      calcUtils.field("RISKCARD-TABS").cell(0, 0).config("class", "");
+      calcUtils.field("RISKCARD-TABS").cell(0, 1).config("class", "");
+      calcUtils.field("RISKCARD-TABS").cell(0, 3).config("class", "");
+      calcUtils
+        .field("RISKCARD-TABS")
+        .cell(0, 2)
+        .config("class", "de-cards-tabs-new");
+    });
+
+    calcUtils.custom("TAB4", function (calcUtils) {
+      calcUtils.field("TAB-INDEX").assign("4");
+      calcUtils.field("RISKCARD-TABS").cell(0, 0).config("class", "");
+      calcUtils.field("RISKCARD-TABS").cell(0, 1).config("class", "");
+      calcUtils.field("RISKCARD-TABS").cell(0, 2).config("class", "");
+      calcUtils
+        .field("RISKCARD-TABS")
+        .cell(0, 3)
+        .config("class", "de-cards-tabs-new");
+    });
+
+    calcUtils.custom("overrideTitle", function (calcUtils) {
+      calcUtils.field("OVERRIDE-TITLE-STATUS").assign("1");
+      // default state of overrride title
+      calcUtils
+        .field("OVERRIDDEN-TITLE")
+        .assign(calcUtils.field("RISK-TITLE").get());
+      calcUtils.field("OVERRIDDEN-TITLE").disabled(false);
+      calcUtils.field("OVERRIDDEN-TITLE").setCannotOverride(false);
+    });
+
+    calcUtils.custom("resetTitle", function (calcUtils) {
+      calcUtils.field("OVERRIDE-TITLE-STATUS").assign("0");
+      calcUtils.field("OVERRIDDEN-TITLE").assign("");
+      const guid = calcUtils.field("GUID").get();
+      return wpw.tax.getRisks().then((risks) => {
+        const riskToUpdate = risks.find((risk) => risk.id === guid);
+        let clonedRisk = wpw.utilities.clone(riskToUpdate);
+        clonedRisk.properties.DE_overriddenTitle = "";
+        return wpw.tax.saveRisk(clonedRisk);
+      });
+    });
+
+    calcUtils.custom("selectBAItems", function (calcUtils) {
+      // new function to generate the select ba items table
+      generateBAItems(calcUtils);
+    });
+
+    function generateBAItems(calcUtils) {
+      let table = calcUtils.form("businessarea").field("BUSINESSAREA-TABLE");
+      // Clear the table if already rows are added, by removing each row
+      let tableLength = table.getRows().length;
+      let itemsTable = calcUtils.form("businessarea").field("SELECT-BA-ITEMS");
+      let tabLength = itemsTable.getRows().length;
+      for (let i = 0; i &lt; tabLength; i++) {
+        calcUtils.removeTableRow("businessarea", "SELECT-BA-ITEMS", 0);
+      }
+      // add rows to the table
+      let strBAItems = wpw.tax.form("riskcard").field("BA").get();
+      let selectarr = strBAItems.split(", ");
+
+      for (let k = 0; k &lt; tableLength; k++) {
+        calcUtils.addTableRow("businessarea", "SELECT-BA-ITEMS", k);
+        let value = table.getRow(k)[0].value();
+        itemsTable.cell(k, 0).assign(value);
+        if (selectarr.includes(value)) {
+          itemsTable.cell(k, 1).set(true);
+        }
+      }
+
+      wpw.tax.openModal("businessarea");
+    }
+
+    calcUtils.custom("riskCardHelp", function () {
+      const url =
+        "https://docu.audicon.net/CWCloud/Apps/SWS.pro/de/Content/Risikokarte.htm";
+      // self for same window, blank for new window
+      window.open(url, "_blank");
+    });
+
+    calcUtils.custom("copyRisk", function (calcUtils) {
+      if (!lockdownStatus) {
+        const guid = calcUtils.field("GUID").get();
+        return wpw.tax.getRisks().then((risks) => {
+          const riskToBeCopied = risks.find((risk) => risk.id === guid);
+          // To save new risk
+          let newRisk = new wpw.models.RiskModel();
+          newRisk.name = riskToBeCopied.name;
+          newRisk.description = riskToBeCopied.description;
+          newRisk.properties.DE_detdesc = riskToBeCopied.properties.DE_detdesc;
+          newRisk.properties.DE_riskType =
+            riskToBeCopied.properties.DE_riskType;
+          newRisk.properties.DE_taxType = riskToBeCopied.properties.DE_taxType;
+          newRisk.properties.DE_businessArea =
+            riskToBeCopied.properties.DE_businessArea;
+          newRisk.properties.DE_probabilityOfOccurance =
+            riskToBeCopied.properties.DE_probabilityOfOccurance;
+          newRisk.properties.DE_possibleAmountOfDamage =
+            riskToBeCopied.properties.DE_possibleAmountOfDamage;
+          newRisk.properties.DE_riskLevel =
+            riskToBeCopied.properties.DE_riskLevel;
+          newRisk.properties.DE_activeStatus = "1";
+          newRisk.properties.DE_activeControls = "";
+          newRisk.properties.DE_relevant = "";
+          newRisk.properties.DE_templateLevel = "";
+          newRisk.properties.DE_assignedDocuments = "";
+          return wpw.tax.saveRisk(newRisk).then((res) => {
+            console.log(
+              "risk copied from " + riskToBeCopied.properties.DE_number
+            );
+            gCalcs.reloadTable(
+              calcUtils,
+              "risksoverview",
+              "ERISKS-OVERVIEW",
+              calcUtils.field("RISK-TITLE").get()
+            );
+            //jump to the bottom of the page
+            var scrollingElement = document.scrollingElement || document.body;
+            scrollingElement.scrollTop = scrollingElement.scrollHeight;
+            wpw.tax.closeModal();
+          });
+        });
+      } else {
+        wpw.tax.global.dialogs.notify(
+          "Lockdown",
+          "Im Lockdown können keine Änderungen vorgenommen werden"
+        );
+      }
+    });
+
+    function saveRisk(calcUtils) {
+      let guid = calcUtils.field("GUID").get();
+      // we have to find if the risk card is opened from an existing risk or to create a new risk
+      // if it is opened from an existing risk then it will have a guid
+      // if the guid does not exist then it means this is a new risk to create
+      let title = calcUtils.field("RISK-TITLE").get();
+      let overriddenTitle = calcUtils.field("OVERRIDDEN-TITLE").get();
+      if (title !== "") {
+        if (guid !== "") {
+          return wpw.tax.getRisks().then((risks) => {
+            // we have to check if the risk number is already exists or invalid, then it cannot save
+            const risk = risks.find((risk) => risk.id === guid);
+            let clonedRisk = wpw.utilities.clone(risk);
+
+            clonedRisk.properties.DE_number = calcUtils
+              .field("RISK-NUMBER")
+              .get();
+            clonedRisk.name = title;
+            clonedRisk.description = calcUtils.field("RISK-DESCRIPTION").get();
+            clonedRisk.properties.DE_detdesc = calcUtils
+              .field("RISK-DETDESC")
+              .get();
+            clonedRisk.properties.DE_riskType = calcUtils
+              .field("RISK-TYPE")
+              .get();
+            clonedRisk.properties.DE_taxType = calcUtils
+              .field("TAX-TYPE")
+              .get();
+            clonedRisk.properties.DE_businessArea = calcUtils.field("BA").get();
+            clonedRisk.properties.DE_probabilityOfOccurance = poo;
+            clonedRisk.properties.DE_possibleAmountOfDamage = paod;
+            clonedRisk.properties.DE_riskLevel = calcUtils.field("RL").get();
+            // also save the overridden value 08.12.2021
+            clonedRisk.properties.DE_overriddenTitle = overriddenTitle;
+
+            return wpw.tax.saveRisk(clonedRisk).then((res) => {
+              console.log("Risk updated");
+
+              let origin = calcUtils.field("ORIGIN").get();
+              if (origin === "Standardrisiko") {
+                let table = calcUtils
+                  .form("risksoverview")
+                  .field("RISKS-OVERVIEW");
+                for (let i = 0; i &lt; table.getRows().length; i++) {
+                  const riskId = table.cell(i, 7).get();
+                  // added new on 09 12 2021
+                  if (riskId === guid) {
+                    table.cell(i, 1).assign(gCalcs.getTitle(risk));
+                  }
+                }
+              } else if (origin === "Individuelles Risiko") {
+                let table = calcUtils
+                  .form("risksoverview")
+                  .field("ERISKS-OVERVIEW");
+                for (let i = 0; i &lt; table.getRows().length; i++) {
+                  const riskId = table.cell(i, 5).get();
+                  const number = res.properties.DE_number;
+                  const name = res.name;
+                  const taxType = res.properties.DE_taxType;
+                  // comparing riskId to the guid so that you only target the row where you want to change the cell value
+                  // and update only if you have different previous Value and activeControls value
+                  if (riskId === guid) {
+                    table.cell(i, 0).assign(number);
+                    table.cell(i, 1).assign(name);
+                    table.cell(i, 2).assign(taxType);
+                  }
+                }
+              }
+              // Close modal
+              wpw.tax.closeModal();
+            });
+          });
+        } else {
+          // To save new risk
+          let newRisk = new wpw.models.RiskModel();
+          newRisk.properties.DE_number = calcUtils.field("RISK-NUMBER").get();
+          newRisk.name = calcUtils.field("RISK-TITLE").get();
+          newRisk.description = calcUtils.field("RISK-DESCRIPTION").get();
+          newRisk.properties.DE_detdesc = calcUtils.field("RISK-DETDESC").get();
+          newRisk.properties.DE_riskType = calcUtils.field("RISK-TYPE").get();
+          newRisk.properties.DE_taxType = calcUtils.field("TAX-TYPE").get();
+          newRisk.properties.DE_businessArea = calcUtils.field("BA").get();
+          newRisk.properties.DE_probabilityOfOccurance = poo;
+          newRisk.properties.DE_possibleAmountOfDamage = paod;
+          newRisk.properties.DE_riskLevel = rl;
+          newRisk.properties.DE_activeStatus = "1";
+          newRisk.properties.DE_activeControls = "";
+          newRisk.properties.DE_relevant = "";
+          newRisk.properties.DE_templateLevel = "";
+          newRisk.properties.DE_assignedDocuments = "";
+          return wpw.tax.saveRisk(newRisk).then((res) => {
+            // Close modal
+            wpw.tax.closeModal();
+            console.log("new risk created");
+            gCalcs.reloadTable(
+              calcUtils,
+              "risksoverview",
+              "ERISKS-OVERVIEW",
+              calcUtils.field("RISK-TITLE").get()
+            );
+            //jump to the bottom of the page
+            var scrollingElement = document.scrollingElement || document.body;
+            scrollingElement.scrollTop = scrollingElement.scrollHeight;
+          });
+        }
+      } else {
+        wpw.tax.global.dialogs.error(
+          "Neues Risiko",
+          "Legen Sie bitte einen Titel für das Risiko fest!"
+        );
+      }
+    }
+
+    calcUtils.onUserInput(function (calcUtils, field) {
+      let testField1 = calcUtils.form("riskcard").field("T-CONTROLS");
+      let riskId = calcUtils.field("GUID").get();
+      let userInputs = calcUtils.listUserInputs();
+      userInputs.forEach((input) => {
+        if (
+          input.formId === "RISKCARD" &amp;&amp;
+          input.fieldId === "T-CONTROLS" &amp;&amp;
+          input.colIndex == 2 &amp;&amp;
+          input.rowId
+        ) {
+          // it needs to be saved in risks activeControls property
+          return wpw.tax.getRisks().then(async (risks) => {
+            let risk = risks.find((risk) => risk.id === riskId);
+            let clonedRisk = wpw.utilities.clone(risk);
+            let activeControlsArr =
+              risk.properties.DE_activeControls.split(",");
+            const row = field("T-CONTROLS").rowIdToIndex(input.rowId);
+            const status = calcUtils.field("T-CONTROLS").cell(row, 2).get();
+            let guid = calcUtils.getCellValue("T-CONTROLS", row, 4);
+            await wpw.tax.getControls().then((controls) => {
+              let control = controls.find((control) => control.id === guid);
+              let clonedControl = wpw.utilities.clone(control);
+              let convertedStatus;
+              if (status === true) {
+                convertedStatus = "1";
+                clonedControl.properties.DE_activeStatus = convertedStatus;
+                // this is now active control
+                // to assign the control id to the activeControls property
+                if (!activeControlsArr.includes(control.id)) {
+                  activeControlsArr.push(control.id);
+                }
+                // all docs should be active when a control is active
+                let attachablesIds = Object.keys(control.attachables);
+                let activeQueries =
+                  clonedControl.properties.DE_activeDocuments.split(",");
+                let activeDocumentsArr = [];
+                for (let i = 0; i &lt; attachablesIds.length; i++) {
+                  let id = attachablesIds[i];
+                  let docId = clonedControl.attachables[id].link;
+                  activeDocumentsArr.push(docId);
+                  // show the active documents
+                  gCalcs.documentsVisibility(docId, true);
+                }
+                let combinedArr = [
+                  ...new Set([...activeQueries, ...activeDocumentsArr]),
+                ];
+                let activeDocuments = combinedArr.join(",");
+                clonedControl.properties.DE_activeDocuments = activeDocuments;
+              } else {
+                const index = activeControlsArr.indexOf(control.id);
+                if (index > -1) {
+                  activeControlsArr.splice(index, 1);
+                }
+              }
+              let activeControls = activeControlsArr.join(",");
+              clonedRisk.properties.DE_activeControls = activeControls;
+              let saveRisk = wpw.tax.saveRisk(clonedRisk);
+              let saveControl = wpw.tax.saveControl(clonedControl);
+              Promise.all([saveRisk, saveControl]).then((promiseArray) => {
+                // Also check for automatically update the risksoverview table, not done yet
+                console.log(
+                  "Associated properties are saved to the Risk and Control"
+                );
+                let riskData = promiseArray[0];
+                let controlData = promiseArray[1];
+                let connectedRisks = [];
+                controlData.risks.forEach((riskId) => {
+                  const cRisk = risks.find((risk) => risk.id === riskId);
+                  let activeControls =
+                    cRisk.properties.DE_activeControls.split(",");
+                  if (activeControls.includes(controlData.id)) {
+                    connectedRisks.push(cRisk.id);
+                  }
+                });
+                if (connectedRisks.length === 0) {
+                  wpw.tax.global.dialogs.notify(
+                    "Aktiv Status",
+                    'Die Maßnahme ist keinem Risiko mehr zugeordnet. Die Maßnahme bleibt dennoch aktiv, so lange Sie diese nicht inaktiv setzen. Falls Sie die Maßnahme inaktiv setzen möchten, öffnen Sie die Maßnahme (Stiftsymbol) und wählen dort "Maßnahme inaktiv setzen".'
+                  );
+                }
+                let origin = calcUtils.field("ORIGIN").get();
+                let riskGuid = calcUtils.field("GUID").get();
+                gCalcs.assignedControlsToRisk(
+                  calcUtils,
+                  origin,
+                  riskData,
+                  riskGuid
+                );
+              });
+            });
+          });
+        }
+      });
+    }, "risk-card");
+
+    function deleteRisk(calcUtils) {
+      if (!lockdownStatus) {
+        let guid = calcUtils.field("GUID").get();
+        wpw.tax.global.dialogs
+          .confirm(
+            "Risiko Löschen",
+            "Möchten Sie das Risiko löschen?",
+            "Ja",
+            "Nein"
+          )
+          .result.then(function () {
+            return wpw.tax.getRisks().then((risks) => {
+              const risk = risks.find((risk) => risk.id === guid);
+              wpw.tax.deleteRisks([risk.id]).then((res) => {
+                // if that risk id is assigned to any of the control, then remove it
+                wpw.tax.getControls().then((controls) => {
+                  controls.forEach((control) => {
+                    const index = control.risks.indexOf(risk.id);
+                    if (index > -1) {
+                      const clonedControl = wpw.utilities.clone(control);
+                      clonedControl.risks.splice(index, 1);
+                      return wpw.tax.saveControl(clonedControl);
+                    }
+                  });
+                });
+                console.log("risk is deleted");
+                gCalcs.reloadTable(
+                  calcUtils,
+                  "risksoverview",
+                  "ERISKS-OVERVIEW"
+                );
+                // Close modal
+                wpw.tax.closeModal();
+              });
+            });
+          });
+      } else {
+        wpw.tax.global.dialogs.notify(
+          "Lockdown",
+          "Im Lockdown können keine Änderungen vorgenommen werden"
+        );
+      }
+    }
+  });
+})();
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>
