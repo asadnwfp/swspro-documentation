@@ -1,0 +1,872 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> forms/control-card/1/controlcard-calculations.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"></div><div class="category"><h2>AgGrid</h2><h3>Classes</h3><ul><li><a href="CheckboxRenderer.html">CheckboxRenderer</a></li><li><a href="DetailsRenderer.html">DetailsRenderer</a></li><li><a href="Utils.html">Utils</a></li></ul></div><div class="category"><h2>Forms</h2><h3>Classes</h3><ul><li><a href="AssignedOverview.html">AssignedOverview</a></li><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="Classification.html">Classification</a></li><li><a href="Classification1.html">Classification1</a></li><li><a href="ControlCard.html">ControlCard</a></li><li><a href="ControlsLibrary.html">ControlsLibrary</a></li><li><a href="ControlsOverview.html">ControlsOverview</a></li><li><a href="DescriptionDialog.html">DescriptionDialog</a></li><li><a href="FooterForm.html">FooterForm</a></li><li><a href="ImportModal.html">ImportModal</a></li><li><a href="Logs.html">Logs</a></li><li><a href="NewRiskReport.html">NewRiskReport</a></li><li><a href="QueriesCockpit.html">QueriesCockpit</a></li><li><a href="RcList.html">RcList</a></li><li><a href="RefDocs.html">RefDocs</a></li><li><a href="RiskCard.html">RiskCard</a></li><li><a href="RiskLibrary.html">RiskLibrary</a></li><li><a href="RiskOverview.html">RiskOverview</a></li><li><a href="RiskReport.html">RiskReport</a></li><li><a href="RpeatForm.html">RpeatForm</a></li><li><a href="SaveQuestionere.html">SaveQuestionere</a></li><li><a href="SelectContacts.html">SelectContacts</a></li><li><a href="SelectControls.html">SelectControls</a></li><li><a href="SelectControlsDocuments.html">SelectControlsDocuments</a></li><li><a href="SelectDocuments.html">SelectDocuments</a></li><li><a href="SelectQueryDocuments.html">SelectQueryDocuments</a></li><li><a href="SendOverview.html">SendOverview</a></li><li><a href="ShowDocument.html">ShowDocument</a></li><li><a href="SWSDB.html">SWSDB</a></li></ul></div><div class="category"><h2>Miscmiscellaneous</h2><h3>Classes</h3><ul><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="ControlsOverviewRollForward.html">ControlsOverviewRollForward</a></li><li><a href="GCalcs.html">GCalcs</a></li><li><a href="GlobalConfigs.html">GlobalConfigs</a></li><li><a href="GlobalFile.html">GlobalFile</a></li><li><a href="RisksOverviewRollForward.html">RisksOverviewRollForward</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>forms/control-card/1/controlcard-calculations.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Global iife: Control Card
+ * @class ControlCard
+ * @category Forms
+ */
+(function () {
+  // define global object
+  const gCalcs = wpw.tax.de.global.functions.gCalcs;
+  wpw.tax.create.calcBlocks("controlcard", function (calcUtils) {
+    let lockdownStatus = wpw.tax.global.engagementProperties.lockdownStatus;
+
+    calcUtils.custom("saveControl", function (calcUtils) {
+      if (!lockdownStatus) {
+        let guid = calcUtils.field("C-GUID").get();
+        // we have to find if the control card is opened from an existing control or to create a new control
+        // if it is opened from an existing control then it will have a guid
+        // if the guid does not exist then it means this is a new control to create
+        let title = calcUtils.field("CONTROL-TITLE").get();
+        let overriddenTitle = calcUtils.field("C-OVERRIDDEN-TITLE").get();
+        if (title !== "") {
+          if (guid !== "") {
+            return wpw.tax.getControls().then((controls) => {
+              const control = controls.find((control) => control.id === guid);
+              let clonedControl = wpw.utilities.clone(control);
+
+              clonedControl.properties.DE_number = calcUtils
+                .field("CONTROL-NUMBER")
+                .get();
+              clonedControl.name = calcUtils.field("CONTROL-TITLE").get();
+              clonedControl.description = calcUtils
+                .field("CONTROL-DESCRIPTION")
+                .get();
+              clonedControl.properties.DE_detDesc = calcUtils
+                .field("CONTROL-DETDESC")
+                .get();
+              clonedControl.properties.DE_controlType = calcUtils
+                .field("CONTROL-TYPE")
+                .get();
+              clonedControl.properties.DE_rPerson = calcUtils
+                .field("CONTROL-RP")
+                .get();
+              if (
+                !clonedControl.properties.hasOwnProperty("DE_templateLevel") ||
+                clonedControl.properties.DE_templateLevel === ""
+              ) {
+                clonedControl.properties.DE_activeStatus = "1";
+              }
+              // also save the overridden value 10.12.2021
+              clonedControl.properties.DE_overriddenTitle = overriddenTitle;
+              return wpw.tax.saveControl(clonedControl).then((res) => {
+                console.log("Control updated");
+                // we need to refresh the row in controls overview with the new data
+                const source = calcUtils.field("SOURCE").get();
+                if (source === "CONTROLS-OVERVIEW") {
+                  let table = calcUtils
+                    .form("controlsoverview")
+                    .field("CONTROLS-OVERVIEW");
+                  gCalcs.refreshControlsOverviewTable(table, res, guid);
+                } else if (source === "ECONTROLS-OVERVIEW") {
+                  let table = calcUtils
+                    .form("controlsoverview")
+                    .field("ECONTROLS-OVERVIEW");
+                  gCalcs.refreshControlsOverviewTable(table, res, guid);
+                } else if (source === "E-CONTROLS") {
+                  // call the global function to recreate the data for that table
+                  const guid = calcUtils.form("riskcard").field("GUID").get();
+                  wpw.tax.getRisks().then((risks) => {
+                    const risk = risks.find((risk) => risk.id === guid);
+                    gCalcs.reloadControlsInRiskCard(calcUtils, risk);
+                  });
+                } else if (source === "T-CONTROLS") {
+                  // call the global function to recreate the data for that table
+                  const guid = calcUtils.form("riskcard").field("GUID").get();
+                  wpw.tax.getRisks().then((risks) => {
+                    const risk = risks.find((risk) => risk.id === guid);
+                    //task 1605
+                    gCalcs.extractControlsFromRisk(calcUtils, risk);
+                  });
+                }
+                wpw.tax.closeModal();
+              });
+            });
+          } else {
+            // To save new CONTROLS
+            // we also need to look into the source, if there is a source id from a risk we can directly assign this control to that risk
+            let source = calcUtils.field("SOURCE").get();
+            let newControl = new wpw.models.Control();
+            newControl.properties = {};
+            // This is not template level control so it should be empty string
+            newControl.properties.DE_templateLevel = "";
+            newControl.properties.DE_number = calcUtils
+              .field("CONTROL-NUMBER")
+              .get();
+            newControl.name = calcUtils.field("CONTROL-TITLE").get();
+            newControl.description = calcUtils
+              .field("CONTROL-DESCRIPTION")
+              .get();
+            newControl.properties.DE_detDesc = calcUtils
+              .field("CONTROL-DETDESC")
+              .get();
+            newControl.properties.DE_controlType = calcUtils
+              .field("CONTROL-TYPE")
+              .get();
+            newControl.properties.DE_rPerson = calcUtils
+              .field("CONTROL-RP")
+              .get();
+            newControl.properties.DE_assignedDocuments = "";
+            newControl.properties.DE_activeStatus = "1";
+            newControl.properties.DE_activeDocuments = "";
+            return wpw.tax.saveControl(newControl).then((res) => {
+              // Close modal
+              wpw.tax.closeModal();
+              console.log("new control created");
+              if (source === "" || source === undefined) {
+                gCalcs.reloadTable(
+                  calcUtils,
+                  "controlsoverview",
+                  "ECONTROLS-OVERVIEW",
+                  calcUtils.field("CONTROL-TITLE").get()
+                );
+                //jump to the bottom of the page
+                var scrollingElement =
+                  document.scrollingElement || document.body;
+                scrollingElement.scrollTop = scrollingElement.scrollHeight;
+              } else {
+                // this block is targeted to save a control created from Maßnahmen anlegen button inside risk card
+                // also relaod the engagement level controls table in risk card
+                try {
+                  return wpw.tax.getRisks().then((risks) => {
+                    const risk = risks.find((risk) => risk.id === source);
+                    const clonedRisk = wpw.utilities.clone(risk);
+                    let activeControls =
+                      clonedRisk.properties.DE_activeControls;
+                    let newControlIds = activeControls.concat("," + res.id);
+                    clonedRisk.properties.DE_activeControls = newControlIds;
+                    clonedRisk.controls.push(res.id);
+                    return wpw.tax.saveRisk(clonedRisk).then((res) => {
+                      console.log("saved newly assigned control");
+                      const origin = calcUtils.field("riskcard.ORIGIN").get();
+                      // this also means we need to make the status of Maßnahmen Zugeordnet in Risksoverview to "Ja"
+                      gCalcs.assignedControlsToRisk(
+                        calcUtils,
+                        origin,
+                        res,
+                        source
+                      );
+                      gCalcs.reloadControlsInRiskCard(calcUtils, clonedRisk);
+                    });
+                  });
+                } catch (e) {
+                  console.log(
+                    "risk cannot be found against the source " + source
+                  );
+                }
+              }
+            });
+          }
+        } else {
+          wpw.tax.global.dialogs.error(
+            "Neue Maßnahme",
+            "Legen Sie bitte einen Titel für die Maßnahme fest!"
+          );
+        }
+      } else {
+        wpw.tax.global.dialogs.notify(
+          "Lockdown",
+          "Im Lockdown können keine Änderungen vorgenommen werden"
+        );
+        wpw.tax.closeModal();
+      }
+    });
+
+    function assignedControlsStatus(guid, risk) {
+      let table = calcUtils.field("risksoverview.RISKS-OVERVIEW");
+      for (let i = 0; i &lt; table.getRows().length; i++) {
+        const riskId = table.cell(i, 7).get();
+        const strActiveControls = risk.properties.DE_activeControls;
+        const activeControls = strActiveControls ? "Ja" : "Nein";
+        if (riskId === guid) {
+          table.cell(i, 4).assign(activeControls);
+        }
+      }
+      return;
+    }
+
+    calcUtils.onFormLoad("controlcard", function (calcUtils) {
+      calcUtils.field("C-TAB-INDEX").assign("1");
+      const priorYearEngId =
+        wpw.tax.global.engagementProperties.priorYearEngagementId;
+      calcUtils.field("PY-ENGID").assign(priorYearEngId);
+      // deafault state of override field
+      calcUtils.field("C-OVERRIDDEN-TITLE").disabled(false);
+      calcUtils.field("C-OVERRIDDEN-TITLE").setCannotOverride(false);
+      calcUtils
+        .field("CONTROLCARD-TABS")
+        .cell(0, 0)
+        .config("class", "de-cards-tabs-new");
+    });
+
+    calcUtils.custom("C-TAB1", function (calcUtils) {
+      calcUtils.field("C-TAB-INDEX").assign("1");
+      calcUtils.field("CONTROLCARD-TABS").cell(0, 1).config("class", "");
+      calcUtils.field("CONTROLCARD-TABS").cell(0, 2).config("class", "");
+      calcUtils.field("CONTROLCARD-TABS").cell(0, 3).config("class", "");
+      calcUtils
+        .field("CONTROLCARD-TABS")
+        .cell(0, 0)
+        .config("class", "de-cards-tabs-new");
+    });
+
+    calcUtils.custom("C-TAB2", function (calcUtils) {
+      calcUtils.field("C-TAB-INDEX").assign("2");
+      calcUtils.field("CONTROLCARD-TABS").cell(0, 0).config("class", "");
+      calcUtils.field("CONTROLCARD-TABS").cell(0, 2).config("class", "");
+      calcUtils.field("CONTROLCARD-TABS").cell(0, 3).config("class", "");
+      calcUtils
+        .field("CONTROLCARD-TABS")
+        .cell(0, 1)
+        .config("class", "de-cards-tabs-new");
+    });
+
+    calcUtils.custom("C-TAB3", function (calcUtils) {
+      calcUtils.field("C-TAB-INDEX").assign("3");
+      calcUtils.field("CONTROLCARD-TABS").cell(0, 0).config("class", "");
+      calcUtils.field("CONTROLCARD-TABS").cell(0, 1).config("class", "");
+      calcUtils.field("CONTROLCARD-TABS").cell(0, 3).config("class", "");
+      calcUtils
+        .field("CONTROLCARD-TABS")
+        .cell(0, 2)
+        .config("class", "de-cards-tabs-new");
+    });
+
+    calcUtils.custom("C-TAB4", function (calcUtils) {
+      calcUtils.field("C-TAB-INDEX").assign("4");
+      calcUtils.field("CONTROLCARD-TABS").cell(0, 0).config("class", "");
+      calcUtils.field("CONTROLCARD-TABS").cell(0, 1).config("class", "");
+      calcUtils.field("CONTROLCARD-TABS").cell(0, 2).config("class", "");
+      calcUtils
+        .field("CONTROLCARD-TABS")
+        .cell(0, 3)
+        .config("class", "de-cards-tabs-new");
+    });
+
+    calcUtils.custom("overrideControlTitle", function (calcUtils) {
+      calcUtils.field("C-OVERRIDE-TITLE-STATUS").assign("1");
+      // deafault state of override field
+      calcUtils
+        .field("C-OVERRIDDEN-TITLE")
+        .assign(calcUtils.field("CONTROL-TITLE").get());
+      calcUtils.field("C-OVERRIDDEN-TITLE").disabled(false);
+      calcUtils.field("C-OVERRIDDEN-TITLE").setCannotOverride(false);
+    });
+
+    calcUtils.custom("resetControlTitle", function (calcUtils) {
+      calcUtils.field("C-OVERRIDE-TITLE-STATUS").assign("0");
+      calcUtils.field("C-OVERRIDDEN-TITLE").assign("");
+      const guid = calcUtils.field("C-GUID").get();
+      return wpw.tax.getControls().then((controls) => {
+        const controlToUpdate = controls.find((control) => control.id === guid);
+        let clonedControl = wpw.utilities.clone(controlToUpdate);
+        clonedControl.properties.DE_overriddenTitle = "";
+        return wpw.tax.saveControl(clonedControl);
+      });
+    });
+
+    calcUtils.custom("openControlDialog", function (calcUtils) {
+      wpw.tax.openModal("descriptiondialog");
+      let str = calcUtils.field("CONTROL-DESCRIPTION").get();
+      calcUtils
+        .form("descriptiondialog")
+        .field("DESCRIPTION-DIALOG")
+        .assign(str);
+    });
+
+    calcUtils.onUserInput(function (calcUtils, field) {
+      // to make a reference
+      let testField2 = calcUtils.form("controlcard").field("T-DOCUMENTS");
+      let controlId = calcUtils.field("C-GUID").get();
+      let userInputs = calcUtils.listUserInputs();
+      userInputs.forEach((input) => {
+        if (
+          input.formId === "CONTROLCARD" &amp;&amp;
+          input.fieldId === "T-DOCUMENTS" &amp;&amp;
+          input.colIndex == 1 &amp;&amp;
+          input.rowId
+        ) {
+          return wpw.tax.getControls().then((controls) => {
+            let control = controls.find((control) => control.id === controlId);
+            let clonedControl = wpw.utilities.clone(control);
+            let activeDocsArr =
+              clonedControl.properties.DE_activeDocuments.split(",");
+            const row = field("T-DOCUMENTS").rowIdToIndex(input.rowId);
+            const status = calcUtils.field("T-DOCUMENTS").cell(row, 1).get();
+            let guid = calcUtils.getCellValue("T-DOCUMENTS", row, 3);
+            // To update the active status of existing document from the row
+            if (status === true) {
+              // check if guid already exists
+              if (!activeDocsArr.includes(guid)) {
+                activeDocsArr.push(guid);
+              }
+              // show the active document
+              gCalcs.documentsVisibility(guid, true);
+            } else {
+              const index = activeDocsArr.indexOf(guid);
+              if (index > -1) {
+                activeDocsArr.splice(index, 1);
+              }
+              // hide the active document
+              gCalcs.documentsVisibility(guid, false);
+            }
+            let activeDocuments = activeDocsArr.join(",");
+            clonedControl.properties.DE_activeDocuments = activeDocuments;
+            return wpw.tax.saveControl(clonedControl).then((res) => {
+              console.log("Control updated with active docs");
+              let table = calcUtils
+                .form("controlsoverview")
+                .field("CONTROLS-OVERVIEW");
+              gCalcs.refreshControlsOverviewTable(table, res, controlId);
+            });
+          });
+        }
+      });
+    }, "control-card");
+
+    //upload Document to controls
+    calcUtils.custom("Contbrowsdoc", function (calcUtils) {
+      //open file upload window
+
+      let inputFile = $('&lt;input type="file"/>');
+      inputFile[0].onchange = function () {
+        const fileSize = inputFile.get(0).files[0].size / 1000000;
+        if (fileSize > 500) {
+          wpw.tax.global.dialogs.error(
+            "Datei-Upload fehlgeschlagen",
+            "Die Dateigröße überschreitet 500 MiB"
+          );
+        } else {
+          wpw.tax.taxUtils
+            .saveUploadedFile(
+              inputFile.get(0).files[0],
+              "MYsctuUWQw68BuDkAMm0kA"
+            )
+            .then((uploadedDoc) => {
+              const guid = calcUtils.form("controlcard").field("C-GUID").get();
+              wpw.tax.getControls().then((controls) => {
+                const control = controls.find((control) => control.id === guid);
+                if (
+                  !control.properties.hasOwnProperty("DE_assignedDocuments")
+                ) {
+                  control.properties.DE_assignedDocuments = "";
+                }
+                const clonedControl = wpw.utilities.clone(control);
+                let docIds = [];
+
+                if (clonedControl.properties.DE_assignedDocuments !== "") {
+                  docIds =
+                    clonedControl.properties.DE_assignedDocuments.split(",");
+                  docIds.push(uploadedDoc.id);
+                  clonedControl.properties.DE_assignedDocuments = docIds.join();
+                } else {
+                  clonedControl.properties.DE_assignedDocuments =
+                    uploadedDoc.id;
+                }
+                wpw.tax.saveControl(clonedControl).then((res) => {
+                  console.log("saved new document to control");
+                  // re generate
+                  gCalcs.generateEngDocs(
+                    calcUtils,
+                    clonedControl,
+                    "controlcard",
+                    "EC-DOCS"
+                  );
+                });
+              });
+            });
+        }
+      };
+      inputFile[0].click();
+    });
+
+    calcUtils.custom("deleteControl", function (calcUtils) {
+      if (!lockdownStatus) {
+        let guid = calcUtils.field("C-GUID").get();
+        wpw.tax.global.dialogs
+          .confirm(
+            "Maßnahme löschen",
+            "Möchten Sie die Maßnahme löschen?",
+            "Ja",
+            "Nein"
+          )
+          .result.then(function () {
+            return wpw.tax.getControls().then((controls) => {
+              const control = controls.find((control) => control.id === guid);
+              return wpw.tax.deleteControls([control.id]).then((res) => {
+                // if that control id is assigned to any of the risk, then remove it
+                wpw.tax.getRisks().then((risks) => {
+                  risks.forEach((risk) => {
+                    const index = risk.controls.indexOf(control.id);
+                    let clonedRisk = wpw.utilities.clone(risk);
+                    if (index > -1) {
+                      clonedRisk.controls.splice(index, 1);
+                    }
+                    // we also need to remove the ref of control.id in DE_activeControls property. SEE TASK 1661
+                    const activeControlsInRisk =
+                      risk.properties.DE_activeControls.split(",");
+                    const controlIndex = activeControlsInRisk.indexOf(
+                      control.id
+                    );
+                    if (index > -1) {
+                      activeControlsInRisk.splice(controlIndex, 1);
+                      clonedRisk.properties.DE_activeControls =
+                        activeControlsInRisk.join(",");
+                    }
+                    return wpw.tax.saveRisk(clonedRisk);
+                  });
+                });
+                console.log("control is deleted");
+                gCalcs.reloadTable(
+                  calcUtils,
+                  "controlsoverview",
+                  "ECONTROLS-OVERVIEW"
+                );
+                // Close modal
+                wpw.tax.closeModal();
+              });
+            });
+          });
+      } else {
+        wpw.tax.global.dialogs.notify(
+          "Lockdown",
+          "Im Lockdown können keine Änderungen vorgenommen werden"
+        );
+      }
+    });
+
+    calcUtils.custom("openTQDoc", function (calcUtils) {
+      gCalcs.openDocument("T-DOCUMENTS", calcUtils);
+    });
+
+    calcUtils.custom("openEQDoc", function (calcUtils) {
+      gCalcs.openDocument("E-DOCUMENTS", calcUtils);
+    });
+
+    calcUtils.custom("openTCDoc", function (calcUtils) {
+      gCalcs.openDocument("TC-DOCS", calcUtils);
+    });
+
+    calcUtils.custom("openECDoc", function (calcUtils) {
+      gCalcs.openDocument("EC-DOCS", calcUtils);
+    });
+
+    calcUtils.custom("assignQueryDocuments", function (calcUtils) {
+      if (!lockdownStatus) {
+        wpw.tax.resetForm("selectquerydocuments");
+        wpw.tax.openModal("selectquerydocuments");
+      } else {
+        wpw.tax.global.dialogs.notify(
+          "Lockdown",
+          "Im Lockdown können keine Änderungen vorgenommen werden"
+        );
+      }
+    });
+
+    calcUtils.custom("assignRefDocs", function (calcUtils) {
+      if (!lockdownStatus) {
+        wpw.tax.resetForm("selectcontrolsdocuments");
+        wpw.tax.openModal("selectcontrolsdocuments");
+      } else {
+        wpw.tax.global.dialogs.notify(
+          "Lockdown",
+          "Im Lockdown können keine Änderungen vorgenommen werden"
+        );
+      }
+    });
+
+    calcUtils.custom("controlCardwHelp", function () {
+      const url =
+        "https://docu.audicon.net/CWCloud/Apps/SWS.pro/de/Content/Massnahmenkarte.htm";
+      // self for same window, blank for new window
+      window.open(url, "_blank");
+    });
+
+    calcUtils.custom("setAllActiveHelp", function () {
+      const url =
+        "https://docu.audicon.net/CWCloud/Apps/SWS.pro/de/Content/Aktive_Risiken_verbinden.htm";
+      // self for same window, blank for new window
+      window.open(url, "_blank");
+    });
+
+    calcUtils.custom("setAllActive", function (calcUtils) {
+      if (!lockdownStatus) {
+        wpw.tax.global.dialogs
+          .confirm(
+            "Maßnahme allen Risiken zuweisen",
+            "Es gibt weitere Risiken, für die diese Maßnahme ausgewählt werden kann. Möchten Sie diese Maßnahme für alle Risiken, bei denen dies in Betracht kommt, auswählen?&lt;br/>&lt;br/>Falls Sie diese Maßnahme für ein einzelnes Risiko später wieder deaktivieren, wählen Sie das entsprechende Risiko in der Risikoübersicht aus, wechseln Sie in die Registerkarte 'Maßnahmen' und entfernen Sie die Auswahl.&lt;br/>&lt;br/>Wir empfehlen, diese Funktion nur zu nutzen, wenn Sie sich sicher sind, dass diese Maßnahme für alle in der Tabelle aufgeführten Risiken ausgewählt werden soll. Falls Sie dies zunächst im Detail prüfen möchten, klicken Sie auf die Schaltfläche 'Nein' und führen Sie eine Einzelauswahl der Maßnahmen in den jeweiligen Risikokarten durch.",
+            "Ja",
+            "Nein"
+          )
+          .result.then(function () {
+            setAllControlsActive(calcUtils);
+          });
+      } else {
+        wpw.tax.global.dialogs.notify(
+          "Lockdown",
+          "Im Lockdown können keine Änderungen vorgenommen werden"
+        );
+      }
+    });
+
+    function setAllControlsActive(calcUtils) {
+      let table = calcUtils.field("NOT-CONNECTED-RISKS");
+      let riskIds = [];
+      for (let i = 0; i &lt; table.getRows().length; i++) {
+        const riskId = table.cell(i, 2).get();
+        riskIds.push(riskId);
+      }
+
+      // guid is the control id
+      const guid = calcUtils.field("C-GUID").get();
+      return wpw.tax
+        .getRisks()
+        .then((risks) => {
+          riskIds.forEach((riskId) => {
+            let risk = risks.find((risk) => risk.id === riskId);
+            let clonedRisk = wpw.utilities.clone(risk);
+            clonedRisk.properties.DE_activeControls =
+              clonedRisk.properties.DE_activeControls + "," + guid;
+            return wpw.tax.saveRisk(clonedRisk).then((res) => {
+              // to update the risks overview
+              // because now control is active in that risk, so we want to se the status as Ja
+              let table = calcUtils.field("risksoverview.RISKS-OVERVIEW");
+              for (let i = 0; i &lt; table.getRows().length; i++) {
+                const tableRiskId = table.cell(i, 7).get();
+                if (riskId === tableRiskId) {
+                  table.cell(i, 4).assign("Ja");
+                }
+              }
+            });
+          });
+        })
+        .then((res) => {
+          calcUtils.field("controlcard.NOT-CONNECTED-RISKS-ROWS").assign("");
+
+          // set risikoZugeordnet status to Ja
+          // this is needed to refresh the overriden title cell value if the title is overridden
+          const source = calcUtils.field("SOURCE").get();
+          //source will be T-CONTROLS when open from riskcard and CONTROLS-OVERVIEW when open from controlsoverview form
+          if (source === "CONTROLS-OVERVIEW") {
+            let table = calcUtils.field("controlsoverview.CONTROLS-OVERVIEW");
+            for (let i = 0; i &lt; table.getRows().length; i++) {
+              const controlId = table.cell(i, 6).get();
+              if (guid === controlId) {
+                table.cell(i, 5).assign("Ja");
+              }
+            }
+          } else if (source === "T-CONTROLS") {
+            // the cell in template level controls in riskcard need to show the true/assigned status
+            let table = calcUtils.field("riskcard.T-CONTROLS");
+            for (let i = 0; i &lt; table.getRows().length; i++) {
+              const controlId = table.cell(i, 4).get();
+              if (guid === controlId) {
+                table.cell(i, 2).set(true);
+              }
+            }
+          }
+
+          setTimeout(() => {
+            // relead assigned risks table
+            reloadRiskTable(calcUtils, guid);
+          }, 800);
+        });
+    }
+
+    function reloadRiskTable(calcUtils, controlId) {
+      wpw.tax.getControls().then((controls) => {
+        const control = controls.find((control) => control.id === controlId);
+        gCalcs.generateConnectedRisksTable(calcUtils, control);
+      });
+    }
+
+    calcUtils.custom("setInactive", function (calcUtils) {
+      if (!lockdownStatus) {
+        let guid = calcUtils.field("C-GUID").get();
+        wpw.tax.global.dialogs
+          .confirm(
+            "Inaktiv setzen",
+            "Möchten Sie die Maßnahme inaktiv setzen?",
+            "Ja",
+            "Nein"
+          )
+          .result.then(function () {
+            return wpw.tax.getControls().then((controls) => {
+              const control = controls.find((control) => control.id === guid);
+              // hide the active documents
+              let activeDocs = control.properties.DE_activeDocuments.split(",");
+              let assignedDocuments =
+                control.properties.DE_assignedDocuments.split(",");
+              activeDocs.forEach((docId) => {
+                // also remove the active queries reference from DE_assignedDocuments property
+                const index = assignedDocuments.indexOf(docId);
+                if (index > -1) {
+                  assignedDocuments.splice(index, 1);
+                } else {
+                  // remove the visibility for only those documents that are template level
+                  // engagement level documents dont need visibility settings
+                  gCalcs.documentsVisibility(docId, false);
+                }
+              });
+              let clonedControl = wpw.utilities.clone(control);
+              clonedControl.properties.DE_activeStatus = "0";
+              // The active controls id from the risk is already removed in riskcard calculations
+              // we have to set all the active documents to inactive
+              clonedControl.properties.DE_activeDocuments = "";
+              clonedControl.properties.DE_assignedDocuments =
+                assignedDocuments.join(",");
+              return wpw.tax.saveControl(clonedControl).then((res) => {
+                console.log("Control is now Inactive");
+                //calcUtils.field("C-ACTIVE-STATUS").assign("Nicht Aktiv");
+                gCalcs.extractControls(calcUtils);
+                // simply recreate that table
+                let table = calcUtils.field("T-DOCUMENTS");
+                for (let i = 0; i &lt; table.getRows().length; i++) {
+                  table.cell(i, 1).set(false);
+                  table.cell(i, 1).disabled(true);
+                  table.cell(i, 1).config("cannotOverride", true);
+                }
+                wpw.tax.closeModal();
+              });
+            });
+          });
+      } else {
+        wpw.tax.global.dialogs.notify(
+          "Lockdown",
+          "Im Lockdown können keine Änderungen vorgenommen werden"
+        );
+      }
+    });
+
+    calcUtils.custom("copyControl", function (calcUtils) {
+      if (!lockdownStatus) {
+        const guid = calcUtils.field("C-GUID").get();
+        return wpw.tax.getControls().then((controls) => {
+          const controlToBeCopied = controls.find(
+            (control) => control.id === guid
+          );
+          // To save new control
+          let newControl = new wpw.models.Control();
+          newControl.name = controlToBeCopied.name;
+          newControl.description = controlToBeCopied.description;
+          newControl.properties.DE_detdesc =
+            controlToBeCopied.properties.DE_detDesc;
+          newControl.properties.DE_controlType =
+            controlToBeCopied.properties.DE_controlType;
+          newControl.properties.DE_rPerson =
+            controlToBeCopied.properties.DE_rPerson;
+
+          newControl.properties.DE_activeDocuments = "";
+          newControl.properties.DE_activeStatus = "1";
+          newControl.properties.DE_templateLevel = "";
+          newControl.properties.DE_assignedDocuments = "";
+          return wpw.tax.saveControl(newControl).then((res) => {
+            console.log(
+              "control copied from " + controlToBeCopied.properties.DE_number
+            );
+            gCalcs.reloadTable(
+              calcUtils,
+              "controlsoverview",
+              "ECONTROLS-OVERVIEW",
+              calcUtils.field("CONTROL-TITLE").get()
+            );
+            //jump to the bottom of the page
+            var scrollingElement = document.scrollingElement || document.body;
+            scrollingElement.scrollTop = scrollingElement.scrollHeight;
+            wpw.tax.closeModal();
+          });
+        });
+      } else {
+        wpw.tax.global.dialogs.notify(
+          "Lockdown",
+          "Im Lockdown können keine Änderungen vorgenommen werden"
+        );
+      }
+    });
+
+    calcUtils.custom("openPYDoc", function (calcUtils) {
+      const row = calcUtils.fieldInfo.parentInfo.row;
+      let url = calcUtils.getCellValue("T-DOCUMENTS", row, 6);
+      window.open(url, "_blank");
+    });
+
+    // new fumction for rollforwarded queries
+    calcUtils.onUserInput(function (calcUtils, field) {
+      // to make a reference
+      let testField4 = calcUtils.form("controlcard").field("T-DOCUMENTS");
+      let controlId = calcUtils.field("C-GUID").get();
+      let userInputs = calcUtils.listUserInputs();
+      userInputs.forEach((input) => {
+        if (
+          input.formId === "CONTROLCARD" &amp;&amp;
+          input.fieldId === "T-DOCUMENTS" &amp;&amp;
+          input.colIndex == 4 &amp;&amp;
+          input.rowId
+        ) {
+          return wpw.tax.getControls().then((controls) => {
+            let control = controls.find((control) => control.id === controlId);
+            let clonedControl = wpw.utilities.clone(control);
+            let activeDocsArr =
+              clonedControl.properties.DE_activeDocuments.split(",");
+            if (!clonedControl.properties.hasOwnProperty("DE_queriesRF")) {
+              clonedControl.properties.DE_queriesRF = "";
+            }
+            let queriesRFArr = clonedControl.properties.DE_queriesRF.split(",");
+            const row = field("T-DOCUMENTS").rowIdToIndex(input.rowId);
+            const status = calcUtils.field("T-DOCUMENTS").cell(row, 4).get();
+            let guid = calcUtils.getCellValue("T-DOCUMENTS", row, 3);
+            // To update the active status of existing document from the row
+            if (status === true) {
+              const index = activeDocsArr.indexOf(guid);
+              if (index > -1) {
+                activeDocsArr.splice(index, 1);
+              }
+              // uncheck the col 3
+              field("T-DOCUMENTS").cell(row, 1).assign(false);
+              field("T-DOCUMENTS").cell(row, 1).disabled(false);
+              field("T-DOCUMENTS").cell(row, 1).config("cannotOverride", false);
+              // hide the active document
+              gCalcs.documentsVisibility(guid, false);
+              // add the queryId to rollforward property in control
+              if (!queriesRFArr.includes(guid)) {
+                queriesRFArr.push(guid);
+              }
+            } else {
+              // remove the queryId to rollforward property in control
+              const index = queriesRFArr.indexOf(guid);
+              if (index > -1) {
+                queriesRFArr.splice(index, 1);
+              }
+            }
+            let activeDocuments = activeDocsArr.join(",");
+            let queriesRF = queriesRFArr.join(",");
+            clonedControl.properties.DE_activeDocuments = activeDocuments;
+            clonedControl.properties.DE_queriesRF = queriesRF;
+            return wpw.tax.saveControl(clonedControl).then((res) => {
+              console.log("Control updated with active docs");
+              let table = calcUtils
+                .form("controlsoverview")
+                .field("CONTROLS-OVERVIEW");
+              gCalcs.refreshControlsOverviewTable(table, res, controlId);
+            });
+          });
+        }
+      });
+    }, "query");
+  });
+})();
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

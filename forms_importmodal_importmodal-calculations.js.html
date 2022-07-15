@@ -1,0 +1,451 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> forms/importmodal/importmodal-calculations.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"></div><div class="category"><h2>AgGrid</h2><h3>Classes</h3><ul><li><a href="CheckboxRenderer.html">CheckboxRenderer</a></li><li><a href="DetailsRenderer.html">DetailsRenderer</a></li><li><a href="Utils.html">Utils</a></li></ul></div><div class="category"><h2>Forms</h2><h3>Classes</h3><ul><li><a href="AssignedOverview.html">AssignedOverview</a></li><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="Classification.html">Classification</a></li><li><a href="Classification1.html">Classification1</a></li><li><a href="ControlCard.html">ControlCard</a></li><li><a href="ControlsLibrary.html">ControlsLibrary</a></li><li><a href="ControlsOverview.html">ControlsOverview</a></li><li><a href="DescriptionDialog.html">DescriptionDialog</a></li><li><a href="FooterForm.html">FooterForm</a></li><li><a href="ImportModal.html">ImportModal</a></li><li><a href="Logs.html">Logs</a></li><li><a href="NewRiskReport.html">NewRiskReport</a></li><li><a href="QueriesCockpit.html">QueriesCockpit</a></li><li><a href="RcList.html">RcList</a></li><li><a href="RefDocs.html">RefDocs</a></li><li><a href="RiskCard.html">RiskCard</a></li><li><a href="RiskLibrary.html">RiskLibrary</a></li><li><a href="RiskOverview.html">RiskOverview</a></li><li><a href="RiskReport.html">RiskReport</a></li><li><a href="RpeatForm.html">RpeatForm</a></li><li><a href="SaveQuestionere.html">SaveQuestionere</a></li><li><a href="SelectContacts.html">SelectContacts</a></li><li><a href="SelectControls.html">SelectControls</a></li><li><a href="SelectControlsDocuments.html">SelectControlsDocuments</a></li><li><a href="SelectDocuments.html">SelectDocuments</a></li><li><a href="SelectQueryDocuments.html">SelectQueryDocuments</a></li><li><a href="SendOverview.html">SendOverview</a></li><li><a href="ShowDocument.html">ShowDocument</a></li><li><a href="SWSDB.html">SWSDB</a></li></ul></div><div class="category"><h2>Miscmiscellaneous</h2><h3>Classes</h3><ul><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="ControlsOverviewRollForward.html">ControlsOverviewRollForward</a></li><li><a href="GCalcs.html">GCalcs</a></li><li><a href="GlobalConfigs.html">GlobalConfigs</a></li><li><a href="GlobalFile.html">GlobalFile</a></li><li><a href="RisksOverviewRollForward.html">RisksOverviewRollForward</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>forms/importmodal/importmodal-calculations.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Global iife: Import Modal
+ * @class ImportModal
+ * @category Forms
+ */
+(function () {
+  /* global _ */
+  const gCalcs = wpw.tax.de.global.functions.gCalcs;
+  wpw.tax.create.calcBlocks("importmodal", function (calcUtils) {
+    calcUtils.onFormLoad("importmodal", function (calcUtils) {
+      // set the tab index to 1
+      calcUtils.field("IMPORTMODAL-TAB-INDEX").assign("1");
+      calcUtils
+        .field("IMPORTMODAL-TABS")
+        .cell(0, 0)
+        .config("class", "de-cards-tabs-new");
+      calcUtils
+        .field("IMPORTMODAL-EDITOR")
+        .assign(
+          "&lt;br/>&lt;p>Bitte beachten Sie, dass für den Import von Risiken &lt;strong>Google Chrome&lt;/strong> als Browser vorausgesetzt wird.&lt;/p>&lt;ol>&lt;li>Laden Sie die Vorlagendatei herunter, indem Sie auf die Schaltfläche &lt;strong>Herunterladen&lt;/strong>&amp;#160;klicken.&lt;/li>&lt;li>Öffnen Sie die Datei in Microsoft Excel und erstellen Sie eine Kopie der Datei. Tragen Sie die zu importierenden Risiken entsprechend der vorgegebenen Spalten ein (Anordnung und Anzahl dürfen nicht verändert werden). Speichern Sie die Datei.&lt;/li>&lt;li>Klicken Sie auf die Schaltfläche &lt;strong>Hochladen&lt;/strong>, um die zuvor gespeicherte Datei mit den Risiken in die Risikoübersicht zu importieren.&lt;/li>&lt;/ol>"
+        );
+    });
+
+    calcUtils.custom("btnImportDescription", function (calcUtils) {
+      // set the tab index to 2
+      calcUtils.field("IMPORTMODAL-TAB-INDEX").assign("2");
+      calcUtils.field("IMPORTMODAL-TABS").cell(0, 0).config("class", "");
+      calcUtils
+        .field("IMPORTMODAL-TABS")
+        .cell(0, 1)
+        .config("class", "de-cards-tabs-new");
+    });
+
+    calcUtils.custom("btnImportModal", function (calcUtils) {
+      // set the tab index to 1
+      calcUtils.field("IMPORTMODAL-TAB-INDEX").assign("1");
+      calcUtils.field("IMPORTMODAL-TABS").cell(0, 1).config("class", "");
+      calcUtils
+        .field("IMPORTMODAL-TABS")
+        .cell(0, 0)
+        .config("class", "de-cards-tabs-new");
+    });
+    // export template
+    calcUtils.custom("exporttemplate", function (calcUtils) {
+      wpw.tax.de.exportTemplate();
+    });
+
+    //close button
+    calcUtils.custom("closeModal", function (calcUtils) {
+      wpw.tax.closeModal();
+    });
+
+    // import risk data
+    let dateInMS = "";
+    calcUtils.custom("importdatabtn", function (calcUtils) {
+      // find out user language
+      let lang = window.navigator.language;
+      let delimit;
+
+      if (lang === "de-DE") {
+        delimit = ";";
+      } else {
+        delimit = ",";
+      }
+      dateInMS = Date.now().toString();
+      let inputFile = $('&lt;input type="file" accept=".csv"/>'); // only select csv files
+      inputFile[0].onchange = function () {
+        wpw.tax.file.read(inputFile.get(0).files[0]).then((data) => {
+          const lines = data.split("\r\n");
+          const result = [];
+          const headers = lines[0].split(delimit);
+
+          if (
+            headers.length === 3 &amp;&amp;
+            headers.includes("ID") &amp;&amp;
+            headers.includes("Titel") &amp;&amp;
+            headers.includes("Beschreibung")
+          ) {
+            for (let i = 1; i &lt; lines.length; i++) {
+              if (!lines[i]) continue;
+              const obj = {};
+              let currentline = lines[i].split(delimit);
+
+              // issue if there is additional column,
+              // need to create a promise, if fails send an error msg
+              let temp = [];
+              if (currentline.length > 3) {
+                let b = [...currentline];
+                b.shift();
+                b.shift();
+                let c = b.join(delimit);
+                temp.push(currentline[0]);
+                temp.push(currentline[1]);
+                temp.push(c);
+                currentline = temp;
+              }
+              for (let j = 0; j &lt; 3; j++) {
+                let text = currentline[j];
+                if (text === undefined) continue;
+                text = text.replace(/^"/, "");
+                text = text.replace(/"$/m, "");
+                text = text.replace(/"{2}/g, '"');
+                obj[headers[j]] = text;
+              }
+              result.push(obj);
+            }
+            if (
+              result.some(
+                (e) =>
+                  e.Titel === undefined ||
+                  e.Titel === "" ||
+                  e.Titel.includes("|")
+              )
+            ) {
+              importErrorDialog();
+            } else if (result.some((e) => e.Titel.length > "4095")) {
+              longtextErrorDialog();
+            } else {
+              saveRisks(result, dateInMS).then((res) => {
+                refreshRisksOverviewTable(calcUtils, result);
+              });
+            }
+          } else {
+            importErrorDialog();
+          }
+        });
+      };
+      inputFile[0].click();
+    });
+
+    function importErrorDialog() {
+      wpw.tax.global.dialogs.error(
+        "Import der Risiken fehlgeschlagen",
+        'Die Datei, die Sie für den Import ausgewählt haben, ist fehlerhaft. Es konnten keine Risiken angelegt werden.&lt;/br>&lt;/br>Möglicherweise liegt die Datei in einer falschen Struktur vor. Bitte stellen Sie sicher, dass Ihre Datei der Struktur der Datei "VorlageRisikoimport.csv" entspricht, die als Vorlage zur Erfassung der Risiken zur Verfügung steht'
+      );
+    }
+    function longtextErrorDialog() {
+      wpw.tax.global.dialogs.error(
+        "Import der Risiken fehlgeschlagen",
+        "Ein Titel ist zu lang. Die Risiken können deshalb nicht importiert werden. Bitte überprüfen Sie die Länge der Titel und kürzen Sie diese entsprechend."
+      );
+    }
+    function refreshRisksOverviewTable(calcUtils, result) {
+      // Generate new risks based on changes
+      let eRisksArr = [];
+      wpw.tax.getRisks().then((risks) => {
+        risks.forEach((risk) => {
+          if (risk.properties.DE_templateLevel !== "1") {
+            let strActiveControls = risk.properties.DE_activeControls;
+            let activeControls = strActiveControls ? "Ja" : "Nein";
+            eRisksArr.push({
+              id: risk.properties.DE_number,
+              name: risk.name,
+              taxType: risk.properties.DE_taxType,
+              guid: risk.id,
+              activeControls: activeControls,
+            });
+          }
+        });
+        let sortedArr = _.sortBy(eRisksArr, "id");
+        let table = calcUtils.field("risksoverview.ERISKS-OVERVIEW");
+        // Clear the table if already rows are added, by removing each row
+        let tableLength = table.getRows().length;
+        for (let i = 0; i &lt; tableLength; i++) {
+          calcUtils.removeTableRow("risksoverview", "ERISKS-OVERVIEW", 0);
+        }
+        // add rows to the table
+        for (let i = 0; i &lt; sortedArr.length; i++) {
+          calcUtils.addTableRow("risksoverview", "ERISKS-OVERVIEW", i);
+          table.cell(i, 0).assign(sortedArr[i].id);
+          table.cell(i, 1).assign(sortedArr[i].name);
+          table.cell(i, 2).set(sortedArr[i].taxType);
+          table.cell(i, 3).set(sortedArr[i].activeControls);
+          table.cell(i, 5).set(sortedArr[i].guid);
+        }
+        //Close modal
+        closeModalAndJumpToBottom();
+        result.forEach((el) => {
+          let row = table
+            .getRows()
+            .find(
+              (row) =>
+                row[0].valueObj.value === el.ID &amp;&amp;
+                row[1].valueObj.value === el.Titel
+            );
+          const rowId = row[1].fieldInfo.row;
+          for (let i = 0; i &lt; row.length; i++) {
+            table.cell(rowId, i).config("class", "background-yellow");
+          }
+          setTimeout(function () {
+            for (let i = 0; i &lt; row.length; i++) {
+              table.cell(rowId, i).config("class", "");
+            }
+          }, 10000);
+        });
+      });
+    }
+
+    //delete imported risk
+    calcUtils.custom("deleteLastImported", function (calcUtils) {
+      let Ids = [];
+      wpw.tax.global.dialogs
+        .confirm(
+          "Zuletzt importierte Risiken löschen",
+          "Möchten Sie die während der aktuellen Sitzung importierten Risiken löschen?",
+          "Ja",
+          "Nein"
+        )
+        .result.then(function () {
+          wpw.tax
+            .getRisks()
+            .then((risks) => {
+              const importedRisks = risks.filter(
+                (risk) => risk.properties.DE_importedDate === dateInMS
+              );
+              importedRisks.forEach((risk) => {
+                Ids.push(risk.id);
+              });
+
+              return Ids;
+            })
+            .then((Ids) => {
+              wpw.tax
+                .deleteRisks(Ids)
+                .then((res) => {
+                  // if that risk id is assigned to any of the control, then remove it
+                  console.log("risks are deleted");
+                  gCalcs.reloadTable(
+                    calcUtils,
+                    "risksoverview",
+                    "ERISKS-OVERVIEW"
+                  );
+                  closeModalAndJumpToBottom();
+                })
+                .catch((e) => {
+                  // console.log("There are no imported Risks");
+                  wpw.tax.global.dialogs.notify(
+                    "Keine zu löschenden Risiken vorhanden",
+                    "Es konnten keine Risiken gefunden werden, die während der aktuellen Sitzung importiert wurden."
+                  );
+                  //closeModalAndJumpToBottom();
+                });
+            });
+        });
+    });
+
+    //delete imported risk
+    calcUtils.custom("deleteAllImported", function (calcUtils) {
+      let Ids = [];
+
+      wpw.tax.global.dialogs
+        .confirm(
+          "Alle importierten Risiken löschen",
+          "Möchten Sie alle importierten Risiken löschen?",
+          "Ja",
+          "Nein"
+        )
+        .result.then(function () {
+          wpw.tax
+            .getRisks()
+            .then((risks) => {
+              const importedRisks = risks.filter(
+                (risk) => risk.properties.DE_imported === "Ja"
+              );
+              importedRisks.forEach((risk) => {
+                Ids.push(risk.id);
+              });
+
+              return Ids;
+            })
+            .then((Ids) => {
+              wpw.tax
+                .deleteRisks(Ids)
+                .then((res) => {
+                  // if that risk id is assigned to any of the control, then remove it
+                  console.log("risks are deleted");
+                  gCalcs.reloadTable(
+                    calcUtils,
+                    "risksoverview",
+                    "ERISKS-OVERVIEW"
+                  );
+                  closeModalAndJumpToBottom();
+                })
+                .catch((e) => {
+                  //console.log("There are no imported Risks");
+                  wpw.tax.global.dialogs.notify(
+                    "Es konnten keine Risiken gelöscht werden",
+                    "Es konnten keine importierten Risiken zum Löschen gefunden werden."
+                  );
+                  //closeModalAndJumpToBottom();
+                });
+            });
+        });
+    });
+
+    async function saveRisks(result, dateInMS) {
+      for (let i = 0; i &lt; result.length; i++) {
+        // To save new risk
+        let newRisk = new wpw.models.RiskModel();
+        newRisk.properties.DE_number = result[i].ID;
+        newRisk.name = result[i].Titel;
+        newRisk.description = result[i].Beschreibung;
+        newRisk.properties.DE_detdesc = "";
+        newRisk.properties.DE_riskType = "";
+        newRisk.properties.DE_taxType = "";
+        newRisk.properties.DE_businessArea = "";
+        newRisk.properties.DE_probabilityOfOccurance = "";
+        newRisk.properties.DE_possibleAmountOfDamage = "";
+        newRisk.properties.DE_riskLevel = "";
+        newRisk.properties.DE_activeStatus = "";
+        newRisk.properties.DE_activeControls = "";
+        newRisk.properties.DE_relevant = "";
+        newRisk.properties.DE_templateLevel = "";
+        newRisk.properties.DE_assignedDocuments = "";
+        newRisk.properties.DE_importedDate = dateInMS;
+        newRisk.properties.DE_imported = "Ja";
+        await wpw.tax.saveRisk(newRisk);
+      }
+      return;
+    }
+
+    function closeModalAndJumpToBottom() {
+      wpw.tax.closeModal();
+      var scrollingElement = document.scrollingElement || document.body;
+      scrollingElement.scrollTop = scrollingElement.scrollHeight;
+    }
+    calcUtils.custom("importmodalHelp", function () {
+      const url =
+        "https://docu.audicon.net/CWCloud/Apps/SWS.pro/de/Content/Risikouebersicht.htm";
+      // self for same window, blank for new window
+      window.open(url, "_blank");
+    });
+  });
+})();
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

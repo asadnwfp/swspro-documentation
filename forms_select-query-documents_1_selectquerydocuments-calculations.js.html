@@ -1,0 +1,315 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> forms/select-query-documents/1/selectquerydocuments-calculations.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"></div><div class="category"><h2>AgGrid</h2><h3>Classes</h3><ul><li><a href="CheckboxRenderer.html">CheckboxRenderer</a></li><li><a href="DetailsRenderer.html">DetailsRenderer</a></li><li><a href="Utils.html">Utils</a></li></ul></div><div class="category"><h2>Forms</h2><h3>Classes</h3><ul><li><a href="AssignedOverview.html">AssignedOverview</a></li><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="Classification.html">Classification</a></li><li><a href="Classification1.html">Classification1</a></li><li><a href="ControlCard.html">ControlCard</a></li><li><a href="ControlsLibrary.html">ControlsLibrary</a></li><li><a href="ControlsOverview.html">ControlsOverview</a></li><li><a href="DescriptionDialog.html">DescriptionDialog</a></li><li><a href="FooterForm.html">FooterForm</a></li><li><a href="ImportModal.html">ImportModal</a></li><li><a href="Logs.html">Logs</a></li><li><a href="NewRiskReport.html">NewRiskReport</a></li><li><a href="QueriesCockpit.html">QueriesCockpit</a></li><li><a href="RcList.html">RcList</a></li><li><a href="RefDocs.html">RefDocs</a></li><li><a href="RiskCard.html">RiskCard</a></li><li><a href="RiskLibrary.html">RiskLibrary</a></li><li><a href="RiskOverview.html">RiskOverview</a></li><li><a href="RiskReport.html">RiskReport</a></li><li><a href="RpeatForm.html">RpeatForm</a></li><li><a href="SaveQuestionere.html">SaveQuestionere</a></li><li><a href="SelectContacts.html">SelectContacts</a></li><li><a href="SelectControls.html">SelectControls</a></li><li><a href="SelectControlsDocuments.html">SelectControlsDocuments</a></li><li><a href="SelectDocuments.html">SelectDocuments</a></li><li><a href="SelectQueryDocuments.html">SelectQueryDocuments</a></li><li><a href="SendOverview.html">SendOverview</a></li><li><a href="ShowDocument.html">ShowDocument</a></li><li><a href="SWSDB.html">SWSDB</a></li></ul></div><div class="category"><h2>Miscmiscellaneous</h2><h3>Classes</h3><ul><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="ControlsOverviewRollForward.html">ControlsOverviewRollForward</a></li><li><a href="GCalcs.html">GCalcs</a></li><li><a href="GlobalConfigs.html">GlobalConfigs</a></li><li><a href="GlobalFile.html">GlobalFile</a></li><li><a href="RisksOverviewRollForward.html">RisksOverviewRollForward</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>forms/select-query-documents/1/selectquerydocuments-calculations.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Global iife: Select Query Documents
+ * @class SelectQueryDocuments
+ * @category Forms
+ */
+(function () {
+  /* global _ */
+  // define global object
+  const gCalcs = wpw.tax.de.global.functions.gCalcs;
+  wpw.tax.create.calcBlocks("selectquerydocuments", function (calcUtils) {
+    // creates table in the form
+    function populateTable(calcUtils, tableArr, formId, tableId) {
+      let sortedArr = _.sortBy(tableArr, "name");
+      let table = calcUtils.field(tableId);
+      // Clear the table if already rows are added, by removing each row
+      let tableLength = table.getRows().length;
+      for (let i = 0; i &lt; tableLength; i++) {
+        calcUtils.removeTableRow(formId, tableId, 0);
+      }
+      // add rows to the table
+      for (var i = 0; i &lt; sortedArr.length; i++) {
+        calcUtils.addTableRow(formId, tableId, i);
+        table.cell(i, 0).label(sortedArr[i].name);
+        table.cell(i, 1).set(sortedArr[i].status);
+        table.cell(i, 2).assign(sortedArr[i].guid);
+      }
+    }
+
+    function getEngagementLevelQueries() {
+      return wpw.tax.getDocuments().then((docs) => {
+        let queries = [];
+        docs.forEach((doc) => {
+          // filter query documents
+          if (doc.type === "query") {
+            // filter eng level queries
+            if (doc.origin === null) {
+              queries.push(doc);
+            } else if (
+              //!doc.origin.hasOwnProperty("type") ||
+              doc.origin.type !== "template"
+            ) {
+              queries.push(doc);
+            } else {
+              //console.log("temp level queries not needed");
+            }
+          } else {
+            //console.log("doc is not a query");
+          }
+        });
+        return queries;
+      });
+    }
+
+    // create a data that contains query documents
+    function extractDocuments(calcUtils) {
+      let controlDocuments = [];
+      return getEngagementLevelQueries().then((docs) => {
+        docs.forEach((doc) => {
+          // To find the documents that are already assigned to that control or not
+          const guid = calcUtils.form("controlcard").field("C-GUID").get();
+          wpw.tax.getControls().then((controls) => {
+            let docsIdArr = [];
+            const control = controls.find((control) => control.id === guid);
+            if (
+              control.properties.hasOwnProperty("DE_assignedDocuments") &amp;&amp;
+              control.properties.DE_assignedDocuments !== ""
+            ) {
+              docsIdArr = control.properties.DE_assignedDocuments.split(",");
+            }
+
+            // assign the stuatus
+            const status = docsIdArr.includes(doc.id);
+            controlDocuments.push({
+              name: doc.name,
+              status: status,
+              guid: doc.id,
+            });
+            // send data to create a table
+            populateTable(
+              calcUtils,
+              controlDocuments,
+              "selectquerydocuments",
+              "QUERY-DOCS"
+            );
+          });
+        });
+      });
+    }
+
+    // first function to execute
+    calcUtils.onFormLoad("selectquerydocuments", function (calcUtils) {
+      // set the tab index to 1
+      calcUtils.field("QUERYDOCUMENTS-TAB-INDEX").assign("1");
+      calcUtils.field("QUERYDOCUMENTS-TABS").cell(0, 1).config("class", "");
+      calcUtils
+        .field("QUERYDOCUMENTS-TABS")
+        .cell(0, 0)
+        .config("class", "de-cards-tabs-new");
+      //assign text to einfuhrungs tab
+      calcUtils
+        .field("QUERYDOCUMENTS-EDITOR")
+        .assign(
+          "In diesem Dialog können Sie der Maßnahme Abfragen zuordnen. Diese Abfragen müssen zuvor in der Dokumentenübersicht anlegt werden.&lt;/br>Gehen Sie zunächst in die Dokumentenübersicht (Registerkarte Dokumente). Wählen Sie anschließend den Ordner aus, in welchem Sie die Abfrage hinzufügen möchten. Wir empfehlen hierzu den Ordner 'Abfragen' innerhalb des gleichnamigen Bereichs. Streichen Sie mit der Maus über den Ordner und Sie sehen auf der rechten Seite ein (+)-Symbol. Wählen Sie dieses aus und anschließend die Option 'Abfrage'.&lt;/br>Nachdem Sie die Erstellung der Abfrage abgeschlossen haben, kehren Sie in diesen Dialog hier zurück und nehmen die Zuordnung der neu erstellten Abfrage zu der Maßnahme vor."
+        );
+      return extractDocuments(calcUtils);
+    });
+
+    calcUtils.custom("btnQueryDocuments", function (calcUtils) {
+      // set the tab index to 1
+      calcUtils.field("QUERYDOCUMENTS-TAB-INDEX").assign("1");
+      calcUtils.field("QUERYDOCUMENTS-TABS").cell(0, 1).config("class", "");
+      calcUtils
+        .field("QUERYDOCUMENTS-TABS")
+        .cell(0, 0)
+        .config("class", "de-cards-tabs-new");
+    });
+
+    calcUtils.custom("btnQueryDocumentsDescription", function (calcUtils) {
+      // set the tab index to 2
+      calcUtils.field("QUERYDOCUMENTS-TAB-INDEX").assign("2");
+      calcUtils.field("QUERYDOCUMENTS-TABS").cell(0, 0).config("class", "");
+      calcUtils
+        .field("QUERYDOCUMENTS-TABS")
+        .cell(0, 1)
+        .config("class", "de-cards-tabs-new");
+    });
+
+    // Custom function to save the query documents to the control
+    calcUtils.custom("saveQueryDocuments", function (calcUtils) {
+      const guid = calcUtils.form("controlcard").field("C-GUID").get();
+      let tableRows = calcUtils.field("QUERY-DOCS").getRows();
+
+      wpw.tax.getControls().then((controls) => {
+        const control = controls.find((control) => control.id === guid);
+        if (!control.properties.hasOwnProperty("DE_assignedDocuments")) {
+          control.properties.DE_assignedDocuments = "";
+        }
+        const clonedControl = wpw.utilities.clone(control);
+        let docIds = [];
+        let activeDocIds = [];
+        // for assigned documents, this contains all documents from engagement level, e.g. query documents and others
+        if (clonedControl.properties.DE_assignedDocuments !== "") {
+          docIds = clonedControl.properties.DE_assignedDocuments.split(",");
+        }
+        // to set query documents as active
+        if (clonedControl.properties.DE_activeDocuments !== "") {
+          activeDocIds = clonedControl.properties.DE_activeDocuments.split(",");
+        }
+        for (let i = 0; i &lt; tableRows.length; i++) {
+          const status = tableRows[i][1].get();
+          const dId = tableRows[i][2].get();
+          // if the checkbox is checked this document id need to be saved
+          if (status === true) {
+            // For all documents
+            if (!docIds.includes(dId)) {
+              docIds.push(dId);
+            }
+            // for query documents to set active
+            if (!activeDocIds.includes(dId)) {
+              activeDocIds.push(dId);
+            }
+          }
+          // if the checkbox is not checked or it is chnaged from previously checked to uncheck
+          // we need to remove that id if exists already
+          else {
+            // for all documents
+            const index = docIds.indexOf(dId);
+            if (index > -1) {
+              docIds.splice(index, 1);
+            }
+            //for query documents only
+            const queryIndex = activeDocIds.indexOf(dId);
+            if (queryIndex > -1) {
+              activeDocIds.splice(queryIndex, 1);
+            }
+          }
+          clonedControl.properties.DE_assignedDocuments = docIds.join();
+          clonedControl.properties.DE_activeDocuments = activeDocIds.join();
+        }
+        wpw.tax.saveControl(clonedControl).then((res) => {
+          console.log("saved control documents");
+          // recall the table
+          gCalcs.generateEngDocs(
+            calcUtils,
+            clonedControl,
+            "controlcard",
+            "E-DOCUMENTS"
+          );
+          // to refresh the controls overview page
+          const source = calcUtils.form("controlcard").field("SOURCE").get();
+          const table = calcUtils.form("controlsoverview").field(source);
+          gCalcs.refreshControlsOverviewTable(table, res, guid);
+        });
+      });
+      wpw.tax.closeModal();
+    });
+  });
+})();
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

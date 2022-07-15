@@ -1,0 +1,529 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> forms/risks-library/1/riskslibrary-calculations.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"></div><div class="category"><h2>AgGrid</h2><h3>Classes</h3><ul><li><a href="CheckboxRenderer.html">CheckboxRenderer</a></li><li><a href="DetailsRenderer.html">DetailsRenderer</a></li><li><a href="Utils.html">Utils</a></li></ul></div><div class="category"><h2>Forms</h2><h3>Classes</h3><ul><li><a href="AssignedOverview.html">AssignedOverview</a></li><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="Classification.html">Classification</a></li><li><a href="Classification1.html">Classification1</a></li><li><a href="ControlCard.html">ControlCard</a></li><li><a href="ControlsLibrary.html">ControlsLibrary</a></li><li><a href="ControlsOverview.html">ControlsOverview</a></li><li><a href="DescriptionDialog.html">DescriptionDialog</a></li><li><a href="FooterForm.html">FooterForm</a></li><li><a href="ImportModal.html">ImportModal</a></li><li><a href="Logs.html">Logs</a></li><li><a href="NewRiskReport.html">NewRiskReport</a></li><li><a href="QueriesCockpit.html">QueriesCockpit</a></li><li><a href="RcList.html">RcList</a></li><li><a href="RefDocs.html">RefDocs</a></li><li><a href="RiskCard.html">RiskCard</a></li><li><a href="RiskLibrary.html">RiskLibrary</a></li><li><a href="RiskOverview.html">RiskOverview</a></li><li><a href="RiskReport.html">RiskReport</a></li><li><a href="RpeatForm.html">RpeatForm</a></li><li><a href="SaveQuestionere.html">SaveQuestionere</a></li><li><a href="SelectContacts.html">SelectContacts</a></li><li><a href="SelectControls.html">SelectControls</a></li><li><a href="SelectControlsDocuments.html">SelectControlsDocuments</a></li><li><a href="SelectDocuments.html">SelectDocuments</a></li><li><a href="SelectQueryDocuments.html">SelectQueryDocuments</a></li><li><a href="SendOverview.html">SendOverview</a></li><li><a href="ShowDocument.html">ShowDocument</a></li><li><a href="SWSDB.html">SWSDB</a></li></ul></div><div class="category"><h2>Miscmiscellaneous</h2><h3>Classes</h3><ul><li><a href="BusinessArea.html">BusinessArea</a></li><li><a href="ControlsOverviewRollForward.html">ControlsOverviewRollForward</a></li><li><a href="GCalcs.html">GCalcs</a></li><li><a href="GlobalConfigs.html">GlobalConfigs</a></li><li><a href="GlobalFile.html">GlobalFile</a></li><li><a href="RisksOverviewRollForward.html">RisksOverviewRollForward</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>forms/risks-library/1/riskslibrary-calculations.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Global iife: Risk Library
+ * @class RiskLibrary
+ * @category Forms
+ */
+(function () {
+  /* global _ */
+  // define global object
+  const gCalcs = wpw.tax.de.global.functions.gCalcs;
+  wpw.tax.create.calcBlocks("riskslibrary", function (calcUtils) {
+    function populateTable(calcUtils, tableArr, formId, tableId) {
+      let table = calcUtils.form(formId).field(tableId);
+      // Clear the table if already rows are added, by removing each row
+      let tableLength = table.getRows().length;
+      for (let i = 0; i &lt; tableLength; i++) {
+        calcUtils.removeTableRow(formId, tableId, 0);
+      }
+      // add rows to the table
+      let sortedArr = _.sortBy(tableArr, "id");
+      for (var i = 0; i &lt; sortedArr.length; i++) {
+        calcUtils.addTableRow(formId, tableId, i);
+        table.cell(i, 0).assign(sortedArr[i].id);
+        table.cell(i, 1).assign(sortedArr[i].name);
+        table.cell(i, 2).assign(sortedArr[i].taxType);
+        table.cell(i, 5).assign(sortedArr[i].guid);
+      }
+    }
+
+    function extractRisks(calcUtils) {
+      // create an array to store the risks extracted from the database
+      let riskArr = [];
+      let eRiskArr = [];
+      wpw.tax.getRisks().then((risks) => {
+        risks.forEach(function (risk) {
+          if (risk.properties.DE_templateLevel === "1") {
+            // To find if the risk is relevant or not
+
+            riskArr.push({
+              id: risk.properties.DE_number,
+              name: risk.name,
+              taxType: risk.properties.DE_taxType,
+              guid: risk.id,
+            });
+          } else {
+            eRiskArr.push({
+              id: risk.properties.DE_number,
+              name: risk.name,
+            });
+          }
+        });
+        // send the risks extracted to populate the table
+        let sortedArr = _.sortBy(riskArr, "id");
+        let i = 0;
+        while (sortedArr.length) {
+          sortedArr.splice(0, 30);
+          let label = i + 1 + " (30 risks)";
+          let table = calcUtils.field("INDEX");
+          calcUtils.addTableRow("riskslibrary", "INDEX", i);
+          table.cell(i, 0).assign(label);
+          i++;
+        }
+        //populateTable(calcUtils, riskArr, "riskslibrary", "RISKS-LIBRARY");
+        populateTable(calcUtils, eRiskArr, "riskslibrary", "ERISKS-LIBRARY");
+      });
+    }
+
+    function removeTableRows(calcUtils) {
+      // Clear the table by removing each row
+      let tableLength = calcUtils.field("RISKS-LIBRARY").getRows().length;
+      for (let i = 0; i &lt; tableLength; i++) {
+        calcUtils.removeTableRow("riskslibrary", "RISKS-LIBRARY", 0);
+      }
+      tableLength = calcUtils.field("ERISKS-LIBRARY").getRows().length;
+      for (let i = 0; i &lt; tableLength; i++) {
+        calcUtils.removeTableRow("riskslibrary", "ERISKS-LIBRARY", 0);
+      }
+    }
+
+    calcUtils.onFormLoad("riskslibrary", function (calcUtils) {
+      extractRisks(calcUtils);
+    });
+
+    calcUtils.custom("saveRisksLibrary", function (calcUtils) {
+      let tableRows = calcUtils.field("RISKS-LIBRARY").getRows();
+      for (let i = 0; i &lt; tableRows.length; i++) {
+        // check if risk already exists , by comparing the number property from the tableRows and the risks property number
+        let num = tableRows[i][0].get();
+        wpw.tax.getRisks().then((risks) => {
+          let riskNumbers = [];
+          for (let i = 0; i &lt; risks.length; i++) {
+            riskNumbers.push(risks[i].properties.DE_number);
+          }
+          const riskExists = riskNumbers.indexOf(num) > -1;
+          if (!riskExists) {
+            // To save new risk
+            let newRisk = new wpw.models.RiskModel();
+            newRisk.properties.DE_number = tableRows[i][0].get();
+            newRisk.name = tableRows[i][1].get();
+            //newRisk.description = tableRows[i][2].get();
+            newRisk.properties.DE_detdesc = "";
+            newRisk.properties.DE_templateLevel = "1";
+            newRisk.properties.DE_taxType = tableRows[i][2].get();
+            newRisk.properties.DE_activeStatus = "0";
+            newRisk.properties.DE_activeControls = "";
+            newRisk.properties.DE_relevant = "";
+            newRisk.properties.DE_assignedDocuments = "";
+            wpw.tax.saveRisk(newRisk).then((res) => {
+              console.log("risk saved");
+            });
+          }
+        });
+      }
+    });
+
+    calcUtils.custom("deleteRisks", function (calcUtils) {
+      if (confirm("Do you want to remove all Risks ?")) {
+        wpw.tax.getRisks().then((res) => {
+          let risks = [];
+          for (let i = 0; i &lt; res.length; i++) {
+            risks.push(res[i].id);
+          }
+          wpw.tax.deleteRisks(risks).then((res) => {
+            removeTableRows(calcUtils);
+          });
+          alert("Risks removed Successfully!");
+        });
+      } else {
+        alert("Cannot able to remove the risks");
+      }
+    });
+
+    calcUtils.custom("editRisk", function (calcUtils) {
+      wpw.tax.resetForm("riskcard");
+      openRiskCard(calcUtils);
+    });
+
+    calcUtils.custom("delete", function (calcUtils) {
+      const row = calcUtils.fieldInfo.row;
+      let guid = calcUtils.getCellValue("RISKS-LIBRARY", row, 5);
+      if (confirm("Do you want to delete the risk?")) {
+        wpw.tax.getRisks().then((risks) => {
+          const risk = risks.find((risk) => risk.id === guid);
+          wpw.tax.deleteRisks([risk.id]).then((res) => {
+            console.log("risk removed");
+            extractRisks(calcUtils);
+          });
+        });
+      } else {
+        alert("Cannot able to remove the risk");
+      }
+    });
+
+    // Risk card calculations
+    function openRiskCard(calcUtils) {
+      // Store the controls
+      let controlsMap = new Map();
+      wpw.tax.getControls().then((controls) => {
+        controls.forEach(function (control) {
+          controlsMap.set(control.id, control);
+        });
+        const form = calcUtils.form("riskcard");
+        const row = calcUtils.fieldInfo.row;
+        let guid = calcUtils.getCellValue("RISKS-LIBRARY", row, 5);
+        wpw.tax.getRisks().then((risks) => {
+          let risk = risks.find((risk) => risk.id === guid);
+          form.field("GUID").assign(risk.id);
+          form.field("RISK-TITLE").assign(risk.name);
+          form.field("RISK-NUMBER").assign(risk.properties.DE_number);
+          form.field("RISK-DESCRIPTION").set(risk.description);
+          form.field("RISK-DETDESC").set(risk.properties.DE_detdesc);
+          form.field("RISK-TYPE").assign(risk.properties.DE_riskType);
+          form.field("TAX-TYPE").assign(risk.properties.DE_taxType);
+          form.field("BA").assign(risk.properties.DE_businessArea);
+          form.field("LS").assign(risk.properties.DE_legalSource);
+          form.field("ALS").assign(risk.properties.DE_additionalLegalSource);
+          form.field("POO").assign(risk.properties.DE_probabilityOfOccurance);
+          form.field("PAOD").assign(risk.properties.DE_possibleAmountOfDamage);
+          form.field("RL").assign(risk.properties.DE_riskLevel);
+
+          // Risk card also have the fields for active and relevant risks
+          // We can find this status from the risk properties
+          // Also change text to show on the risk card
+          let activeStatus, relevantStatus;
+          // To check activeStatus of risk
+          if (risk.properties.DE_activeStatus === "1") {
+            activeStatus = "Aktiv";
+          } else {
+            activeStatus = "Nicht Aktiv";
+          }
+
+          // to check relevantStatus of risk
+          if (risk.properties.DE_relevant === "Ja") {
+            relevantStatus = "Relevant";
+          } else {
+            relevantStatus = "Nicht Relevant";
+          }
+
+          // This is risk library so every field can be overriden
+          form.field("RISK-TYPE").disabled(false);
+          form.field("RISK-TYPE").setCannotOverride(false);
+          form.field("BA").disabled(false);
+          form.field("BA").setCannotOverride(false);
+          form.field("POO").disabled(false);
+          form.field("POO").setCannotOverride(false);
+          form.field("PAOD").disabled(false);
+          form.field("PAOD").setCannotOverride(false);
+          form.field("RL").disabled(false);
+          form.field("RL").setCannotOverride(false);
+          form.field("RISK-TITLE").disabled(false);
+          form.field("RISK-TITLE").setCannotOverride(false);
+          form.field("RISK-DESCRIPTION").disabled(false);
+          form.field("RISK-DESCRIPTION").setCannotOverride(false);
+          form.field("TAX-TYPE").disabled(false);
+          form.field("TAX-TYPE").setCannotOverride(false);
+          form.field("RISK-NUMBER").disabled(false);
+          form.field("RISK-NUMBER").setCannotOverride(false);
+          form.field("RISK-TITLE").disabled(false);
+          form.field("RISK-TITLE").setCannotOverride(false);
+          form.field("RISK-DESCRIPTION").disabled(false);
+          form.field("RISK-DESCRIPTION").disabled(false);
+          form.field("RISK-DESCRIPTION").setCannotOverride(false);
+          form.field("TAX-TYPE").disabled(false);
+          form.field("TAX-TYPE").setCannotOverride(false);
+          form.field("RISK-NUMBER").disabled(false);
+          form.field("RISK-NUMBER").setCannotOverride(false);
+
+          // find the template level properties
+          if (risk.properties.DE_templateLevel === "1") {
+            form.field("ACTIVE-STATUS").assign(activeStatus);
+            form.field("RELEVANT-STATUS").assign(relevantStatus);
+            form.field("ORIGIN").assign("Standardrisiko");
+          }
+          // others would be engagement level risks
+          else {
+            form.field("ACTIVE-STATUS").assign("");
+            form.field("RELEVANT-STATUS").assign("");
+            form.field("ORIGIN").assign("Individuelles Risiko");
+          }
+
+          // Adding controls related to that risk from the template mapping
+          let tempControlsArr = [];
+          let engControlsArr = [];
+          let activeControlsArr = [];
+          // Find that risk has contorls active
+          if (
+            risk.properties.DE_templateLevel === "1" &amp;&amp;
+            risk.properties.DE_activeControls !== ""
+          ) {
+            activeControlsArr = risk.properties.DE_activeControls.split(",");
+          }
+          // find if any controls are assigned to the risk
+          if (risk.controls.length > 0) {
+            risk.controls.forEach(function (rCon) {
+              var cControl = controlsMap.get(rCon);
+              if (cControl.properties.DE_templateLevel === "1") {
+                let cId = activeControlsArr.find((res) => res === cControl.id);
+                if (activeControlsArr.indexOf(cId) > -1) {
+                  tempControlsArr.push({
+                    id: cControl.properties.DE_number,
+                    name: cControl.name,
+                    active: true,
+                    guid: cControl.id,
+                  });
+                } else {
+                  tempControlsArr.push({
+                    id: cControl.properties.DE_number,
+                    name: cControl.name,
+                    active: "",
+                    guid: cControl.id,
+                  });
+                }
+              } else {
+                engControlsArr.push({
+                  id: cControl.properties.DE_number,
+                  name: cControl.name,
+                  guid: cControl.id,
+                });
+              }
+            });
+            // populateTable(calcUtils, tempControlsArr, "riskcard", "T-CONTROLS");
+            // populateTable(calcUtils, engControlsArr, "riskcard", "E-CONTROLS");
+            gCalcs.generateTable(
+              calcUtils,
+              tempControlsArr,
+              "riskcard",
+              "T-CONTROLS"
+            );
+            gCalcs.generateTable(
+              calcUtils,
+              engControlsArr,
+              "riskcard",
+              "E-CONTROLS"
+            );
+          }
+
+          // Disable the controls active checkbox if the risk is not active
+          if (activeStatus !== "Aktiv") {
+            let table = wpw.tax.form("riskcard").field("T-CONTROLS");
+            for (let i = 0; i &lt; table.getRows().length; i++) {
+              table.cell(i, 2).disabled(true);
+              table.cell(i, 2).config("cannotOverride", true);
+            }
+          }
+          // find if a single risk has any documents attached to it
+          if (risk.attachables.count() > 0) {
+            // find all the documents on documents surfacce and put in into a map
+            wpw.tax.getDocuments().then((docs) => {
+              let documentsMap = new Map();
+              docs.forEach(function (doc) {
+                documentsMap.set(doc.id, doc);
+              });
+              let tempDocsArr = []; // this will take all the documents associated to a single risk
+              // remember these documents are not directly referenced here, they have a separate id in attachables model,
+              // so we have to look for the id of attachable and then look for the link id
+              //(here link property inside attachable has the actual document id)
+              // id here is just a link of attachable model
+              Object.keys(risk.attachables).forEach((id) => {
+                // find the document id from the attachable id
+                try {
+                  let docId = risk.attachables[id].link;
+                  const cDocument = documentsMap.get(docId);
+                  tempDocsArr.push({
+                    name: cDocument.name,
+                    guid: cDocument.id,
+                  });
+                } catch (e) {
+                  console.log(
+                    "the attached document is not found for the risk " +
+                      risk.name
+                  );
+                }
+                //populateTable(calcUtils, tempDocsArr, "riskcard", "T-DOCS");
+                gCalcs.generateTable(
+                  calcUtils,
+                  tempDocsArr,
+                  "riskcard",
+                  "T-DOCS"
+                );
+              });
+            });
+          }
+          // individual docs from engagement level
+          let assignedDocIds = [];
+          let engDocsArr = [];
+          if (
+            risk.properties.hasOwnProperty("DE_assignedDocuments") &amp;&amp;
+            risk.properties.DE_assignedDocuments !== ""
+          ) {
+            assignedDocIds = risk.properties.DE_assignedDocuments.split(",");
+          }
+          // look for the documents from the above ids
+          wpw.tax.getDocuments().then((documents) => {
+            for (let i = 0; i &lt; assignedDocIds.length; i++) {
+              try {
+                let doc = documents.find((doc) => doc.id === assignedDocIds[i]);
+                engDocsArr.push({
+                  name: doc.name,
+                  guid: doc.id,
+                });
+              } catch (e) {
+                console.log(
+                  "the document is not found for the id " + assignedDocIds[i]
+                );
+              }
+            }
+            //populateTable(calcUtils, engDocsArr, "riskcard", "E-DOCS");
+            gCalcs.generateTable(calcUtils, engDocsArr, "riskcard", "E-DOCS");
+          });
+        });
+        wpw.tax.openModal("riskcard");
+      });
+    }
+
+    calcUtils.custom("rangedRisks", function (calcUtils) {
+      const rangedRow = calcUtils.fieldInfo.row;
+      const table = calcUtils.field("INDEX");
+      table.cell(rangedRow, 0).config("class", "background-yellow");
+
+      let risksArr = [];
+      wpw.tax.getRisks().then((risks) => {
+        risks.forEach(function (risk) {
+          if (risk.properties.DE_templateLevel === "1") {
+            risksArr.push({
+              id: risk.properties.DE_number,
+              name: risk.name,
+              description: risk.description,
+              taxType: risk.properties.DE_taxType,
+              guid: risk.id,
+            });
+          }
+        });
+        let sortedArr = _.sortBy(risksArr, "id");
+        let i = 0;
+        let newArr = [];
+        while (sortedArr.length) {
+          newArr.push(sortedArr.splice(0, 30));
+          i++;
+        }
+        for (let j = 0; j &lt; newArr.length; j++) {
+          if (j === rangedRow) {
+            populateTable(
+              calcUtils,
+              newArr[j],
+              "riskslibrary",
+              "RISKS-LIBRARY"
+            );
+          }
+        }
+      });
+    });
+  });
+})();
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

@@ -1,0 +1,373 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> assignedoverview-calculations.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"></div><div class="category"><h2>Category</h2><h3>Classes / All</h3><ul><li><a href="AssignedOverview.html">AssignedOverview</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>assignedoverview-calculations.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Global iife: Assigned Overview
+ * @class AssignedOverview
+ * @category Category
+ * @subcategory All
+ */
+(function () {
+  /*global _ */
+  const gCalcs = wpw.tax.de.global.functions.gCalcs;
+  wpw.tax.create.calcBlocks("assignedoverview", function (calcUtils) {
+    let lockdownStatus = wpw.tax.global.engagementProperties.lockdownStatus;
+    /**
+     * The funciton would take an array object with data for the table to populate.
+     * Inorder to populate the table, that is why we have to remove all of the entries of the tables first.
+     * followed by new entries from the table array object.
+     *
+     * @param {Object} calcUtils the calcUtil object is used to get refrence for caswares API.
+     * @param {ArrayObject} tableArr Array of the table to populate.
+     * @param {string} tableId num id of the table to populate.
+     * @name #populateTable
+     * @function
+     * @memberOf AssignedOverview
+     */
+    function populateTable(calcUtils, tableArr, tableId) {
+      let table = calcUtils.field(tableId);
+      // Clear the table if already rows are added, by removing each row
+      let tableLength = table.getRows().length;
+      for (let i = 0; i &lt; tableLength; i++) {
+        calcUtils.removeTableRow("assignedoverview", tableId, 0);
+      }
+      // add rows to the table
+      for (let i = 0; i &lt; tableArr.length; i++) {
+        let status = tableArr[i].status;
+        let hideCheckbox = false;
+        console.log("Status: ", status);
+        if (status == "Fertiggestellt" || status === "Abgebrochen") {
+          hideCheckbox = true;
+          // continue; // to remove the row entry from table.
+        }
+        calcUtils.addTableRow("assignedoverview", tableId);
+        table.cell(i, 0).assign(tableArr[i].name);
+        table.cell(i, 1).assign(tableArr[i].docName);
+        table.cell(i, 2).assign(status);
+        table.cell(i, 3).assign(tableArr[i].dueDate);
+        table.cell(i, 5).assign(tableArr[i].id);
+        table.cell(i, 6).assign(tableArr[i].docId);
+        table.cell(i, 7).assign(tableArr[i].url);
+
+        if (tableArr[i].name !== "" || hideCheckbox) {
+          // remove the checkbox in the name row
+          table.cell(i, 4).localData.type = "none";
+        }
+      }
+    }
+
+    /**
+     * Cleans the data array and remove any thing that is empty.
+     * @param {Object} data array of data
+     * @returns A set of filteredData.
+     * @name #filterArr
+     * @function
+     * @memberOf AssignedOverview
+     */
+    function filterArr(data) {
+      // filter out empty elements
+      let filteredArr = data.filter((el) => {
+        return el != "";
+      });
+      let uniqueData = [...new Set(filteredArr)];
+      return uniqueData;
+    }
+
+    /**
+     * Get's staffEntriesMap 'createStaffEntries'
+     * Gets all the assigned conacts, and use the 'filterArr' to get unique data.
+     * Places the staff and users into their respective style, and push the data into tableArr dataStructure.
+     * which is then used to populated the table.
+     * @see {@link AssignedOverview#populateTable}.
+     * @see {@link AssignedOverview#createStaffEntries}
+     * @see {@link AssignedOverview#filterArr}
+     * @function
+     * @name #onFormLoad-AssignedOverview
+     * @memberOf AssignedOverview
+     */
+    calcUtils.onFormLoad("assignedoverview", function (calcUtils) {
+      const staffEntriesMap = gCalcs.getStaffEntriesMap();
+      let table = calcUtils.form("queriescockpit").field("QUERIES-COCKPIT");
+      let newContactsArr = [];
+
+      for (let i = 0; i &lt; table.getRows().length; i++) {
+        let assignedContacts = table.cell(i, 7).get();
+        // split the string to array
+        let assignedContactsArr = assignedContacts.split(", ");
+        newContactsArr.push(...assignedContactsArr);
+      }
+      let uniqueContacts = filterArr(newContactsArr);
+      let contactsArr = [];
+      return wpw.tax.getAllContacts().then((res) => {
+        let contactsData = [];
+        for (let i in res) {
+          contactsArr.push({
+            name: res[i].name,
+            id: res[i].id,
+          });
+        }
+        uniqueContacts.forEach((contact) => {
+          let contactDetails = contactsArr.find((res) => res.name === contact);
+          if (contactDetails == undefined) {
+            staffEntriesMap.forEach((value, key) => {
+              if (value === contact.replace(/\*/g, "")) {
+                contactDetails = { id: key, name: "*" + value };
+              }
+            });
+          }
+          contactsData.push(contactDetails);
+        });
+
+        let tableArr = [];
+        // contstruct the data for each contact
+        contactsData.forEach((item) => {
+          let strQueryNames = "";
+          let strQueryDueDates = "";
+          let strDocIds = "";
+          tableArr.push({
+            name: item.name,
+            docName: "",
+            status: "",
+            dueDate: "",
+            id: item.id,
+          });
+          // a contact has more than one queries assigned to him
+          for (let i = 0; i &lt; table.getRows().length; i++) {
+            let namesArr = table.cell(i, 7).get().split(", ");
+            let queryName = table.cell(i, 0).get();
+            let status = table.cell(i, 2).get();
+            let date = table.cell(i, 4).get();
+            let url = table.cell(i, 11).get();
+            let dueDate = "";
+            // check the date is filled properly
+            if (typeof date === "object" &amp;&amp; date !== null)
+              dueDate = date.day + "." + date.month + "." + date.year;
+            let docId = table.cell(i, 10).get();
+            if (namesArr.indexOf(item.name) > -1) {
+              tableArr.push({
+                name: "",
+                docName: queryName,
+                status: status,
+                dueDate: dueDate,
+                docId: docId,
+                id: item.id,
+                url: url,
+              });
+              // this will be used later in send Email
+              strQueryNames = strQueryNames.concat(queryName + ", ");
+              strQueryDueDates = strQueryDueDates.concat(dueDate + ", ");
+              strDocIds = strDocIds.concat(docId + ", ");
+            }
+          }
+        });
+        populateTable(calcUtils, tableArr, "ASSIGNED-OVERVIEW");
+      });
+    });
+
+    calcUtils.custom("cancelReminder", function () {
+      wpw.tax.closeModal("assignedoverview");
+    });
+
+    calcUtils.custom("sendReminder", function (calcUtils) {
+      if (!lockdownStatus) {
+        let cIds = [];
+        let reminderData = [];
+        let table = calcUtils.field("ASSIGNED-OVERVIEW");
+        for (let i = 0; i &lt; table.getRows().length; i++) {
+          const reminder = table.cell(i, 4).get();
+          const cId = table.cell(i, 5).get();
+          const url = table.cell(i, 7).get();
+          if (reminder === true) {
+            // put the contact id into the cids
+            if (!cIds.includes(cId)) {
+              cIds.push(cId);
+            }
+            reminderData.push({
+              docName: table.cell(i, 1).get(),
+              dueDate: table.cell(i, 3).get(),
+              contactId: cId,
+              docId: table.cell(i, 6).get(),
+              url: url,
+            });
+          }
+        }
+        let newData = [];
+        cIds.forEach((id) => {
+          let emailData = reminderData.filter((data) => data.contactId === id);
+          let obj = { contactId: id, data: emailData };
+          newData.push(obj);
+        });
+        let bodyText =
+          "Mit dem folgenden Link öffnen Sie das Ihnen zur Bearbeitung zugeordnete Abfragedokument. ";
+        let convertedNewData = convertNewDatatoUpdatedCode(newData);
+        console.log("EmailData-AssignedOverview: newData: ", convertedNewData);
+        let emailData = gCalcs.sendEmails(
+          calcUtils,
+          convertedNewData,
+          bodyText
+        );
+        console.log("EmailData-AssignedOverview: ", emailData);
+        gCalcs.generateQueryDocuments(calcUtils);
+        wpw.tax.closeModal("sendoverview");
+        gCalcs.startLoadingBar(
+          "QUERIESCOCKPIT",
+          "Bitte Warten",
+          "Abfrageübersicht wird geladen. Bitte warten."
+        );
+      } else {
+        wpw.tax.global.dialogs.notify(
+          "Lockdown",
+          "Im Lockdown können keine Änderungen vorgenommen werden"
+        );
+        wpw.tax.closeModal();
+      }
+    });
+    function convertNewDatatoUpdatedCode(data) {
+      let contactsMap = new Map();
+
+      data.forEach((obj) => {
+        console.log("Object: ", obj);
+
+        let key = obj.contactId;
+        let value = [];
+        obj.data.forEach((dataObj) => {
+          if (dataObj.dueDate === "") {
+            dataObj.dueDate = new Date();
+            console.log("Today: ", dataObj.dueDate);
+            //         console.log("Today:Type:  ", typeof obj.dueDate);
+          } else {
+            let date = dataObj.dueDate.split(".");
+
+            dataObj.dueDate = new Date(date[2], date[1] - 1, date[0], 0, 0, 0);
+          }
+
+          console.log("Date-:###############:  ", dataObj.dueDate);
+
+          value.push({
+            queryName: dataObj.docName,
+            dueDate: dataObj.dueDate,
+            contactId: dataObj.contactId,
+            docId: dataObj.docId,
+            url: dataObj.url,
+          });
+        });
+        contactsMap.set(key, value);
+      });
+      return contactsMap;
+    }
+  });
+})();
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>
